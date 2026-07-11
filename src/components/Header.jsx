@@ -1,82 +1,155 @@
-import { FaHome } from "react-icons/fa";
-import logo from "../assets/headerlogo.png";
-import { MdAccountCircle, MdContactPhone } from "react-icons/md";
-import { HiMenuAlt3 } from "react-icons/hi";
+import logo from '../assets/images/headerlogo.png'
 import { useState } from "react";
-import { IoLanguage } from "react-icons/io5";
+import Language from '../utils/buttons/Language'
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import Menu from '../utils/buttons/Menu';
+import RashiLists from '../utils/buttons/RashiLists'
+
 
 const Header = () => {
-    const [open, setOpen] = useState(false)
-    const {t , i18n} = useTranslation()
 
-  const changeLanguage = ()=>{
-    if(i18n.language === 'en'){
-      i18n.changeLanguage('hi')
-    }else{
-      i18n.changeLanguage("en")
-    }
-  }
-    return (
-    <header className="z-10 w-full bg-[#08002D] border-b-2 border-[#D4A646] flex justify-between items-center px-5 h-[10vh] lg:h-[15vh] fixed top-0 ">
+  const [open, setOpen] = useState(false)
+  const [hover, setHover] = useState(false)
 
-          <img
-            src={logo}
-            alt="logo"
-            className="h-16"
-          />
+  const { t } = useTranslation()
 
-        <div className="w-[80%] flex justify-end items-center gap-8 text-yellow-300 font-semibold">
-          <span onClick={changeLanguage} className="flex flex-col items-center mr-3">
-        <IoLanguage className="cursor-pointer text-2xl lg:text-4xl text-yellow-300" />
-        {t("language")}</span>
-       
-      <Link to="/"  className="hidden lg:flex flex-col items-center ">
-      <FaHome className="text-xl lg:text-4xl text-yellow-500" /> 
-      {t("home")}
+
+  return (
+    <header className="z-50 w-full bg-[#08002D] border-b-2 border-[#D4A646] flex justify-center items-center lg:px-5 py-3 fixed top-0">
+
+
+      <a href="/">
+        <img
+          src={logo}
+          alt="logo"
+          className="w-32 aspect-square"
+        />
+      </a>
+
+
+      <div className="ml-2 w-full flex flex-col font-bold text-[11px]">
+
+        <p className="text-yellow-500">
+          {t('head1')}
+        </p>
+
+        <p className="text-amber-200">
+          {t('head2')}
+        </p>
+
+      </div>
+
+      <div className="w-[80%] flex justify-end items-center gap-8 text-yellow-300 font-semibold cursor-pointer">
+
+        <Link
+          to="/"
+          className="hidden lg:flex hover:text-amber-600">
+          {t("home")}
         </Link>
-     
-     <Link to={"/contact"} className="hidden lg:flex flex-col items-center">
-     <MdContactPhone className="text-xl lg:text-4xl text-yellow-500" /> 
-     {t("contact")}
-     </Link>  
+
+        <Link
+          to="/astrology"
+          className="hidden lg:flex hover:text-amber-600">
+          {t("astrology")}
+        </Link>
+
+        <Link
+          to="/numerology"
+          className="hidden lg:flex hover:text-amber-600">
+          {t("numerology")}
+        </Link>
+
+        <Link
+          to="/vastu"
+          className="hidden lg:flex hover:text-amber-600">
+          {t("vaastu")}
+        </Link>
 
 
-     <Link to={"/account"} className="hidden lg:flex flex-col items-center">
-        <MdAccountCircle className="text-xl lg:text-4xl text-yellow-500"/> 
-        {t("account")}
-          </Link>
-          </div>
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden text-yellow-300"
-          >
-            <HiMenuAlt3 className="text-2xl lg:text-4xl text-yellow-300 " /><p className="font-semibold">{t("menu")}</p>
-          </button>
-             {open && (
-        <div className="md:hidden bg-slate-800 text-amber-200 absolute right-0 top-10 w-full mt-10">
+        <Link
+          to="/panchang"
+          className="hidden lg:flex hover:text-amber-600">
+          {t("panchang")}
+        </Link>
 
-          <ul className="flex justify-around gap-8 p-3 items-center">
+        <div className="relative hidden lg:flex"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}>
 
-          <Link to={'/'} className="flex flex-col items-center font-semibold text-lg">
-            <FaHome className="text-2xl lg:text-6xl text-amber-200" /><li>{t("home")}
-            </li></Link>
-          
-          <Link to={'/contact'} className="flex flex-col items-center font-semibold text-lg"><MdContactPhone className="text-2xl lg:text-6xl text-amber-200" />
-            <li>{t("contact")}
-              </li></Link>
-          
-          <Link to={"/account"} className="flex flex-col items-center font-semibold text-lg"><MdAccountCircle className="text-2xl lg:text-6xl text-amber-200"/>
-            <li>{t("account")}
-              </li></Link>
-            </ul>
+          <span className="lg:hover:text-amber-600">
+            {t("rashifal")}
+          </span>
+          {
+            hover && (
+          <div className="absolute top-6 right-0 rounded-xl p-4 w-52 shadow-xl z-50">
+
+                <RashiLists />
+
+              </div>
+
+            )
+
+          }
+
 
         </div>
-      )}
+
+          <Link
+          to="/poojan"
+          className="hidden lg:flex hover:text-amber-600">
+          Reports
+        </Link>
+
+        <Link
+          to="/contact"
+          className="hidden lg:flex hover:text-amber-600">
+
+          {t("contact")}
+
+        </Link>
+
+
+
+        <Link
+          to="/account"
+          className="hidden lg:flex hover:text-amber-600">
+
+          {t("account")}
+
+        </Link>
+
+
+
+        <span>
+
+          <Language />
+
+        </span>
+
+
+      </div>
+
+
+
+      <button
+
+        onClick={() => setOpen(!open)}
+
+        className="md:hidden text-yellow-300"
+
+      >
+
+        <Menu />
+
+      </button>
+
+
 
     </header>
-  );
-};
+
+  )
+}
+
 
 export default Header;

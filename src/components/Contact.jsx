@@ -1,15 +1,16 @@
 import { useTranslation } from "react-i18next";
-import photo2 from "../assets/photo2.png";
-import photo1 from "../assets/photo1.jpeg";
-import photo4 from "../assets/photo4.png";
-import photo from "../assets/pt.png";
-import video1 from "../assets/video1.mp4";
-import video2 from "../assets/video2.mp4";
-import video3 from "../assets/video3.mp4";
-import mic from "../assets/micpic.png";
+import photo2 from "../assets/images/photo2.png";
+import photo1 from "../assets/images/photo1.jpeg";
+import photo4 from "../assets/images/photo4.png";
+import photo from "../assets/images/pt.png";
+import video1 from "../assets/videos/video1.mp4";
+import video2 from "../assets/videos/video2.mp4";
+import video3 from "../assets/videos/video3.mp4";
+import mic from "../assets/images/micpic.png";
 import { FaFacebook, FaWhatsapp } from "react-icons/fa";
 import { BsInstagram } from "react-icons/bs";
 import { SiGmail } from "react-icons/si";
+import { MdCall } from "react-icons/md";
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -74,48 +75,48 @@ const Contact = () => {
       <a href="#contact">
         {" "}
         <h1 className="text-red-200 text-2xl w-full font-semibold ml-5 text-center mt-5 underline">
-          Pt. BL vashishth Contact :-
+          {t("contactTitle")}
         </h1>{" "}
       </a>
-      <div className="w-full flex flex-wrap justify-center p-2 pl-5 mt-5">
+      <div className="w-full flex flex-wrap justify-center lg:justify-around p-2 pl-5 mt-5">
         <img
           src={photo2}
-          className=" h-[500px] border-2 border-amber-200 rounded-md m-5 mb-4"
+          className=" lg:w-[35%] lg:border-2 border-amber-200 rounded-md m-5 mb-4 "
         />
         <img
           src={photo4}
-          className=" w-full lg:w-[50%] border-2 border-amber-200 rounded-md m-5 mb-4"
+          className=" w-full lg:w-[50%] border-2 border-amber-200 rounded-md m-5 "
         />
         <img
           src={photo1}
-          className=" h-[500px] border-2 border-amber-200 rounded-md m-5 mb-4"
+          className=" w-full lg:w-[50%] border-2 border-amber-200 rounded-md m-5  "
         />
         <img
           src={photo}
-          className=" h-[500px] border-2 border-amber-200 rounded-md m-5 mb-4"
+          className=" w-full lg:w-[40%] border-2 border-amber-200 rounded-md m-5  "
         />
         <img
           src={mic}
-          className=" h-[500px] border-2 border-amber-200 rounded-md m-5 mb-4"
+          className="w-full lg:w-[50%] border-2 border-amber-200 rounded-md m-5  "
         />
         <video 
         src={video1} 
         controls
-        className="h-[500px] rounded-lg border-2 border-amber-200 m-5"
+        className="h-[500px] rounded-lg border-2 border-amber-200 m-5 "
         />
         <video 
         src={video2} 
         controls
-        className="h-[500px] rounded-lg border-2 border-amber-200 m-5"
+        className="h-[500px] rounded-lg border-2 border-amber-200 m-5 "
         />
         <video 
         src={video3} 
         controls
-        className="h-[500px] rounded-lg border-2 border-amber-200 m-5"
+        className="h-[500px] rounded-lg border-2 border-amber-200 m-5 "
         />
       </div>
-      <div id="contact" className="h-[50vh] w-full mt-8 text-amber-200 flex flex-col justify-center items-center ">
-        <h1 className=""> Contact to Pt. Bhanwar Lal Vashisth (Manoj Vedic Astro) </h1>
+      <div id="contact" className="h-[50vh] w-full mt-8 text-amber-200 flex flex-col justify-center items-center   ">
+        <h1 className="">{t("contactTitle")}</h1>
         <div className="mt-4 flex  items-center">
           <a
             href="https://wa.me/918882532259?text=Hello%20I%20want%20to%20know%20about%20your%20astrology%20services"
@@ -124,11 +125,17 @@ const Contact = () => {
           >
             <FaWhatsapp className="text-4xl ml-8" />
           </a>
-           <a href=""><BsInstagram className="text-4xl ml-8" /> </a>
-           <a href="mailto:aditya.0.rajpoot@gmail.com?subject=Astrology%20Consultation%20Inquiry&body=Hello%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20astrology%20services.%20Please%20share%20details%20regarding%20consultations%2C%20kundali%20analysis%2C%20and%20pricing.%0A%0AThank%20you."><SiGmail className="text-4xl ml-8" /></a>
-           <a href=""><FaFacebook className="text-4xl ml-8" /></a>
+
+           <a href="https://www.instagram.com/manoj_guru_jiii?igsh=Yjdnb3lxcTZkbXF3"><BsInstagram className="text-4xl ml-8" /> </a>
+
+           <a href="mailto:manojshastriastrologer45@gmail.com?subject=Astrology%20Consultation%20Inquiry&body=Hello%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20astrology%20services.%20Please%20share%20details%20regarding%20consultations%2C%20kundali%20analysis%2C%20and%20pricing.%0A%0AThank%20you."><SiGmail className="text-4xl ml-8" /></a>
+
+           <a href="https://www.facebook.com/share/179LmPcf9k/"><FaFacebook className="text-4xl ml-8" /></a>
+
+           <a href="tel:+91 88825 32259"><MdCall className="text-4xl ml-8" /></a>
         </div>
       </div>
+
     </div>
   );
 };

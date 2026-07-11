@@ -4,29 +4,20 @@ A modern astrology web application built using React.js.
 
 ## Features
 
-* Responsive Home Page
-* Contact Page
-* Hindi to English Translation
-* English to Hindi Translation
-* User-Friendly Interface
-* Mobile Responsive Design
-
-## Language Used
-
-* React.js
-* JavaScript (ES6+)
-* HTML5
-* CSS3
-* React Router
-* React Icons
+* Vastu page complete 
+* Rashifal complete
+* Dainik panchang complete 
+* Astrology complete
 
 ## Future Enhancements
 
 * Kundali Generation
-* Astrology API Integration
+* Kundali Milan Generation
 * Horoscope Predictions
 * Multi-Language Support
-* User Authentication
+* Lal kitab Generation
+* Kp Astrology Generation
+* Numerology Generation
 
 ## Author
 
@@ -35,3 +26,8 @@ Aditya Rajpoot
 ---
 
 Made with React.js ❤️
+
+
+# Numerology 
+- All inputes  
+

@@ -1,97 +1,107 @@
-import React from 'react'
-import image from '../assets/headerlogo.png'
-import astro from '../assets/astro.png'
-import vaastu from '../assets/astro-vastu.png'
-import pooja from '../assets/kalash-pooja.png'
+import image from '../assets/images/headerlogo.png'
+import astro from '../assets/images/astro.png'
+import vaastu from '../assets/images/astro-vastu.png'
+import pooja from '../assets/images/kalash-pooja.png'
 import { FaArrowRight } from 'react-icons/fa'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import Services from '../utils/buttons/Services'
+import PremiumCard from '../utils/buttons/PremiumCard'
 
 const Maincontainer = () => {
-    const {t} = useTranslation()
+  const { t } = useTranslation()
+
   return (
-    <div className='pt-28 w-full bg-[#08122D] lg:flex flex-wrap justify-between  lg:items-center'>
-        <div className='m-5 pt-10 lg:w-[50%] lg:ml-10'>
-        <h1 className='text-3xl lg:text-5xl font-semibold text-yellow-300'>
-            {t("welcome")}
-        </h1>
-        <p className='text-white text-lg mt-3'>{t("description")}.</p>
-        </div>
-        <div className=' flex justify-end items-center W-full lg:w-[30%] mr-10 pl-5 lg:pl-auto mt-5'>
+    <div className='w-full bg-[#08122D] pt-28'>
+      <div className='mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8'>
+        <section className='flex flex-col gap-8 py-8 lg:flex-row lg:items-center lg:justify-between'>
+          <div className='max-w-2xl'>
+            <h1 className='text-3xl font-semibold text-yellow-300 sm:text-4xl lg:text-5xl'>
+              {t("welcome")}
+            </h1>
+            <p className='mt-3 text-base text-white sm:text-lg'>{t("description")}</p>
+          </div>
+          <div className='flex justify-center lg:justify-end'>
             <img
-            src={image}
-            className=' rounded-full border border-amber-300 h-[20%] lg:w-[70%]  '
+              src={image}
+              alt='astrology'
+              className='w-full lg:w-[80%] max-w-sm rounded-full border border-amber-300'
             />
-        </div>
-
-        <div className='w-full flex justify-between lg:justify-evenly pt-10 lg:m-0 px-2'>
-
-        <div className='cursor-pointer border border-amber-200 bg-gradient-to-r from-[#111827] to-[#0a0a0a] lg:p-4 rounded-lg p-4'>
-
-            <h1 className=' lg:font-semibold text-amber-300 lg:text-2xl text-center lg:px-16 '>23+ {t("years")}</h1>
-            <p className='text-slate-400 text-center'>{t("astrology")}</p>
-        </div>
-
-            <div className='bg-gradient-to-r from-[#111827] to-[#0a0a0a] border border-amber-300 lg:p-4 rounded-lg p-4'>
-
-            <h1 className=' lg:font-semibold text-amber-300 lg:text-2xl text-center lg:px-16'>21+ {t("years")}</h1>
-            <p className='text-slate-400 text-center'>{t("vaastu")} </p>
-        </div>
+          </div>
+        </section>
 
 
-            <div className='bg-gradient-to-r from-[#111827] to-[#0a0a0a] border border-amber-300 lg:p-4 rounded-lg p-4'>
+        <section className="overflow-hidden rounded-lg shadow-[0_0_15px_rgba(251,191,36,0.3)] my-10 px-3">
 
-            <h1 className=' lg:font-semibold text-amber-300 lg:text-2xl text-center lg:px-16'>27+ {t("years")}</h1>
+          <div className="marquee">
 
-            <p className='text-slate-400 text-center'>{t("poojan")}</p>
-        </div>
-        </div>
+            <div className="marquee-content">
 
-        <div className=' w-full flex flex-wrap py-16 lg:my-10'>
-            <div className='bg-gradient-to-r from-[#111827] to-[#0a0a0a] p-8 w-full lg:w-[30.5%] border border-amber-200 m-4 flex flex-col rounded-lg'>
-                <div className='my-3 flex'>
-                <img
-                src={astro} 
-                className='w-[10%] rounded-full'/>
-                <h1 className=' text-amber-200 font-bold text-2xl ml-1'>{t("astrology")}</h1>
-                </div>
-            <h2 className='text-amber-200 my-3'>23+ {t("experiences")}</h2>
-            <p className='text-white'>{t("vedic")}
-               <Link to={"/astrology"}> <span className='flex items-center text-amber-200 mt-2'>{t("view")} <FaArrowRight className='text-yellow-200 ml-2' /></span></Link>
-                </p>
-            </div>
-            
-             <div className='bg-gradient-to-r from-[#111827] to-[#0a0a0a] p-8 w-full lg:w-[30.5%] border border-amber-200 m-4 flex flex-col rounded-lg'>
-                <div className='my-3 flex'>
-                <img
-                src={vaastu} 
-                className='w-[10%] rounded-full'/>
-                <h1 className=' text-amber-200 font-bold text-2xl ml-1'>{t("vaastu")}</h1>
-                </div>
-            <h2 className='text-amber-200 my-3'>21+ {t("experiences")}</h2>
-            <p className='text-white'> {t("vastu")}
-            <Link to={"/vastu"}><span className='flex items-center text-amber-200 mt-2'>{t("view")} <FaArrowRight className='text-yellow-200 ml-2' /></span> </Link>
-                </p>
+              <span>
+                🪶 जय श्री श्याम 🪶 | BL Vashisht — वशिष्ठ ऋषि परंपरा अनुसार संपूर्ण ज्योतिषीय परामर्श | हस्तलिखित जन्म कुंडली | कुंडली विश्लेषण | अंक ज्योतिष | बिना तोड़फोड़ संपूर्ण वास्तु दोष निवारण | वैदिक यंत्र | ऑनलाइन एवं ऑफलाइन यज्ञ, पूजन-अनुष्ठान की सुविधा उपलब्ध है।
+              </span>
+
+
+              <span>
+                🪶 जय श्री श्याम 🪶 | BL Vashisht — वशिष्ठ ऋषि परंपरा अनुसार संपूर्ण ज्योतिषीय परामर्श | हस्तलिखित जन्म कुंडली | कुंडली विश्लेषण | अंक ज्योतिष | बिना तोड़फोड़ संपूर्ण वास्तु दोष निवारण | वैदिक यंत्र | ऑनलाइन एवं ऑफलाइन यज्ञ, पूजन-अनुष्ठान की सुविधा उपलब्ध है।
+              </span>
+
+
             </div>
 
-             <div className='bg-gradient-to-r from-[#111827] to-[#0a0a0a] p-8 w-full lg:w-[30.5%] border border-amber-200 m-4 flex flex-col rounded-lg'>
-                <div className='my-3 flex items-center'>
-                <img
-                src={pooja} 
-                className='w-[10%] rounded-full'/>
-                <h1 className=' text-amber-200 font-bold text-2xl ml-1'>{t("poojan")}</h1>
-                </div>
-            <h2 className='text-amber-200 my-3'>27+ {t("experiences")}</h2>
-            <p className='text-white'> {t("paath")}
-             <Link to={"/poojan"}><span className='flex items-center text-amber-200 mt-2'> {t("view")} <FaArrowRight className='text-yellow-200 ml-2' /></span> </Link>   
-                </p>
-            </div>
-        </div>
+          </div>
 
-        <nav>
-            <ul></ul>
-        </nav>
-        
+        </section>
+
+        <section className='pt-10 grid grid-cols-1 gap-10 lg:grid-cols-3'>
+          <div className='flex min-h-full flex-col justify-between rounded-lg border border-amber-200 bg-gradient-to-r from-[#111827] to-[#0a0a0a] p-6'>
+            <Link to={'/astrology'}><div className='mb-3 flex items-center gap-2'>
+              <img src={astro} alt='astrology' className='h-10 w-10 rounded-full' />
+              <h1 className='text-2xl font-bold text-amber-200'>{t("astrology")}</h1>
+            </div>
+              <h2 className='my-3 text-amber-200'>23+ {t("experiences")}</h2>
+              <p className='text-white'>
+                {t("vedic")}
+                <span className='mt-2 flex items-center text-amber-200'>
+                  <Services />
+                </span>
+              </p></Link>
+          </div>
+
+          <Link to={'/vastu'}>  <div className='flex min-h-full flex-col justify-between rounded-lg border border-amber-200 bg-gradient-to-r from-[#111827] to-[#0a0a0a] p-6'>
+            <div className='mb-3 flex items-center gap-2'>
+              <img src={vaastu} alt='vaastu' className='h-10 w-10 rounded-full' />
+              <h1 className='text-2xl font-bold text-amber-200'>{t("vaastu")}</h1>
+            </div>
+            <h2 className='my-3 text-amber-200'>21+ {t("experiences")}</h2>
+            <p className='text-white'>
+              {t("vastu")}
+
+              <span className='mt-2 flex items-center text-amber-200'>
+                <Services />
+              </span>
+            </p>
+          </div>
+          </Link>
+
+          <Link to={'/poojan'}><div className='flex min-h-full flex-col rounded-lg border border-amber-200 bg-gradient-to-r from-[#111827] to-[#0a0a0a] p-6'>
+            <div className='mb-3 flex items-center gap-2'>
+              <img src={pooja} alt='poojan' className='h-10 w-10 rounded-full' />
+              <h1 className='text-2xl font-bold text-amber-200'>{t("poojan")}</h1>
+            </div>
+            <h2 className='my-3 text-amber-200'>27+ {t("experiences")}</h2>
+            <p className='text-white'>
+              {t("paath")}
+
+              <span className='mt-2 flex items-center text-amber-200'>
+                <Services />
+              </span>
+            </p>
+          </div>
+          </Link>
+        </section>
+      </div>
+      {/* <PremiumCard /> */}
     </div>
   )
 }

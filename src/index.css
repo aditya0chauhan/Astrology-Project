@@ -1,1 +1,99 @@
 @import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: #08122d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+.marquee {
+width:100%;
+overflow:hidden;
+}
+
+
+.marquee-content {
+
+display:flex;
+
+width:max-content;
+
+animation: scroll 35s linear infinite;
+
+}
+
+
+.marquee-content span{
+
+padding:20px 40px;
+
+font-size:20px;
+
+font-weight:600;
+
+color:#fbbf24;
+
+white-space:nowrap;
+
+}
+
+
+
+.marquee-content:hover{
+
+animation-play-state:paused;
+
+}
+
+
+
+@keyframes scroll{
+
+
+from{
+
+transform:translateX(0);
+
+}
+
+
+to{
+
+transform:translateX(-50%);
+
+}
+
+
+}
+
+@media (max-width: 640px) {
+  #chart {
+    padding-right: 15px;
+  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
