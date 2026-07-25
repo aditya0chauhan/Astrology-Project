@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../utils/buttons/Loader";
+import { useTranslation } from "react-i18next";
 
 
 const MasikRashifal = () => {
     const { rashi } = useParams();
+    const { t, i18n } = useTranslation();
     const [rashifal, setRashifal] = useState(null);
     const [loading, setLoading] = useState(false);
+    const cacheRef = useRef({}); // Cache API responses to avoid duplicate calls
 
     const zodiacMap = {
         mesh: 1,
@@ -23,102 +26,108 @@ const MasikRashifal = () => {
         meen: 12
     }
 
-    const rashiCards = [
+    const rashiNames = {
+        mesh: t("rashi1"),
+        vrishabh: t("rashi2"),
+        mithun: t("rashi3"),
+        kark: t("rashi4"),
+        singh: t("rashi5"),
+        kanya: t("rashi6"),
+        tula: t("rashi7"),
+        vrishchik: t("rashi8"),
+        dhanu: t("rashi9"),
+        makar: t("rashi10"),
+        kumbh: t("rashi11"),
+        meen: t("rashi12")
+    }
 
+    const rashiCards = [
         {
-            name: "मेष",
+            name: t("rashi1"),
             path: "mesh",
             icon: "♈"
         },
-
         {
-            name: "वृषभ",
+            name: t("rashi2"),
             path: "vrishabh",
             icon: "♉"
         },
-
         {
-            name: "मिथुन",
+            name: t("rashi3"),
             path: "mithun",
             icon: "♊"
         },
-
         {
-            name: "कर्क",
+            name: t("rashi4"),
             path: "kark",
             icon: "♋"
         },
-
         {
-            name: "सिंह",
+            name: t("rashi5"),
             path: "singh",
             icon: "♌"
         },
-
         {
-            name: "कन्या",
+            name: t("rashi6"),
             path: "kanya",
             icon: "♍"
         },
-
         {
-            name: "तुला",
+            name: t("rashi7"),
             path: "tula",
             icon: "♎"
         },
-
         {
-            name: "वृश्चिक",
+            name: t("rashi8"),
             path: "vrishchik",
             icon: "♏"
         },
-
         {
-            name: "धनु",
+            name: t("rashi9"),
             path: "dhanu",
             icon: "♐"
         },
-
         {
-            name: "मकर",
+            name: t("rashi10"),
             path: "makar",
             icon: "♑"
         },
-
         {
-            name: "कुंभ",
+            name: t("rashi11"),
             path: "kumbh",
             icon: "♒"
         },
-
         {
-            name: "मीन",
+            name: t("rashi12"),
             path: "meen",
             icon: "♓"
         }
-
     ]
 
-    const getRashifal = async () => {
+    const getRashifal = async (lang) => {
         try {
-            setLoading(true);
             const zodicNumber = zodiacMap[rashi];
+            const cacheKey = `monthly_${zodicNumber}_${lang}`;
+            
+            if (cacheRef.current[cacheKey]) {
+                setRashifal(cacheRef.current[cacheKey]);
+                return;
+            }
+            
+            setLoading(true);
+            const langCode = lang === 'en' ? 'en' : 'hi';
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/prediction/monthly?zodiac=${zodicNumber}&day=today&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/prediction/monthly?zodiac=${zodicNumber}&day=today&lang=${langCode}`);
 
             const data = await response.json();
-             setRashifal(data);
+            // Store in cache
+            cacheRef.current[cacheKey] = data;
+            setRashifal(data);
         }
         catch (error) {
-            console.log(error);
+            console.error("Error fetching monthly horoscope:", error);
+            setRashifal(null);
         }
-
         finally {
             setLoading(false);
         }
@@ -126,14 +135,12 @@ const MasikRashifal = () => {
 
     useEffect(() => {
         if (rashi) {
-            getRashifal();
+            getRashifal(i18n.language);
         }
-    }, [rashi])
+    }, [rashi, i18n.language])
 
     if (loading) {
-
         return (
-
             <div className="min-h-screen flex justify-center items-center bg-[#0a0a0a]">
                 <Loader />
             </div>
@@ -141,97 +148,96 @@ const MasikRashifal = () => {
     }
 
     if (!rashi) {
-
         return (
-
-         <div className="mt-24 min-h-screen bg-[#0a0a0a] text-white px-5 py-10">
-
-            <h1 className="text-center text-3xl text-yellow-400 font-bold mb-8">
-                    🌞 मासिक राशिफल
+            <div className="mt-24 min-h-screen bg-[#0a0a0a] text-white px-5 py-10">
+                <h1 className="text-center text-3xl text-yellow-400 font-bold mb-8">
+                    🌞 {t("monthlyHoroscope")}
                 </h1>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-5 max-w-5xl mx-auto">
                     {
                         rashiCards.map((item) => (
-
-             <Link key={item.path} to={`/masik_rashifal/${item.path}`}
-                className="bg-white/10 rounded-xl p-6 text-center border border-yellow-500 hover:scale-105 duration-300 ">
-
-                   <h2 className="text-4xl">
-                      {item.icon}
-                     </h2>
-
-                  <p className="text-yellow-300 mt-3 text-xl">
-                    {item.name}
-                         </p>
+                            <Link key={item.path} to={`/masik_rashifal/${item.path}`}
+                                className="bg-white/10 rounded-xl p-6 text-center border border-yellow-500 hover:scale-105 duration-300  hover:scale-[1.10] duration-300">
+                                <h2 className="text-4xl">
+                                    {item.icon}
+                                </h2>
+                                <p className="text-yellow-300 mt-3 text-xl">
+                                    {item.name}
+                                </p>
                             </Link>
                         ))
                     }
-
                 </div>
             </div>
         )
     }
+
     return (
         <div className="mt-24 min-h-screen bg-[#0a0a0a] text-white px-5 py-10">
-             {
-                rashifal?.response && (
-                   
-            <div className="max-w-3xl mx-auto bg-white/10 p-6 rounded-2xl space-y-5">
-               <h1 className="text-3xl text-yellow-400 font-bold text-center">
-                 {rashi} राशिफल
-                 </h1>
+            {loading && (
+                <div className="min-h-screen flex justify-center items-center">
+                    <Loader />
+                </div>
+            )}
+            
+            {!loading && rashifal?.response && (
+                <div className="max-w-3xl mx-auto bg-white/10 p-6 rounded-2xl space-y-5">
+                    <h1 className="text-3xl text-yellow-400 font-bold text-center">
+                        {rashiNames[rashi]} {t("monthlyHoroscope")}
+                    </h1>
 
-                   <p>
-                  📅 {rashifal.response.month}
-                        </p>
+                    <p className="text-sm text-gray-300">
+                        {t("month")} {rashifal.response.month}
+                    </p>
 
-               <div>
-                  <h2 className="text-green-400 text-xl">मासिक राशिफल</h2>
-
-                  <p>{rashifal.response.horoscope_data}
-                      </p></div>
-
-            <div className="grid grid-cols-2 gap-4">
-                <Card
-                    title="❤️ प्रेम"
-                    value={rashifal.response.love}/>
-                <Card
-                    title="👑 Career"
-                    value={rashifal.response.career}/>
-
-                <Card
-                    title="⭐ परिवार"
-                    value={rashifal.response.family}/>
-
-                <Card
-                    title="🏥 स्वास्थ्य"
-                    value={rashifal.response.health}/>
-
-                <Card
-                    title="🫱🫲 चुनौतीपूर्ण दिन"
-                    value={rashifal.response.challenging_days}/>
-                    
+                    <div>
+                        <h2 className="text-green-400 text-xl font-semibold mb-3">{t("monthlyHoroscope")}</h2>
+                        <p className="text-gray-200 leading-relaxed">{rashifal.response.horoscope_data}</p>
                     </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Card
+                            title={t("love")}
+                            value={rashifal.response.love} />
+
+                        <Card
+                            title={t("career")}
+                            value={rashifal.response.career} />
+
+                        <Card
+                            title={t("family")}
+                            value={rashifal.response.family} />
+
+                        <Card
+                            title={t("health")}
+                            value={rashifal.response.health} />
+
+                        <Card
+                            title={t("challengingDays")}
+                            value={rashifal.response.challenging_days}
+                            colSpan={true} />
                     </div>
-                )
-            }
+                </div>
+            )}
+            
+            {!loading && (!rashifal?.response) && (
+                <div className="max-w-3xl mx-auto bg-white/10 p-6 rounded-2xl text-center">
+                    <p className="text-red-400 text-lg">Unable to load monthly horoscope data. Please try again.</p>
+                </div>
+            )}
         </div>
     )
 }
 
-const Card = ({ title, value }) => {
+const Card = ({ title, value, colSpan }) => {
     return (
-
-        <div className="bg-black/30 rounded-xl p-4">
-
+        <div className={`bg-black/30 rounded-xl p-4 ${colSpan ? 'col-span-2' : ''}`}>
             <h2 className="text-yellow-400">
                 {title}
             </h2>
-
             <p>{value}</p>
         </div>
-
     )
 }
 

@@ -22,9 +22,9 @@ const tabs = [
 
 const KundaliNavbar = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="fixed top-32 left-0 right-0 z-50 bg-[#08122D]/95 backdrop-blur-md border-y border-amber-500 shadow-lg">
+    <div className="fixed top-12 left-0 right-0 z-50 bg-[#08122D]/95 backdrop-blur-md border-y border-amber-500 shadow-lg">
       <div className="overflow-x-auto scrollbar-hide">
-     <div className="flex w-max gap-3 px-4 py-3">
+        <div className="flex w-max gap-3 px-4 py-3">
           {tabs.map((tab) => (
             <button
               key={tab.id}

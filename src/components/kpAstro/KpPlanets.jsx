@@ -15,11 +15,7 @@ const KpPlanets = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `https://api.jyotishamastroapi.com/api/kp/planet_details?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                    {
-                        headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                    }
-                )
+                    `/.netlify/functions/proxy/api/kp/planet_details?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
 
                 const response = await data.json();
                 setPlanets(response.response.planets);

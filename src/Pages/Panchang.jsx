@@ -69,14 +69,7 @@ const Panchang = () => {
       const timezone = getTimezone();
 
       const response = await fetch(
-        `https://api.jyotishamastroapi.com/api/panchang/panchang?date=${date}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=${timezone}&lang=hi`,
-        {
-          headers: {
-            key: import.meta.env.VITE_ASTRO_API_KEY,
-          },
-        }
-
-      );
+        `/.netlify/functions/proxy/api/panchang/panchang?date=${date}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=${timezone}&lang=hi`);
       const data = await response.json();
       setPanchang(data);
     }
@@ -94,13 +87,7 @@ const Panchang = () => {
     const { date, time } = getDateTime();
     const timezone = getTimezone();
     const response = await fetch(
-      `https://api.jyotishamastroapi.com/api/panchang/choghadiya-muhurta?date=${date}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=${timezone}&lang=hi`,
-      {
-        headers: {
-          key: import.meta.env.VITE_ASTRO_API_KEY
-        }
-      }
-    );
+      `/.netlify/functions/proxy/api/panchang/choghadiya-muhurta?date=${date}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=${timezone}&lang=hi`);
     const data = await response.json();
     setChoghadiya(data);
   }

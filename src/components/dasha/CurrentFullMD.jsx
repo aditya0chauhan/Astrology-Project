@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 
 const CurrentFullMD = ({ userData }) => {
+  const { t, i18n } = useTranslation();
   const [mahadashaFull, setMahadashaFull] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openSection, setOpenSection] = useState("mahadasha");
@@ -15,12 +17,8 @@ const CurrentFullMD = ({ userData }) => {
       try {
         setLoading(true);
 
-        const  data = await fetch(
-            `https://api.jyotishamastroapi.com/api/dasha/current-mahadasha-full?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-           {
-            headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-          }
-          )
+        const data = await fetch(
+            `/.netlify/functions/proxy/api/dasha/current-mahadasha-full?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
 
         const fullDasha = await data.json();
         setMahadashaFull(fullDasha.response);
@@ -32,7 +30,7 @@ const CurrentFullMD = ({ userData }) => {
     };
 
     fetchfullMahadasha();
-  }, [userData]);
+  }, [userData, i18n.language]);
 
  if (loading) {
         return (
@@ -44,34 +42,34 @@ const CurrentFullMD = ({ userData }) => {
 
   if (!mahadashaFull) {
   return  <div className="text-center text-red-400 mt-10">
-      डेटा उपलब्ध नहीं है।
+      {t("noDataAvailable")}
     </div>
 }
 
   const fullMahadasha = [
   {
     id: "mahadasha",
-    title: "महादशा",
+    title: t("mahadasha"),
     data: mahadashaFull.mahadasha,
   },
   {
     id: "antardasha",
-    title: "अन्तर्दशा",
+    title: t("antardasha"),
     data: mahadashaFull.antardasha,
   },
   {
     id: "paryantardasha",
-    title: "प्रत्यन्तर दशा",
+    title: t("paryantardasha"),
     data: mahadashaFull.paryantardasha,
   },
   {
     id: "Shookshamadasha",
-    title: "सूक्ष्म दशा",
+    title: t("shookshamaDasha"),
     data: mahadashaFull.Shookshamadasha,
   },
   {
     id: "Pranadasha",
-    title: "प्राण दशा",
+    title: t("pranaDasha"),
     data: mahadashaFull.Pranadasha,
   },
 ];
@@ -81,7 +79,7 @@ const CurrentFullMD = ({ userData }) => {
 
 <h2 className="text-3xl font-bold text-center text-amber-400 mt-24 my-5">
 
-सम्पूर्ण दशा विवरण
+{t("fullDashaDetails")}
 
 </h2>
 
@@ -140,13 +138,13 @@ className="border-l-4 border-amber-400 pl-5 py-3 relative"
 
 <p className="text-green-300">
 
-प्रारम्भ : {item.start}
+{t("start")}: {item.start}
 
 </p>
 
 <p className="text-red-300">
 
-समाप्त : {item.end}
+{t("end")}: {item.end}
 
 </p>
 

@@ -22,14 +22,8 @@ const Number = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/number-analysis?name=${userData.name}&date=${formattedDate}&phone=${userData.phone}&lang=hi`,
-
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/number-analysis?name=${userData.name}&date=${formattedDate}&phone=${userData.phone}&lang=hi`);
+                
             const result = await response.json();
             setData(result.response);
         }

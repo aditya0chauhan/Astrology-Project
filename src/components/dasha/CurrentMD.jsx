@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 
 const CurrentMD = ({ userData }) => {
+    const { t, i18n } = useTranslation();
     const [mahadasha, setMahadasha] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -15,11 +17,7 @@ const CurrentMD = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `https://api.jyotishamastroapi.com/api/dasha/current-mahadasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                    {
-                        headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                    }
-                )
+                    `/.netlify/functions/proxy/api/dasha/current-mahadasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
 
                 const dasha = await data.json();
                 setMahadasha(dasha.response);
@@ -31,7 +29,7 @@ const CurrentMD = ({ userData }) => {
         };
 
         fetchMahadasha();
-    }, [userData]);
+    }, [userData, i18n.language]);
 
     if (loading) {
         return (
@@ -43,29 +41,29 @@ const CurrentMD = ({ userData }) => {
 
     if (!mahadasha) {
         return <div className="text-center text-red-400 mt-10">
-            डेटा उपलब्ध नहीं है।
+            {t("noDataAvailable")}
         </div>
     }
 
     const dashaCards = [
         {
-            title: "महादशा",
+            title: t("mahadasha"),
             data: mahadasha.order_of_dashas.major,
         },
         {
-            title: "अन्तर्दशा",
+            title: t("antardasha"),
             data: mahadasha.order_of_dashas.minor,
         },
         {
-            title: "प्रत्यन्तर दशा",
+            title: t("paryantardasha"),
             data: mahadasha.order_of_dashas.sub_minor,
         },
         {
-            title: "सूक्ष्म दशा",
+            title: t("shookshamaDasha"),
             data: mahadasha.order_of_dashas.sub_sub_minor,
         },
         {
-            title: "प्राण दशा",
+            title: t("pranaDasha"),
             data: mahadasha.order_of_dashas.sub_sub_sub_minor,
         },
     ];
@@ -74,7 +72,7 @@ const CurrentMD = ({ userData }) => {
         <div className=" text-white mt-24">
 
             <h1 className="text-3xl text-center font-bold text-amber-400 mb-10">
-                वर्तमान दशा
+                {t("currentDasha")}
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -89,15 +87,15 @@ const CurrentMD = ({ userData }) => {
                         </h2>
 
                         <p>
-                            <strong>ग्रह :</strong> {item.data.name}
+                            <strong>{t("planet")} :</strong> {item.data.name}
                         </p>
 
                         <p>
-                            <strong>प्रारम्भ :</strong> {item.data.start}
+                            <strong>{t("start")} :</strong> {item.data.start}
                         </p>
 
                         <p>
-                            <strong>समाप्त :</strong> {item.data.end}
+                            <strong>{t("end")} :</strong> {item.data.end}
                         </p>
                     </div>
                 ))}

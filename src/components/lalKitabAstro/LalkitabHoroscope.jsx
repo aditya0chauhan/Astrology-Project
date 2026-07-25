@@ -18,13 +18,7 @@ const LalkitabHoroscope = ({userData}) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/lalKitab/horoscope?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/lalKitab/horoscope?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi`);
 
             const result = await response.json();
             setHoroscope(result.response);

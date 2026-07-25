@@ -15,11 +15,7 @@ const KpSanketStatus = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `https://api.jyotishamastroapi.com/api/kp/planet_signification?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                    {
-                        headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                    }
-                )
+                    `/.netlify/functions/proxy/api/kp/planet_signification?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
 
                 const response = await data.json();
                 setStatus(response.response);

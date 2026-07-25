@@ -19,14 +19,7 @@ const MobileAnalysis = ({ userData }) => {
         try {
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/mobile-analysis?phone=${userData.phone}&lang=hi`,
-
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/mobile-analysis?phone=${userData.phone}&lang=hi`);
             const result = await response.json();
             setData(result.response);
         }

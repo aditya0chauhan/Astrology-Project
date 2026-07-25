@@ -16,13 +16,7 @@ const Astakvarga = ({ userData }) => {
         setLoading(true);
 
         const data = await fetch(
-          `https://api.jyotishamastroapi.com/api/horoscope/ashtakvarga?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-          {
-            headers: {
-              key: import.meta.env.VITE_ASTRO_API_KEY,
-            },
-          }
-        );
+          `/.netlify/functions/proxy/api/horoscope/ashtakvarga?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`);
 
         const json = await data.json();
         setAstakvarga(json.response);
@@ -38,13 +32,7 @@ const Astakvarga = ({ userData }) => {
         setLoading(true);
 
         const data = await fetch(
-          `https://api.jyotishamastroapi.com/api/horoscope/ashtakvarga_chart?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-          {
-            headers: {
-              key: import.meta.env.VITE_ASTRO_API_KEY,
-            },
-          }
-        );
+          `/.netlify/functions/proxy/api/horoscope/ashtakvarga_chart?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`);
         const svg = await data.text();
         const cleanSvg = svg
           .replace(/^"/, "")

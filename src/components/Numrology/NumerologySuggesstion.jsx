@@ -21,13 +21,7 @@ const NumerologySuggesstion = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/numerology-suggestion?date=${formattedDate}&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/numerology-suggestion?date=${formattedDate}&lang=hi`);
 
             const result = await response.json();   
             if (result.response) {
@@ -52,13 +46,7 @@ const NumerologySuggesstion = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/numerology-analysis?date=${formattedDate}&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/numerology-analysis?date=${formattedDate}&lang=hi`);
 
             const result = await response.json();   
             if (result.response) {

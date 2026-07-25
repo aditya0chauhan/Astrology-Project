@@ -1,34 +1,48 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 
 const SadeSati = ({ userData }) => {
+    const { t, i18n } = useTranslation();
     const [sadeSati, setSadeSati] = useState(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!userData) return;
+
         const { formattedDate, time, latitude, longitude } = userData;
+        const activeLang = i18n.resolvedLanguage || i18n.language || "en";
+        const apiLang = activeLang.toLowerCase().startsWith("hi") ? "hi" : "en";
+        let isCancelled = false;
+
         const fetchSadeSati = async () => {
             try {
+                setSadeSati(null);
                 setLoading(true);
 
-                const data = await fetch(
-                    `https://api.jyotishamastroapi.com/api/extended_horoscope/current_sadesati?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                    {
-                        headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                    }
-                )
+                const response = await fetch(
+                    `/.netlify/functions/proxy/api/extended_horoscope/current_sadesati?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${apiLang}`);
 
-                const dosha = await data.json();
-                setSadeSati(dosha.response);
+                const dosha = await response.json();
+
+                if (!isCancelled) {
+                    setSadeSati(dosha?.response ?? null);
+                }
             } catch (err) {
                 console.log(err);
             } finally {
-                setLoading(false);
+                if (!isCancelled) {
+                    setLoading(false);
+                }
             }
-        }
-        fetchSadeSati()
-    }, [userData])
+        };
+
+        fetchSadeSati();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, [userData, i18n.language, i18n.resolvedLanguage]);
 
     if (loading) {
         return (
@@ -40,7 +54,7 @@ const SadeSati = ({ userData }) => {
 
     if (!sadeSati) {
         return <div className="text-center text-red-400 mt-10">
-            डेटा उपलब्ध नहीं है।
+            {t("noDataAvailable")}
         </div>
     }
 
@@ -77,7 +91,7 @@ font-bold
 text-yellow-400
 mb-8
 ">
-🪐 शनि साढ़े साती रिपोर्ट
+🪐 {t("sadeSatiReport")}
 </h2>
 
 
@@ -95,7 +109,7 @@ text-center
 
 
 <h3 className="text-xl text-gray-300">
-साढ़े साती स्थिति
+{t("sadeSatiStatus")}
 </h3>
 
 
@@ -109,9 +123,9 @@ mt-3
 {
 sadeSati.is_sade_sati_period
 ?
-"चल रही है"
+t("running")
 :
-"नहीं चल रही"
+t("notRunning")
 }
 
 </p>
@@ -135,7 +149,7 @@ mb-8
 <div className="border border-yellow-500 rounded-xl p-5 text-center">
 
 <p className="text-gray-300">
-Age
+{t("age")}
 </p>
 
 <h3 className="text-3xl text-yellow-400">
@@ -147,7 +161,7 @@ Age
 <div className="border border-yellow-500 rounded-xl p-5 text-center">
 
 <p className="text-gray-300">
-Shani Period
+{t("shaniPeriod")}
 </p>
 
 <h3 className="text-xl text-yellow-400">
@@ -180,7 +194,7 @@ text-2xl
 text-yellow-400
 mb-3
 ">
-📜 विवरण
+📜 {t("description")}
 </h3>
 
 
@@ -214,7 +228,7 @@ text-2xl
 text-yellow-400
 mb-5
 ">
-🙏 उपाय
+🙏 {t("remedies")}
 </h3>
 
 

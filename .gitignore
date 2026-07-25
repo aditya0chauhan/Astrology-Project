@@ -7,9 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build
 dist
 dist-ssr
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Local files
 *.local
 
 # Editor directories and files
@@ -17,8 +27,40 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Cache
+.vite
+.cache
+.eslintcache
+
+# Coverage
+coverage
+
+# Optional Archives
+*.zip
+*.rar
+*.7z
+
+# Media (Optional)
+*.mp4
+*.mov
+*.avi
+
+# Netlify Local
+.netlify
+
+# OS Files
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+
+# Package Manager
+.pnpm-store

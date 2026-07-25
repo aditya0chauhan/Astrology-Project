@@ -22,14 +22,7 @@ setLoading(true);
 
 try{
 const response = await fetch(
-`https://api.jyotishamastroapi.com/api/numerology/vehicle-analysis?vehicle=${vehicleData.vehicle}&lang=hi`,
-{
-headers:{
-key:import.meta.env.VITE_ASTRO_API_KEY
-}
-}
-
-);
+`/.netlify/functions/proxy/api/numerology/vehicle-analysis?vehicle=${vehicleData.vehicle}&lang=hi`);
 
 
 

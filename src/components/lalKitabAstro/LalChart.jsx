@@ -21,13 +21,7 @@ const LalChart = ({ userData }) => {
             
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/lalKitab/chart?tz=5.5&colored_planets=true&color=%23E96B02&style=north&date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/lalKitab/chart?tz=5.5&colored_planets=true&color=%23E96B02&style=north&date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&lang=hi`);
 
             const result = await response.text();
             const cleanSvg = JSON.parse(result);

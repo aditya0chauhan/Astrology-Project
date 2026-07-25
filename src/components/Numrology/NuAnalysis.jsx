@@ -22,13 +22,7 @@ const NuAnalysis = ({userData}) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/karmic-number?date=${formattedDate}&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/karmic-number?date=${formattedDate}&lang=hi`);
 
             const result = await response.json();
             setData (result.response)
@@ -51,13 +45,7 @@ const NuAnalysis = ({userData}) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const yearResponse = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/personal-year?date=${formattedDate}&gender=${userData.gender}&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/personal-year?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
 
             const result = await yearResponse.json();
             setYear (result.response)
@@ -79,13 +67,7 @@ const NuAnalysis = ({userData}) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const master = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/master-numbers?date=${formattedDate}&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/master-numbers?date=${formattedDate}&lang=hi`);
 
             const result = await master.json();
             setMasterNumber (result.response)

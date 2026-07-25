@@ -1,7 +1,9 @@
 import  { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
 import Loader from '../../utils/buttons/Loader';
 
 const ManglikDosh = ({userData}) => {
+    const { t, i18n } = useTranslation();
     const [manglik, setManglik] = useState(null);
         const [loading, setLoading] = useState(false);
     
@@ -15,11 +17,7 @@ const ManglikDosh = ({userData}) => {
                     setLoading(true);
     
                     const data = await fetch(
-                        `https://api.jyotishamastroapi.com/api/dosha/manglik-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                        {
-                            headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                        }
-                    )
+                        `/.netlify/functions/proxy/api/dosha/manglik-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === 'hi' ? 'hi' : 'en'}`)
     
                     const dosha = await data.json();
                     setManglik(dosha.response);
@@ -31,7 +29,7 @@ const ManglikDosh = ({userData}) => {
             };
     
             manglikDosh();
-        }, [userData]);
+        }, [userData, i18n.language]);
     
         if (loading) {
         return (
@@ -43,7 +41,7 @@ const ManglikDosh = ({userData}) => {
     
         if (!manglik) {
             return <div className="text-center text-red-400 mt-10">
-                डेटा उपलब्ध नहीं है।
+                {t('noDataAvailable')}
             </div>
         }
   return (
@@ -53,20 +51,20 @@ const ManglikDosh = ({userData}) => {
   <div className="rounded-xl border border-amber-400 bg-[#1A2742] p-6">
 
     <h2 className="text-2xl font-bold text-amber-400 mb-6">
-      🔥 मांगलिक दोष रिपोर्ट
+      🔥 {t('manglikDoshReport')}
     </h2>
 
     <div className="grid md:grid-cols-2 gap-5">
 
       <div className="bg-[#243454] rounded-lg p-4">
-        <p className="text-gray-300">स्कोर</p>
+        <p className="text-gray-300">{t('score')}</p>
         <p className="text-3xl font-bold text-amber-300">
           {manglik.score}%
         </p>
       </div>
 
       <div className="bg-[#243454] rounded-lg p-4">
-        <p className="text-gray-300">ज्योतिष निष्कर्ष</p>
+        <p className="text-gray-300">{t('astrologyConclusion')}</p>
         <p className="text-lg text-green-300">
           {manglik.bot_response}
         </p>
@@ -80,14 +78,14 @@ const ManglikDosh = ({userData}) => {
   <div className="rounded-xl border border-amber-400 bg-[#1A2742] p-6">
 
     <h2 className="text-xl font-bold text-amber-300 mb-5">
-      📊 दोष की स्थिति
+      📊 {t('doshaStatus')}
     </h2>
 
     <div className="grid md:grid-cols-3 gap-5">
 
       <div className="bg-[#243454] rounded-lg p-4">
 
-        <p>मंगल से</p>
+        <p>{t('fromMars')}</p>
 
         <p className={`font-bold text-xl ${
           manglik.manglik_by_mars
@@ -95,7 +93,7 @@ const ManglikDosh = ({userData}) => {
             : "text-green-400"
         }`}>
 
-          {manglik.manglik_by_mars ? "हाँ" : "नहीं"}
+          {manglik.manglik_by_mars ? t('yes') : t('no')}
 
         </p>
 
@@ -103,7 +101,7 @@ const ManglikDosh = ({userData}) => {
 
       <div className="bg-[#243454] rounded-lg p-4">
 
-        <p>राहु-केतु से</p>
+        <p>{t('fromRahuKetu')}</p>
 
         <p className={`font-bold text-xl ${
           manglik.manglik_by_rahuketu
@@ -111,7 +109,7 @@ const ManglikDosh = ({userData}) => {
             : "text-green-400"
         }`}>
 
-          {manglik.manglik_by_rahuketu ? "हाँ" : "नहीं"}
+          {manglik.manglik_by_rahuketu ? t('yes') : t('no')}
 
         </p>
 
@@ -119,7 +117,7 @@ const ManglikDosh = ({userData}) => {
 
       <div className="bg-[#243454] rounded-lg p-4">
 
-        <p>शनि से</p>
+        <p>{t('fromSaturn')}</p>
 
         <p className={`font-bold text-xl ${
           manglik.manglik_by_saturn
@@ -127,7 +125,7 @@ const ManglikDosh = ({userData}) => {
             : "text-green-400"
         }`}>
 
-          {manglik.manglik_by_saturn ? "हाँ" : "नहीं"}
+          {manglik.manglik_by_saturn ? t('yes') : t('no')}
 
         </p>
 
@@ -141,7 +139,7 @@ const ManglikDosh = ({userData}) => {
   <div className="rounded-xl border border-amber-400 bg-[#1A2742] p-6">
 
     <h2 className="text-xl font-bold text-amber-300 mb-5">
-      📌 मांगलिक दोष बनने के कारण
+      📌 {t('reasonsForManglikDosha')}
     </h2>
 
     <div className="space-y-4">
@@ -168,7 +166,7 @@ const ManglikDosh = ({userData}) => {
   <div className="rounded-xl border border-amber-400 bg-[#1A2742] p-6">
 
     <h2 className="text-xl font-bold text-amber-300 mb-5">
-      🔭 ग्रहों की स्थिति
+      🔭 {t('planetPositions')}
     </h2>
 
     <div className="space-y-4">

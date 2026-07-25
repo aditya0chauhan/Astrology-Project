@@ -1,6 +1,6 @@
 const tabs = [
-  { id: 'paramparik', label: '📜 KP कुंडली' },
-  { id: 'rashiChart', label: '🌌 KP राशि चार्ट' },
+  { id: 'rashiChart', label: '📜 KP कुंडली ' },
+  { id: 'paramparik', label: '🌌 KP राशि चार्ट' },
   { id: 'grah', label: '🪐 ग्रह विवरण' },
   { id: 'grahSanket', label: '✨ ग्रहों की स्थिति' },
   { id: 'sanket', label: '🏠 भाव विवरण' },

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 
 const SubYogini = ({ userData }) => {
+    const { t, i18n } = useTranslation();
     const [subyogini, setSubyogini] = useState(null);
     const [loading, setLoading] = useState(false);
     const [openSection, setOpenSection] = useState(0);
@@ -15,11 +17,7 @@ const SubYogini = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `https://api.jyotishamastroapi.com/api/dasha/yogini-dasha-sub?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                    {
-                        headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                    }
-                )
+                    `/.netlify/functions/proxy/api/dasha/yogini-dasha-sub?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
 
                 const dasha = await data.json();
                 setSubyogini(dasha.response);
@@ -31,7 +29,7 @@ const SubYogini = ({ userData }) => {
         };
 
         fetchSubYogini();
-    }, [userData]);
+    }, [userData, i18n.language]);
 
    if (loading) {
         return (
@@ -43,18 +41,18 @@ const SubYogini = ({ userData }) => {
 
     if (!subyogini) {
         return <div className="text-center text-red-400 mt-10">
-            डेटा उपलब्ध नहीं है।
+            {t("noDataAvailable")}
         </div>
     }
     return (
         <div className="mt-24 text-white">
 
             <h1 className="text-3xl font-bold text-center text-amber-400">
-                योगिनी उपदशा
+                {t("yoginiSubDasha")}
             </h1>
 
             <p className="text-center text-gray-300 mt-2">
-                प्रत्येक योगिनी दशा के अंतर्गत आने वाली उपदशाओं का विस्तृत विवरण
+                {t("yoginiSubDashaSubtitle")}
             </p>
 
             <div className="space-y-5 mt-10">
@@ -82,7 +80,7 @@ const SubYogini = ({ userData }) => {
                                 </h2>
 
                                 <p className="text-green-300">
-                                    स्वामी : {main.main_dasha_lord}
+                                    {t("lord")}: {main.main_dasha_lord}
                                 </p>
 
                             </div>
@@ -113,14 +111,14 @@ const SubYogini = ({ userData }) => {
                                             </h3>
 
                                             <p className="text-green-300 mt-2">
-                                                प्रारम्भ :
+                                                {t("start")}:
                                                 <span className="text-white ml-2">
                                                     {main.sub_dasha_start_dates[i]}
                                                 </span>
                                             </p>
 
                                             <p className="text-red-300">
-                                                समाप्त :
+                                                {t("end")}:
                                                 <span className="text-white ml-2">
                                                     {main.sub_dasha_end_dates[i]}
                                                 </span>

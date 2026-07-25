@@ -1,155 +1,74 @@
-import logo from '../assets/images/headerlogo.png'
-import { useState } from "react";
+import logo from '../assets/images/pic.png'
+import { useState } from 'react'
 import Language from '../utils/buttons/Language'
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import Menu from '../utils/buttons/Menu';
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import Menu from '../utils/buttons/Menu'
 import RashiLists from '../utils/buttons/RashiLists'
 
-
 const Header = () => {
-
-  const [open, setOpen] = useState(false)
   const [hover, setHover] = useState(false)
-
   const { t } = useTranslation()
 
+  const navLinks = [
+    { to: '/', label: t('home') },
+    { to: '/astrology', label: t('astrology') },
+    { to: '/numerology', label: t('numerology') },
+    { to: '/vastu', label: t('vaastu') },
+    { to: '/panchang', label: t('panchang') },
+    { to: '/report', label: t('rep') },
+    { to: '/contact', label: t('contact') },
+    { to: '/account', label: t('account') },
+    { to: '/poojan', label: t('pujan') },
+  ]
 
   return (
-    <header className="z-50 w-full bg-[#08002D] border-b-2 border-[#D4A646] flex justify-center items-center lg:px-5 py-3 fixed top-0">
+    <header className="fixed top-0 z-50 w-full border-b border-[#D4A646]/70 bg-[#08002D]/95 backdrop-blur-xl">
+      <div className="mx-auto flex items-center justify-between gap-2 px-3 py-3 sm:px-4 lg:px-5">
+        <a href="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
+          <img src={logo} alt="logo" className="h-11 w-11 rounded-full object-cover sm:h-12 sm:w-12 hover:scale-[1.20] duration-300 " />
+          <div className=" min-w-0 flex-col sm:flex">
+            <p className="text-[10px] font-bold text-yellow-500">{t('head1')}</p>
+            <p className="text-[10px] font-semibold text-amber-200">{t('head2')}</p>
+          </div>
+        </a>
 
+        <div className="hidden flex-1 items-center justify-end gap-4 text-[13px] font-semibold text-yellow-300 lg:flex xl:gap-5">
+          {navLinks.map((link) => (
+            <Link key={link.to} to={link.to} className="transition hover:text-amber-600 hover:scale-[1.10] duration-300">
+              {link.label}
+            </Link>
+          ))}
 
-      <a href="/">
-        <img
-          src={logo}
-          alt="logo"
-          className="w-32 aspect-square"
-        />
-      </a>
-
-
-      <div className="ml-2 w-full flex flex-col font-bold text-[11px]">
-
-        <p className="text-yellow-500">
-          {t('head1')}
-        </p>
-
-        <p className="text-amber-200">
-          {t('head2')}
-        </p>
-
-      </div>
-
-      <div className="w-[80%] flex justify-end items-center gap-8 text-yellow-300 font-semibold cursor-pointer">
-
-        <Link
-          to="/"
-          className="hidden lg:flex hover:text-amber-600">
-          {t("home")}
-        </Link>
-
-        <Link
-          to="/astrology"
-          className="hidden lg:flex hover:text-amber-600">
-          {t("astrology")}
-        </Link>
-
-        <Link
-          to="/numerology"
-          className="hidden lg:flex hover:text-amber-600">
-          {t("numerology")}
-        </Link>
-
-        <Link
-          to="/vastu"
-          className="hidden lg:flex hover:text-amber-600">
-          {t("vaastu")}
-        </Link>
-
-
-        <Link
-          to="/panchang"
-          className="hidden lg:flex hover:text-amber-600">
-          {t("panchang")}
-        </Link>
-
-        <div className="relative hidden lg:flex"
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}>
-
-          <span className="lg:hover:text-amber-600">
-            {t("rashifal")}
-          </span>
-          {
-            hover && (
-          <div className="absolute top-6 right-0 rounded-xl p-4 w-52 shadow-xl z-50">
-
+          <div
+            className="relative hover:scale-[1.08] duration-300"
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+          >
+            <span className="cursor-pointer transition hover:text-amber-600 ">{t('rashifal')}</span>
+            {hover && (
+              <div className=" absolute right-0 top-6 z-50 w-52  rounded-xl p-4">
                 <RashiLists />
-
               </div>
+            )}
+          </div>
 
-            )
-
-          }
-
-
+          <span className="shrink-0">
+            <Language />
+          </span>
         </div>
 
-          <Link
-          to="/poojan"
-          className="hidden lg:flex hover:text-amber-600">
-          Reports
-        </Link>
-
-        <Link
-          to="/contact"
-          className="hidden lg:flex hover:text-amber-600">
-
-          {t("contact")}
-
-        </Link>
-
-
-
-        <Link
-          to="/account"
-          className="hidden lg:flex hover:text-amber-600">
-
-          {t("account")}
-
-        </Link>
-
-
-
-        <span>
-
-          <Language />
-
-        </span>
-
-
+        <div className="flex items-center gap-2 lg:hidden">
+          <div className="shrink-0">
+            <Language />
+          </div>
+          <div className="shrink-0">
+            <Menu />
+          </div>
+        </div>
       </div>
-
-
-
-      <button
-
-        onClick={() => setOpen(!open)}
-
-        className="md:hidden text-yellow-300"
-
-      >
-
-        <Menu />
-
-      </button>
-
-
-
     </header>
-
   )
 }
-
 
 export default Header;

@@ -1,5 +1,4 @@
 const tabs = [
-  { id: 'user', label: 'व्यक्ति विवरण' },
   { id: 'paramparik', label: 'अष्टकूट मिलान' },
   { id: 'dashkoot', label: 'दशकूट मिलान' },
   { id: 'aggregate', label: 'समग्र मिलान' },

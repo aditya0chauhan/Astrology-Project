@@ -19,13 +19,7 @@ const PlaneDetails = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/plane-details?date=${formattedDate}&gender=${userData.gender}&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/plane-details?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
 
             const result = await response.json();
             if (result.response) {

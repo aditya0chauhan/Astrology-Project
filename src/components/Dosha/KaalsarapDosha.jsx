@@ -1,7 +1,9 @@
 import  { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
 import Loader from '../../utils/buttons/Loader';
 
 const KaalsarapDosha = ({userData}) => {
+    const { t, i18n } = useTranslation();
     const [kalsarap, setKalsarap] = useState(null);
         const [loading, setLoading] = useState(false);
     
@@ -15,11 +17,7 @@ const KaalsarapDosha = ({userData}) => {
                     setLoading(true);
     
                     const data = await fetch(
-                        `https://api.jyotishamastroapi.com/api/dosha/kaalsarp-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                        {
-                            headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                        }
-                    )
+                        `/.netlify/functions/proxy/api/dosha/kaalsarp-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === 'hi' ? 'hi' : 'en'}`)
     
                     const dosha = await data.json();
                     setKalsarap(dosha.response);
@@ -31,7 +29,7 @@ const KaalsarapDosha = ({userData}) => {
             };
     
             kalsarapdosh();
-        }, [userData]);
+        }, [userData, i18n.language]);
     
         if (loading) {
         return (
@@ -43,7 +41,7 @@ const KaalsarapDosha = ({userData}) => {
     
         if (!kalsarap) {
             return <div className="text-center text-red-400 mt-10">
-                डेटा उपलब्ध नहीं है।
+                {t('noDataAvailable')}
             </div>
         }
   return (
@@ -51,20 +49,20 @@ const KaalsarapDosha = ({userData}) => {
         <div className="bg-[#1A2742] rounded-xl border border-amber-400 p-6">
 
 <h2 className="text-2xl font-bold text-amber-400 mb-6">
-🔥 कालसर्प दोष रिपोर्ट
+🔥 {t('kaalsarpDoshReport')}
 </h2>
 
 <div className="grid md:grid-cols-2 gap-5">
 
 <div className="bg-[#243454] rounded-lg p-4">
-<p className="text-gray-300">कालसर्प दोष</p>
+<p className="text-gray-300">{t('kaalsarpDosh')}</p>
 
 <p className={`text-xl font-bold ${
 kalsarap.is_dosha_present
 ?"text-red-400"
 :"text-green-400"
 }`}>
-{kalsarap.is_dosha_present ? "उपस्थित" : "नहीं"}
+{kalsarap.is_dosha_present ? t('present') : t('absent')}
 </p>
 
 </div>
@@ -78,7 +76,7 @@ kalsarap.is_dosha_present
 
 <h2 className="text-xl font-bold text-amber-300 mb-4">
 
-🤖 ज्योतिष निष्कर्ष
+🤖 {t('astrologyConclusion')}
 
 </h2>
 
@@ -93,7 +91,7 @@ kalsarap.is_dosha_present
 
 <h2 className="text-xl font-bold text-amber-300 mb-6">
 
-🪔 उपाय
+🪔 {t('remedies')}
 
 </h2>
 

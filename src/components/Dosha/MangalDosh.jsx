@@ -1,7 +1,9 @@
 import  { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
 import Loader from '../../utils/buttons/Loader';
 
 const MangalDosh = ({userData}) => {
+    const { t, i18n } = useTranslation();
     const [mangalDosh, setMangalDosh] = useState(null);
         const [loading, setLoading] = useState(false);
     
@@ -15,11 +17,7 @@ const MangalDosh = ({userData}) => {
                     setLoading(true);
     
                     const data = await fetch(
-                        `https://api.jyotishamastroapi.com/api/dosha/mangal_dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                        {
-                            headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                        }
-                    )
+                        `/.netlify/functions/proxy/api/dosha/mangal_dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === 'hi' ? 'hi' : 'en'}`)
     
                     const dosha = await data.json();
                     setMangalDosh(dosha.response);
@@ -31,7 +29,7 @@ const MangalDosh = ({userData}) => {
             };
     
             mangalDosh();
-        }, [userData]);
+        }, [userData, i18n.language]);
     
        if (loading) {
         return (
@@ -43,7 +41,7 @@ const MangalDosh = ({userData}) => {
     
         if (!mangalDosh) {
             return <div className="text-center text-red-400 mt-10">
-                डेटा उपलब्ध नहीं है।
+                {t('noDataAvailable')}
             </div>
         }
   return (
@@ -51,20 +49,20 @@ const MangalDosh = ({userData}) => {
         <div className="bg-[#1A2742] rounded-xl border border-amber-400 p-6">
 
 <h2 className="text-2xl font-bold text-amber-400 mb-6">
-🔥 मंगल दोष रिपोर्ट
+🔥 {t('mangalDoshReport')}
 </h2>
 
 <div className="grid md:grid-cols-2 gap-5">
 
 <div className="bg-[#243454] rounded-lg p-4">
-<p className="text-gray-300">मंगल दोष</p>
+<p className="text-gray-300">{t('mangalDosh')}</p>
 
 <p className={`text-xl font-bold ${
 mangalDosh.is_dosha_present
 ?"text-red-400"
 :"text-green-400"
 }`}>
-{mangalDosh.is_dosha_present ? "उपस्थित" : "नहीं"}
+{mangalDosh.is_dosha_present ? t('present') : t('absent')}
 </p>
 
 </div>
@@ -72,11 +70,11 @@ mangalDosh.is_dosha_present
 <div className="bg-[#243454] rounded-lg p-4">
 
 <p className="text-gray-300">
-आंशिक दोष
+{t('partialDosha')}
 </p>
 
 <p className="text-xl font-bold text-yellow-300">
-{mangalDosh.is_anshik ? "हाँ" : "नहीं"}
+{mangalDosh.is_anshik ? t('yes') : t('no')}
 </p>
 
 </div>
@@ -84,7 +82,7 @@ mangalDosh.is_dosha_present
 <div className="bg-[#243454] rounded-lg p-4">
 
 <p className="text-gray-300">
-स्कोर
+{t('score')}
 </p>
 
 <p className="text-xl font-bold text-cyan-300">
@@ -96,7 +94,7 @@ mangalDosh.is_dosha_present
 <div className="bg-[#243454] rounded-lg p-4">
 
 <p className="text-gray-300">
-Cancellation Score
+{t('cancellationScore')}
 </p>
 
 <p className="text-xl font-bold text-green-300">
@@ -112,7 +110,7 @@ Cancellation Score
 
 <h2 className="text-xl font-bold text-amber-300 mb-4">
 
-🤖 ज्योतिष निष्कर्ष
+🤖 {t('astrologyConclusion')}
 
 </h2>
 
@@ -127,7 +125,7 @@ Cancellation Score
 
 <h2 className="text-xl font-bold text-amber-300 mb-5">
 
-❌ दोष समाप्त होने के कारण
+❌ {t('reasonsForDoshaEnding')}
 
 </h2>
 
@@ -153,7 +151,7 @@ className="bg-[#243454] rounded-lg p-4"
 
 <h2 className="text-xl font-bold text-amber-300 mb-4">
 
-📌 दोष बनने के कारण
+📌 {t('reasonsForDosha')}
 
 </h2>
 
@@ -168,7 +166,7 @@ className="bg-[#243454] rounded-lg p-4"
 
 <h2 className="text-xl font-bold text-amber-300 mb-6">
 
-🪔 उपाय
+🪔 {t('remedies')}
 
 </h2>
 

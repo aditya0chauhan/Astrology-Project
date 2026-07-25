@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 
 const YoginiDasha = ({ userData }) => {
+    const { t, i18n } = useTranslation();
     const [yogini, setYogini] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -13,11 +15,7 @@ const YoginiDasha = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `https://api.jyotishamastroapi.com/api/dasha/yogini-dasha-main?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                    {
-                        headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                    }
-                )
+                    `/.netlify/functions/proxy/api/dasha/yogini-dasha-main?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
 
                 const dasha = await data.json();
                 setYogini(dasha.response);
@@ -28,7 +26,7 @@ const YoginiDasha = ({ userData }) => {
             }
         }
         fetchYoginiDasha()
-    }, [userData])
+    }, [userData, i18n.language])
    
      if (loading) {
         return (
@@ -40,18 +38,18 @@ const YoginiDasha = ({ userData }) => {
 
     if (!yogini) {
         return <div className="text-center text-red-400 mt-10">
-            डेटा उपलब्ध नहीं है।
+            {t("noDataAvailable")}
         </div>
     }
     return (
         <div className="mt-24 text-white">
 
             <h1 className="text-3xl font-bold text-center text-amber-400">
-                योगिनी दशा
+                {t("yoginiDasha")}
             </h1>
 
             <p className="text-center text-gray-300 mt-2">
-                जन्म के आधार पर योगिनी दशाओं का क्रम एवं समाप्ति तिथि
+                {t("yoginiDashaSubtitle")}
             </p>
 
             <div className="mt-10 space-y-5">
@@ -80,7 +78,7 @@ const YoginiDasha = ({ userData }) => {
                                     </h2>
 
                                     <p className="text-gray-400 mt-1">
-                                        योगिनी दशा
+                                        {t("yoginiDasha")}
                                     </p>
 
                                 </div>
@@ -92,7 +90,7 @@ const YoginiDasha = ({ userData }) => {
                             <div className="text-center">
 
                                 <p className="text-gray-400">
-                                    दशा स्वामी
+                                    {t("dashaLord")}
                                 </p>
 
                                 <h3 className="text-xl text-green-300 font-semibold">
@@ -106,7 +104,7 @@ const YoginiDasha = ({ userData }) => {
                             <div className="text-right">
 
                                 <p className="text-gray-400">
-                                    समाप्ति
+                                    {t("endDate")}
                                 </p>
 
                                 <h3 className="text-red-300 font-semibold">

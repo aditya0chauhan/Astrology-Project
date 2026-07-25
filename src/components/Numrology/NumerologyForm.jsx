@@ -49,7 +49,7 @@ const NumerologyForm = ({ setUserData, setVehicleData }) => {
                 <div className="flex justify-center gap-5 mb-8 ">
 
                     <button onClick={() => setActiveForm("numerology")}
-                        className={`px-5 py-2 rounded-xl border border-yellow-500
+                        className={`px-5 py-2 rounded-xl border border-yellow-500 focus:scale-[1.10] duration-300 cursor-pointer
         ${activeForm === "numerology" ? "bg-yellow-500 text-black font-semibold"
                                 : "text-yellow-400"}`}>
 
@@ -58,7 +58,7 @@ const NumerologyForm = ({ setUserData, setVehicleData }) => {
                     </button>
 
                     <button onClick={() => setActiveForm("vehicle")}
-                        className={`px-5 py-2 rounded-xl border border-yellow-500 
+                        className={`px-5 py-2 rounded-xl border border-yellow-500 focus:scale-[1.10] duration-300 cursor-pointer 
         ${activeForm === "vehicle" ? "bg-yellow-500 text-black font-semibold"
                                 : "text-yellow-400"}`}>
 
@@ -75,22 +75,22 @@ const NumerologyForm = ({ setUserData, setVehicleData }) => {
 
                     <input placeholder="Enter Your Name" value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="bg-transparent border border-yellow-500 rounded-xl p-3 text-white " />
+                            className="bg-transparent border border-yellow-500 rounded-xl p-3 text-white focus:scale-[1.05] duration-300 " />
 
                  <div className="relative">
 
                     <input type="date" value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className=" w-full bg-transparent border border-yellow-500 rounded-xl p-3 pt-6 text-white outline-none "/>
+                    className=" w-full bg-transparent border border-yellow-500 rounded-xl p-3 pt-6 text-white outline-none focus:scale-[1.05] duration-300 "/>
 
-           <span className="absolute left-3 top-1 text-xs text-yellow-400 ">
+           <span className="absolute left-3 top-1 text-xs text-yellow-400 hover:scale-[1.05] duration-300 ">
                    Enter Date Of Birth
             </span>
 
                 </div>
 
                         <select value={gender} onChange={(e) => setGender(e.target.value)}
-                            className="bg-[#050b20] border border-yellow-500 rounded-xl p-3 text-white">
+                            className="bg-[#050b20] border border-yellow-500 rounded-xl p-3 text-white focus:scale-[1.05] duration-300 ">
 
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -99,7 +99,7 @@ const NumerologyForm = ({ setUserData, setVehicleData }) => {
 
                         <input placeholder="Mobile Number" value={phone}
                             onChange={(e) => setPhone(e.target.value)}
-                            className="bg-transparent border border-yellow-500 rounded-xl p-3 text-white" />
+                            className="bg-transparent border border-yellow-500 rounded-xl p-3 text-white focus:scale-[1.05] duration-300 " />
 
                         <button className="mt-5 md:col-span-2 flex justify-center items-center ">
                            <GenrateReport />
@@ -113,9 +113,9 @@ const NumerologyForm = ({ setUserData, setVehicleData }) => {
 
                     <form onSubmit={vehicleSubmit} className="space-y-6 ">
 
-                        <input type="text" placeholder="Enter Vehicle Number" value={vehicle}
+                        <input type="text" placeholder="Enter last 4 digit Vehicle Number" value={vehicle}
                             onChange={(e) => setVehicle(e.target.value)}
-                            className="w-full bg-transparent border border-yellow-500 rounded-xl p-3 text-white " />
+                            className="w-full bg-transparent border border-yellow-500 rounded-xl p-3 text-white focus:scale-[1.05] duration-300 " />
 
                         <button className="w-full bg-yellow-500 text-black font-bold rounded-xl py-3">
                             Check Vehicle 🚗

@@ -31,27 +31,55 @@ import {Genrate} from '../utils/buttons/Genrate';
 import SadeSati from '../components/dasha/SadeSati';
 import Gem from '../components/kundaliFiles/Gem';
 
+const readStoredFormData = () => {
+    if (typeof window === 'undefined') return null;
+
+    try {
+        const stored = localStorage.getItem('kundaliFormData');
+        return stored ? JSON.parse(stored) : null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 const KundaliPage = () => {
     const { t } = useTranslation();
     const chartRef = useRef(null);
     const formRef = useRef(null);
-    const [name, setName] = useState('');
-    const [dob, setDob] = useState('');
-    const [time, setTime] = useState('');
-    const [place, setPlace] = useState('');
-    const [userData, setUserData] = useState(null);
+    const storedFormData = readStoredFormData();
+    const [name, setName] = useState(storedFormData?.name || '');
+    const [dob, setDob] = useState(storedFormData?.dob || '');
+    const [time, setTime] = useState(storedFormData?.time || '');
+    const [place, setPlace] = useState(storedFormData?.place || '');
+    const [userData, setUserData] = useState(storedFormData?.userData || null);
     const [suggesstion, setSuggesstion] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [showForm, setShowForm] = useState(true);
-    const [showNavbar, setShowNavbar] = useState(false);
+    const [showForm, setShowForm] = useState(storedFormData?.showForm ?? true);
+    const [showNavbar, setShowNavbar] = useState(storedFormData?.showNavbar ?? false);
     const [errors, setErrors] = useState({});
-    const [activeTab, setActiveTab] = useState('paramparik');
+    const [activeTab, setActiveTab] = useState(storedFormData?.activeTab || 'paramparik');
 
     useEffect(() => {
         if ((loading || userData) && chartRef.current) {
             chartRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }, [loading, userData]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        localStorage.setItem('kundaliFormData', JSON.stringify({
+            name,
+            dob,
+            time,
+            place,
+            userData,
+            showForm,
+            showNavbar,
+            activeTab,
+        }));
+    }, [name, dob, time, place, userData, showForm, showNavbar, activeTab]);
 
     const genrateKundali = async () => {
         const validationErrors = {};
@@ -192,8 +220,8 @@ const KundaliPage = () => {
     };
 
     return (
-        <div className='mt-24'>
-            <div className='fixed top-20 py-1 w-full text-xl font-semibold bg-amber-300 flex justify-center z-30 '>
+        <div className='mt-20'>
+            <div className='fixed py-1 w-full text-xl font-semibold bg-amber-300 flex justify-center z-30'>
                 <button
                     type="button"
                     onClick={() => {
@@ -238,7 +266,7 @@ const KundaliPage = () => {
                                         setName(e.target.value);
                                         if (errors.name) setErrors(prev => ({ ...prev, name: '' }));
                                     }}
-                                    className={`w-full p-4 rounded-lg bg-[#2B3B59] text-white ${errors.name ? 'border border-red-500 bg-[#3f1f1f]' : ''}`}
+                                    className={`w-full p-4 rounded-lg bg-[#2B3B59] text-white focus:scale-[1.05] duration-300 ${errors.name ? 'border border-red-500 bg-[#3f1f1f]' : ''}`}
                                 />
                                 {errors.name && <p className="mt-2 text-sm text-red-400">{errors.name}</p>}
                             </div>
@@ -255,7 +283,7 @@ const KundaliPage = () => {
                                         setDob(e.target.value);
                                         if (errors.dob) setErrors(prev => ({ ...prev, dob: '' }));
                                     }}
-                                    className={`w-full p-4 rounded-lg bg-[#2B3B59] text-white ${errors.dob ? 'border border-red-500 bg-[#3f1f1f]' : ''}`}
+                                    className={`w-full p-4 rounded-lg bg-[#2B3B59] text-white focus:scale-[1.05] duration-300 ${errors.dob ? 'border border-red-500 bg-[#3f1f1f]' : ''}`}
                                 />
                                 {errors.dob && <p className="mt-2 text-sm text-red-400">{errors.dob}</p>}
                             </div>
@@ -272,7 +300,7 @@ const KundaliPage = () => {
                                         setTime(e.target.value);
                                         if (errors.time) setErrors(prev => ({ ...prev, time: '' }));
                                     }}
-                                    className={`w-full p-4 rounded-lg bg-[#2B3B59] text-white ${errors.time ? 'border border-red-500 bg-[#3f1f1f]' : ''}`}
+                                    className={`w-full p-4 rounded-lg bg-[#2B3B59] text-white focus:scale-[1.05] duration-300 ${errors.time ? 'border border-red-500 bg-[#3f1f1f]' : ''}`}
                                 />
                                 {errors.time && <p className="mt-2 text-sm text-red-400">{errors.time}</p>}
                             </div>
@@ -291,7 +319,7 @@ const KundaliPage = () => {
                                         if (errors.place) setErrors(prev => ({ ...prev, place: '' }));
                                         searchPlace(e.target.value);
                                     }}
-                                    className={`w-full p-4 rounded-lg bg-[#2B3B59] text-white ${errors.place ? 'border border-red-500 bg-[#3f1f1f]' : ''}`}
+                                    className={`w-full p-4 rounded-lg bg-[#2B3B59] text-white focus:scale-[1.05] duration-300 ${errors.place ? 'border border-red-500 bg-[#3f1f1f]' : ''}`}
                                 />
                                 {errors.place && <p className="mt-2 text-sm text-red-400">{errors.place}</p>}
                                 {suggesstion.length > 0 && (

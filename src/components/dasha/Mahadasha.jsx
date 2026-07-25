@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next';
 import {Orbit,BookOpenText,Clock3,MoonStar,Sparkles,ScrollText,} from "lucide-react";
 import CurrentFullMD from './CurrentFullMD'
 import CurrentMD from './CurrentMD'
@@ -8,7 +9,8 @@ import YoginiDasha from './YoginiDasha';
 import SubYogini from './SubYogini';
 
 const Mahadasha = ({ userData }) => {
-  const [activeCard, setActiveCard] = useState("current");
+  const { t } = useTranslation();
+  const [activeCard, setActiveCard] = useState(null);
   const resultRef = useRef(null);
 
   const handleCardClick = (id) => {
@@ -25,38 +27,38 @@ const Mahadasha = ({ userData }) => {
   const cards = [
     {
       id: "current",
-      title: "वर्तमान महादशा",
-      desc: "वर्तमान महादशा, अन्तर्दशा, प्रत्यन्तर आदि देखें",
+      title: t("currentMahadasha"),
+      desc: t("currentMahadashaDesc"),
       icon: <Orbit size={42} className="text-red-500" />,
     },
     {
       id: "full",
-      title: "सम्पूर्ण महादशा",
-      desc: "जन्म से अंतिम महादशा तक सम्पूर्ण विवरण",
+      title: t("fullMahadasha"),
+      desc: t("fullMahadashaDesc"),
       icon: <BookOpenText size={42} className="text-red-500" />,
     },
     {
       id: "timeline",
-      title: "महादशा क्रम (Timeline)",
-      desc: "पूरे जीवन की महादशा टाइमलाइन, ग्रह क्रम एवं प्रारम्भ तिथियों का विस्तृत विवरण।",
+      title: t("mahadashaTimeline"),
+      desc: t("mahadashaTimelineDesc"),
       icon: <Clock3 size={42} className="text-red-500" />,
     },
     {
       id: "sub",
-      title: "Specific Sub Dasha",
-      desc: "किसी भी ग्रह की उपदशा देखें",
+      title: t("specificSubDasha"),
+      desc: t("specificSubDashaDesc"),
       icon: <MoonStar size={42} className="text-red-500" />
     },
     {
       id: "yogini",
-      title: "Yogini Dasha",
-      desc: "जन्म के आधार पर आपकी वर्तमान एवं आगामी योगिनी दशाओं का क्रम और समयावधि देखें।",
+      title: t("yoginiDasha"),
+      desc: t("yoginiDashaDesc"),
       icon: <Sparkles size={42} className="text-red-500" />
     },
     {
       id: "subYogini",
-      title: "Full Yogini Dasha",
-      desc: "वर्तमान योगिनी दशा के अंतर्गत चल रही उपदशाओं का विस्तृत विवरण देखें।",
+      title: t("fullYoginiDasha"),
+      desc: t("fullYoginiDashaDesc"),
       icon: <ScrollText size={42} className="text-red-500" />
     },
 

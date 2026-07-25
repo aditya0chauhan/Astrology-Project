@@ -1,15 +1,17 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 const RashiLists = () => {
+  const { t } = useTranslation();
   return (
     <StyledWrapper>
       <div className="input">
         <button className="value">
-          <Link to={'/dainik_rashifal'}>दैनिक राशिफल</Link>
+          <Link to={'/dainik_rashifal'}>{t('dr')}</Link>
         </button>
         <button className="value">
-         <Link to={'/masik_rashifal'}>मासिक राशिफल</Link> 
+         <Link to={'/masik_rashifal'}>{t('mr')}</Link> 
         </button>
       </div>
     </StyledWrapper>

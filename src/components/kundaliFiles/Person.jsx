@@ -16,11 +16,7 @@ const Person = ({userData}) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `https://api.jyotishamastroapi.com/api/prediction/panchang?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                    {
-                        headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                    }
-                )
+                    `/.netlify/functions/proxy/api/prediction/panchang?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
 
                 const json = await data.json();
              
@@ -50,8 +46,6 @@ const Person = ({userData}) => {
     }
   return (
   <div className="space-y-8 text-white">
-
-    {/* Explanation */}
 
     <div className="bg-[#1A2742] p-4 border border-amber-400 rounded-xl">
 

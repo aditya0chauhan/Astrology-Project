@@ -1,27 +1,43 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 const Language = () => {
-      const {t , i18n} = useTranslation()
-    const changeLanguage = ()=>{
-        if(i18n.language === 'en') {
-          i18n.changeLanguage('hi')
-        }else if(i18n.language === 'hi'){
-          i18n.changeLanguage("en")
-        }
-      }
+  const { i18n } = useTranslation();
+  const [currentLang, setCurrentLang] = useState(() => (i18n.language?.toLowerCase().startsWith('hi') ? 'hi' : 'en'));
+
+  useEffect(() => {
+    setCurrentLang(i18n.language?.toLowerCase().startsWith('hi') ? 'hi' : 'en');
+  }, [i18n.language]);
+
+  const changeLanguage = (lang) => {
+    if (lang === currentLang) return;
+    setCurrentLang(lang);
+    i18n.changeLanguage(lang);
+  };
+
   return (
     <StyledWrapper>
-      <div id="firstFilter" className="filter-switch">
-        <input defaultChecked id="option1" name="options" type="radio" />
-        <label onClick={changeLanguage} className="option" htmlFor="option1">English</label>
-        <input id="option2" name="options" type="radio" />
-        <label onClick={changeLanguage} className="option" htmlFor="option2">हिंदी</label>
-        <span className="background" />
+      <div className="filter-switch" role="tablist" aria-label="Language switch">
+        <button
+          type="button"
+          className={`option ${currentLang === 'en' ? 'active' : ''}`}
+          onClick={() => changeLanguage('en')}
+        >
+          English
+        </button>
+        <button
+          type="button"
+          className={`option ${currentLang === 'hi' ? 'active' : ''}`}
+          onClick={() => changeLanguage('hi')}
+        >
+          हिंदी
+        </button>
+        <span className={`background ${currentLang === 'hi' ? 'right' : 'left'}`} />
       </div>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   .filter-switch {
@@ -33,49 +49,46 @@ const StyledWrapper = styled.div`
     height: 22px;
     width: 80px;
     overflow: hidden;
+    padding: 2px;
   }
-  .filter-switch input {
-    display: none;
-  }
-  .filter-switch label {
+
+  .filter-switch .option {
     flex: 1;
     text-align: center;
     cursor: pointer;
     border: none;
+    background: transparent;
     border-radius: 30px;
     position: relative;
-    overflow: hidden;
     z-index: 1;
-    transition: all 0.5s;
+    transition: all 0.3s ease;
     font-weight: 600;
     font-size: 8px;
+    color: #7d7d7d;
+    padding: 0;
   }
+
+  .filter-switch .option.active {
+    color: #212121;
+    font-weight: bold;
+  }
+
   .filter-switch .background {
     position: absolute;
-    display:flex;
-    align-items:center;
-    width: 42%;
-    height: 13px;
+    display: flex;
+    align-items: center;
+    width: calc(50% - 4px);
+    height: calc(100% - 4px);
     background-color: #ffc000;
-    top: 4px;
-    left: 4px;
+    top: 2px;
+    left: 2px;
     border-radius: 30px;
-    transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: left 0.3s ease;
   }
-  #option2:checked ~ .background {
-    left: 50%;
+
+  .filter-switch .background.right {
+    left: calc(50% + 2px);
   }
-  #option1:checked + label[for="option1"] {
-    color: #212121;
-    font-weight: bold;
-  }
-  #option2:checked + label[for="option2"] {
-    color: #212121;
-    font-weight: bold;
-  }
-  #option1:not(:checked) + label[for="option1"],
-  #option2:not(:checked) + label[for="option2"] {
-    color: #7d7d7d;
-  }`;
+`;
 
 export default Language;

@@ -44,7 +44,7 @@ const Paramparik = ({ userData }) => {
       try {
       
         const response = await axios.get(
-          'https://api.jyotishamastroapi.com/api/horoscope/ascendant-report',
+          '/.netlify/functions/proxy/api/horoscope/ascendant-report',
           {
             params: {
               date: formattedDate,
@@ -53,23 +53,14 @@ const Paramparik = ({ userData }) => {
               longitude: longitude,
               tz: 5.5,
               lang: 'hi',
-            },
-            headers: {
-              key: import.meta.env.VITE_ASTRO_API_KEY,
-            },
+            }
           }
         )
 
         const kundali = response.data.response?.[0]
 
         const chartResponse = await fetch(
-          `https://api.jyotishamastroapi.com/api/chart_image/d1?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&style=north&lang=hi&colored_planets=true`,
-          {
-            headers: {
-              key: import.meta.env.VITE_ASTRO_API_KEY,
-            },
-          }
-        )
+          `/.netlify/functions/proxy/api/chart_image/d1?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&style=north&lang=hi&colored_planets=true`)
         const chartSvg = await chartResponse.text()
         const cleanSvg = normalizeSvg(chartSvg)
 

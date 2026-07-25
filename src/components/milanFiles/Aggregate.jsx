@@ -13,13 +13,7 @@ const Aggregate = ({ boyData, girlData }) => {
             const girlDob = girlData.dob.replace(/-/g, "/");
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/matching/aggregate-match?boy_dob=${boyDob}&boy_tob=${boyData.time}&boy_lat=${boyData.latitude}&boy_lon=${boyData.longitude}&boy_tz=5.5&girl_dob=${girlDob}&girl_tob=${girlData.time}&girl_lat=${girlData.latitude}&girl_lon=${girlData.longitude}&girl_tz=5.5&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY,
-                    },
-                }
-            );
+                `/.netlify/functions/proxy/api/matching/aggregate-match?boy_dob=${boyDob}&boy_tob=${boyData.time}&boy_lat=${boyData.latitude}&boy_lon=${boyData.longitude}&boy_tz=5.5&girl_dob=${girlDob}&girl_tob=${girlData.time}&girl_lat=${girlData.latitude}&girl_lon=${girlData.longitude}&girl_tz=5.5&lang=hi`);
 
             const json = await response.json();
             setAggregate(json.response)

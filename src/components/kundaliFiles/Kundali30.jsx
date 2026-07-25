@@ -36,11 +36,7 @@ const Kundali30 = ({ userData }) => {
       setLoading(true)
       try {
         const res = await fetch(
-          `https://api.jyotishamastroapi.com/api/chart_image/d30?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&style=north&lang=hi&colored_planets=true`,
-          {
-            headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-          }
-        )
+          `/.netlify/functions/proxy/api/chart_image/d30?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&style=north&lang=hi&colored_planets=true`)
         if (!res.ok) {
           console.warn('D30 chart fetch failed:', res.status, res.statusText)
         } else {

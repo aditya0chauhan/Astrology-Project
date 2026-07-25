@@ -13,7 +13,7 @@ import { MdCall } from "react-icons/md";
 const Vaastu = () => {
   const { t } = useTranslation();
   return (
-    <div className="mt-14 w-full bg-[#08122D]">
+    <div className="mt-5 w-full bg-[#08122D]">
       <div className="h-10" id="vastuhome"></div>
       <div className="w-full">
         <button className="fixed left-0 right-0 top-16 flex items-center justify-center bg-amber-300 p-1 text-xl font-semibold text-red-700">
@@ -27,7 +27,7 @@ const Vaastu = () => {
       </div>
       
 
-      <div className="mx-auto max-w-7xl px-3 pb-10 sm:px-5">
+      <div className="mx-auto max-w-7xl px-3 pb-10 sm:px-5 mt-8">
         <div className="grid grid-cols-1 gap-4 pt-10 sm:grid-cols-2">
 
           <a href="#v1" className="overflow-hidden rounded-xl border border-amber-200">

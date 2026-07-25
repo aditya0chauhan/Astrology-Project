@@ -1,2 +1,0 @@
-api.jyotishamastroapi.com/api/lalKitab/varshphal_chart?date=15/05/1998&time=12:30&latitude=25.2138&longitude=75.8648&tz=5.5&lang=en&style=north&colored_planets=true&color=%2304de6f&varshphal_date=14/01/2025", requestOptions)
-  .then(response => response.text())

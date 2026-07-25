@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 
 const Subdasha = ({ userData }) => {
+  const { t, i18n } = useTranslation();
   const [subDasha, setSubDasha] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -14,10 +16,7 @@ const Subdasha = ({ userData }) => {
         setLoading(true);
 
         const data = await fetch(
-          `https://api.jyotishamastroapi.com/api/dasha/specific-sub-dasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-          {
-            headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-          }
+          `/.netlify/functions/proxy/api/dasha/specific-sub-dasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`
         )
 
         const dasha = await data.json();
@@ -29,7 +28,7 @@ const Subdasha = ({ userData }) => {
       }
     }
     fetchSubDasha()
-  }, [userData])
+  }, [userData, i18n.language])
   
  if (loading) {
         return (
@@ -41,7 +40,7 @@ const Subdasha = ({ userData }) => {
 
   if (!subDasha) {
     return <div className="text-center text-red-400 mt-10">
-      डेटा उपलब्ध नहीं है।
+      {t("noDataAvailable")}
     </div>
   }
 
@@ -52,7 +51,7 @@ const Subdasha = ({ userData }) => {
         <div className="bg-[#1A2742] rounded-xl  p-6">
 
           <h2 className="text-3xl font-bold text-center text-amber-400 mb-8">
-            🌙 Specific Sub Dasha
+            🌙 {t("specificSubDasha")}
           </h2>
 
           <div className="space-y-5">
@@ -100,7 +99,7 @@ const Subdasha = ({ userData }) => {
                     <div className="bg-[#1A2742] rounded-lg p-4">
 
                       <p className="text-gray-400">
-                        प्रारम्भ
+                        {t("start")}
                       </p>
 
                       <p className="text-green-300 font-semibold mt-2">
@@ -112,7 +111,7 @@ const Subdasha = ({ userData }) => {
                     <div className="bg-[#1A2742] rounded-lg p-4">
 
                       <p className="text-gray-400">
-                        समाप्त
+                        {t("end")}
                       </p>
 
                       <p className="text-red-300 font-semibold mt-2">

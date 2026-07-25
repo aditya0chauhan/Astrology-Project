@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 
 const TimelineDasha = ({ userData }) => {
+  const { t, i18n } = useTranslation();
   const [timeDasha, setTimeDasha] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -13,11 +15,7 @@ const TimelineDasha = ({ userData }) => {
         setLoading(true);
 
         const data = await fetch(
-          `https://api.jyotishamastroapi.com/api/dasha/mahadasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-          {
-            headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-          }
-        )
+          `/.netlify/functions/proxy/api/dasha/mahadasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
 
         const dasha = await data.json();
         setTimeDasha(dasha.response);
@@ -28,7 +26,7 @@ const TimelineDasha = ({ userData }) => {
       }
     }
     fetchTimelineDasha()
-  }, [userData])
+  }, [userData, i18n.language])
 
   if (loading) {
         return (
@@ -40,18 +38,18 @@ const TimelineDasha = ({ userData }) => {
 
   if (!timeDasha) {
     return <div className="text-center text-red-400 mt-10">
-      डेटा उपलब्ध नहीं है।
+      {t("noDataAvailable")}
     </div>
   }
 return (
   <div className="mt-24 text-white">
 
     <h1 className="text-3xl font-bold text-center text-amber-400">
-      महादशा क्रम (Timeline)
+      {t("mahadashaTimeline")}
     </h1>
 
     <p className="text-center text-gray-300 mt-3">
-      जन्म के बाद ग्रहों की महादशाओं का क्रम
+      {t("mahadashaTimelineSubtitle")}
     </p>
 
     {/* Top Info */}
@@ -60,7 +58,7 @@ return (
 
       <div className="bg-[#1A2742] border border-amber-400 rounded-xl p-5">
         <p className="text-gray-400">
-          महादशा प्रारम्भ
+          {t("mahadashaStart")}
         </p>
 
         <h2 className="text-xl font-bold text-amber-300 mt-2">
@@ -70,7 +68,7 @@ return (
 
       <div className="bg-[#1A2742] border border-amber-400 rounded-xl p-5">
         <p className="text-gray-400">
-          जन्म के समय शेष महादशा
+          {t("remainingMahadashaAtBirth")}
         </p>
 
         <h2 className="text-xl font-bold text-green-300 mt-2">
@@ -104,7 +102,7 @@ return (
               </h2>
 
               <p className="mt-3 text-green-300">
-                प्रारम्भ :
+                {t("start")}:
                 <span className="text-white ml-2">
                   {timeDasha.mahadasha_order[index]}
                 </span>

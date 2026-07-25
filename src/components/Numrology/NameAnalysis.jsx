@@ -21,13 +21,7 @@ const NameAnalysis = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/name-analysis?name=${userData.name}&date=${formattedDate}&gender=${userData.gender}&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/name-analysis?name=${userData.name}&date=${formattedDate}&gender=${userData.gender}&lang=hi`);
 
             const result = await response.json();
                 setData(result.response);
@@ -50,13 +44,7 @@ const NameAnalysis = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `https://api.jyotishamastroapi.com/api/numerology/lucky-things?date=${formattedDate}&gender=${userData.gender}&lang=hi`,
-                {
-                    headers: {
-                        key: import.meta.env.VITE_ASTRO_API_KEY
-                    }
-                }
-            );
+                `/.netlify/functions/proxy/api/numerology/lucky-things?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
 
             const result = await response.json();
                 setLuckyData(result.response);

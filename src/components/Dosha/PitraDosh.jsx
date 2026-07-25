@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
 import Loader from '../../utils/buttons/Loader';
 
 const PitraDosh = ({ userData }) => {
+    const { t, i18n } = useTranslation();
     const [pitra, setPitra] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -15,11 +17,7 @@ const PitraDosh = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `https://api.jyotishamastroapi.com/api/dosha/pitra-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
-                    {
-                        headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-                    }
-                )
+                    `/.netlify/functions/proxy/api/dosha/pitra-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === 'hi' ? 'hi' : 'en'}`)
 
                 const dosha = await data.json();
                
@@ -32,7 +30,7 @@ const PitraDosh = ({ userData }) => {
         };
 
         pitraDosh();
-    }, [userData]);
+    }, [userData, i18n.language]);
 
      if (loading) {
         return (
@@ -44,7 +42,7 @@ const PitraDosh = ({ userData }) => {
 
     if (!pitra) {
         return <div className="text-center text-red-400 mt-10">
-            डेटा उपलब्ध नहीं है।
+            {t('noDataAvailable')}
         </div>
     }
     return (
@@ -55,7 +53,7 @@ const PitraDosh = ({ userData }) => {
                 <div className="bg-[#1A2742] rounded-xl border border-amber-400 p-6">
 
                     <h2 className="text-2xl font-bold text-amber-400 mb-6">
-                        🕉️ पितृ दोष रिपोर्ट
+                        🕉️ {t('pitraDoshReport')}
                     </h2>
 
                     <div className="grid md:grid-cols-2 gap-5">
@@ -63,7 +61,7 @@ const PitraDosh = ({ userData }) => {
                         <div className="bg-[#243454] rounded-lg p-5">
 
                             <p className="text-gray-300 mb-2">
-                                पितृ दोष
+                                {t('pitraDosh')}
                             </p>
 
                             <p
@@ -72,7 +70,7 @@ const PitraDosh = ({ userData }) => {
                                         : "text-green-400"
                                     }`}
                             >
-                                {pitra.is_dosha_present ? "उपस्थित" : "नहीं"}
+                                {pitra.is_dosha_present ? t('present') : t('absent')}
                             </p>
 
                         </div>
@@ -80,7 +78,7 @@ const PitraDosh = ({ userData }) => {
                         <div className="bg-[#243454] rounded-lg p-5">
 
                             <p className="text-gray-300 mb-2">
-                                ज्योतिष निष्कर्ष
+                                {t('astrologyConclusion')}
                             </p>
 
                             <p className="text-green-300 leading-7">
@@ -100,7 +98,7 @@ const PitraDosh = ({ userData }) => {
                 <div className="bg-[#1A2742] rounded-xl border border-amber-400 p-6">
 
                     <h2 className="text-xl font-bold text-amber-300 mb-6">
-                        ⚠️ पितृ दोष के प्रभाव
+                        ⚠️ {t('pitraDoshEffects')}
                     </h2>
 
                     <div className="space-y-4">
@@ -135,7 +133,7 @@ const PitraDosh = ({ userData }) => {
                 <div className="bg-[#1A2742] rounded-xl border border-amber-400 p-6">
 
                     <h2 className="text-xl font-bold text-amber-300 mb-6">
-                        🪔 पितृ दोष निवारण उपाय
+                        🪔 {t('pitraDoshRemedies')}
                     </h2>
 
                     <div className="space-y-4">

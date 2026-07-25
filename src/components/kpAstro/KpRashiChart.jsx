@@ -37,11 +37,8 @@
         setLoading(true)
         try {
           const res = await fetch(
-            `https://api.jyotishamastroapi.com/api/kp/rasi_chart?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi&style=north&colored_planets=true&color=%23000000`,
-            {
-              headers: { key: import.meta.env.VITE_ASTRO_API_KEY },
-            }
-          )
+            `/.netlify/functions/proxy/api/kp/rasi_chart?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi&style=north&colored_planets=true&color=%23000000`)
+            
           if (!res.ok) {
             console.warn('kp Rashi chart fetch failed:', res.status, res.statusText)
           } else {
@@ -73,7 +70,7 @@
         {rashiChart && (
           <div className="mt-10 bg-white rounded-xl p-4 sm:p-6">
             <h2 className="w-full text-amber-500 text-xl sm:text-2xl font-bold text-center mb-4">
-              केपी राशि कुंडली
+              केपी कुंडली
             </h2>
 
             <div className='chart-inner w-full rounded-lg bg-white lg:p-4 lg:flex justify-center items-center'>
