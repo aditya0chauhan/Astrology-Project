@@ -120,9 +120,7 @@ const DainikRashifal = () => {
                 `/.netlify/functions/proxy/api/prediction/daily?zodiac=${zodicNumber}&day=today&lang=${langCode}`
             );
             const data = await response.json();
-
-            console.log("Data:", data);
-
+            console.log(data)
             cacheRef.current[cacheKey] = data;
             setRashifal(data);
         }
@@ -142,8 +140,7 @@ const DainikRashifal = () => {
     }, [rashi, i18n.language])
 
     if (loading) {
-        console.log("RASHIFAL STATE:", rashifal);
-console.log("HAS RESPONSE:", !!rashifal?.response);
+       
         return (
 
             <div className="min-h-screen flex justify-center items-center bg-[#0a0a0a]">

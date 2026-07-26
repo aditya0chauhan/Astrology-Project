@@ -33,13 +33,13 @@ const Astrology = () => {
             >
               <div className='absolute inset-0 bg-gradient-to-br from-slate-950/85 via-slate-900/90 to-slate-950/90' />
               <div className='relative z-10 flex min-h-[75vh] flex-col items-center justify-center text-center text-white sm:px-10 lg:px-16'>
-                <p className='rounded-full border border-amber-300/30 bg-amber-400/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.3em] text-amber-200'>
+                <p className='rounded-full border border-amber-300/30 bg-amber-400/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.3em] text-amber-200 hover:scale-[1.08] duration-300'>
                   Astrology
                 </p>
-                <h2 className='mt-5 text-3xl font-semibold text-amber-100 sm:text-4xl lg:text-5xl hover:scale-[1.05] duration-300'>
+                <h2 className='mt-5 text-3xl font-semibold text-amber-100 sm:text-4xl lg:text-5xl hover:scale-[1.08] duration-300'>
                   {t('as')}
                 </h2>
-                <p className='mt-4 max-w-3xl text-base leading-8 text-slate-200 sm:text-lg hover:scale-[1.05] duration-300'>
+                <p className='mt-6 max-w-3xl text-base leading-8 text-slate-200 sm:text-lg hover:scale-[1.08] duration-300'>
                 {t("asdet")}
                 </p>
                 <div className='mt-8 flex flex-wrap justify-center gap-3 hover:scale-[1.05] duration-300'>
@@ -51,18 +51,18 @@ const Astrology = () => {
               </div>
             </div>
 
-    <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-lg border-2 border-amber-300 text-center text-white bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
+    <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-6 rounded-4xl border-2 border-amber-300 text-center text-white bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
         <Link to={"/kundali"}><img src={kundali}
-          className='rounded-lg border-2 border-amber-100'/>
+          className='rounded-4xl border-2 border-amber-100 hover:scale-[1.05] duration-300'/>
           <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>Kundali</h1>
             <p>अपनी जन्म कुंडली के रहस्य जानें।</p>
             <p>जन्म कुंडली का विस्तृत विश्लेषण।</p>
             <p>ग्रहों की स्थिति, योग, दोष और भविष्य की संभावनाओं का विस्तृत अध्ययन।</p></Link>
         </div>    
 
-      <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-lg border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
+      <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-6 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
         <Link to={'/kundaliMilan'}><img src={kundaliMilan}
-          className='rounded-lg border-2 border-amber-100'/>
+          className='rounded-4xl border-2 border-amber-100 hover:scale-[1.05] duration-300'/>
           <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>Kundali Milan</h1>
             <p>36 गुण मिलान, मांगलिक दोष एवं वैवाहिक सुख का गहन विश्लेषण।</p>
             <p>विवाह से पूर्व गुण मिलान एवं ग्रहों की अनुकूलता का विश्लेषण।</p>
@@ -92,25 +92,25 @@ const Astrology = () => {
 
         </section>
         
-         <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-lg border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
+         <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
        <Link to={'/lalKitab'}><img src={lalkitab}
-          className='rounded-lg border-2 border-amber-100'/>
+          className='rounded-4xl border-2 border-amber-100'/>
           <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>lalkitab Kundali</h1>
             <p>लाल किताब के गूढ़ रहस्यों और ग्रहों के प्रभाव को जानें।</p>
             <p>जीवन की समस्याओं के कारण एवं उनके सरल उपाय जानें।</p>
             <p>सरल एवं प्रभावी लाल किताब उपायों के साथ अनुभवी मनोज एस्ट्रो परामर्श के साथ सटीक मार्गदर्शन एवं प्रभावी उपाय।</p></Link>   
         </div>
 
-        <div className='mt-5 w-full lg:w-[40%] flex lg:hidden flex-col justify-between p-3 rounded-lg border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
+        <div className='mt-5 w-full lg:w-[40%] flex lg:hidden flex-col justify-between p-3 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
        <Link to={"/rashifal"}><img src={rashifal}
-          className='rounded-lg border-2 border-amber-100'/>
+          className='rounded-4xl border-2 border-amber-100'/>
           <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>Rashifal</h1>
             <p> ग्रह स्थिति के अनुसार राशिफल शुभ-अशुभ संकेतों के साथ दिनभर का सटीक मार्गदर्शन करियर, धन, स्वास्थ्य और प्रेम जीवन का विश्लेषण अनुभवी मनोज एस्ट्रो परामर्श के साथ सटीक मार्गदर्शन | </p></Link>   
         </div>
 
-         <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-lg border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
+         <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
       <Link to={"/panchang"}><img src={panchang}
-          className='rounded-lg border-2 border-amber-100'/>
+          className='rounded-4xl border-2 border-amber-100'/>
           <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>Dainik Panchang</h1>
             <p>शुभ मुहूर्त एवं राहुकाल का समय</p>
             <p>अभिजीत मुहूर्त और चौघड़िया विवरण</p>
@@ -118,9 +118,9 @@ const Astrology = () => {
             <p>दैनिक शुभ-अशुभ समय का मार्गदर्शन</p>
             <p> आज की तिथि, वार, नक्षत्र मनोज एस्ट्रो की दैनिक पंचांग के साथ। </p></Link>    
         </div>
-         <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-lg border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
+         <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
       <Link to={"/kpAstrology"}><img src={kp}
-          className='rounded-lg border-2 border-amber-100'/>
+          className='rounded-4xl border-2 border-amber-100'/>
           <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>KP Astrology</h1>
             <p>सटीक भविष्यवाणी की आधुनिक ज्योतिष पद्धति</p>
             <p>KP Chart और राशि चार्ट की सम्पूर्ण जानकारी</p>

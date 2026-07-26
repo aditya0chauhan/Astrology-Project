@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
+import Footer from './Footer'
+import ScrollTop from "./ScrollTop";
 
 const Layout = () => {
   const contentRef = useRef(null);
@@ -63,9 +65,11 @@ const Layout = () => {
 
   return (
     <>
+     <ScrollTop />
       <Header />
       <div ref={contentRef} className="page-content">
         <Outlet />
+        <Footer />
       </div>
     </>
   );

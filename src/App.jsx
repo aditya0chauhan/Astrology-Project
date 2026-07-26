@@ -9,7 +9,6 @@ import Poojan from './components/Poojan'
 import KundaliMilan from './Pages/KundaliMilan'
 import Panchang from './Pages/Panchang'
 import KundaliPage from './Pages/KundaliPage'
-
 import Mahadasha from './components/dasha/Mahadasha'
 import CurrentMD from './components/dasha/CurrentMD'
 import CurrentFullMD from './components/dasha/CurrentFullMD'
@@ -20,6 +19,7 @@ import Numerology from './components/Numrology/Numerology'
 import LalKitab from './components/lalKitabAstro/LalKitab'
 import KpFile from './components/kpAstro/KpFile'
 import Reports from './components/Reports/Reports'
+
 
 const appRouter = createBrowserRouter([{
   path : "/",

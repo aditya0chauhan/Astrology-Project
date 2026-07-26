@@ -7,6 +7,7 @@ import vastu5 from "../assets/images/vastu-5.png";
 import vastu6 from "../assets/images/vastu-6.png";
 import vastu7 from "../assets/images/vastu-7.png";
 import vastu8 from "../assets/images/vastu-8.png";
+import banner from '../assets/images/banner.png'
 import { useTranslation } from "react-i18next";
 import { MdCall } from "react-icons/md";
 
@@ -23,11 +24,39 @@ const Vaastu = () => {
 
           
         </button>
+
+        <section className='mt-16 relative rounded-xl lg:rounded-[32px] border border-amber-300/20 bg-[radial-gradient(circle_at_100%_0,rgba(242,184,46,0.15),transparent_32%),linear-gradient(135deg,#761027_0%,#2e0715_52%,#0b1029_100%)] p-2 lg:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:p-8 my-5'>
+                          <div className='flex flex-col'>
+                            <div className='min-h-full flex flex-col justify-around'>
+                              <a href='https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20श्रावण%202026%20स्पेशल%20पूजा%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20ऑनलाइन%20पूजा,%20रुद्राभिषेक,%20कालसर्प%20शांति,%20वास्तु%20एवं%20अन्य%20सेवाओं%20की%20जानकारी%20साझा%20करें।%0A%0Aधन्यवाद।🙏'>
+                               <img
+                                src={banner}
+                                alt='shiv'
+                                className='rounded-xl lg:rounded-4xl hover:scale-[1.01] duration-300'
+                              />
+                              </a>
+                        </div>
+                           <section >
+                    <div className='text-amber-200 text-xl lg:text-3xl font-semibold mt-3 lg:mt-5'>
+                      <marquee scrollamount="4" >
+                        <span>
+                          🕉️  श्रावण मास 2026 महोत्सव | 29 जुलाई से 28 अगस्त 2026 | समस्त शिव भक्तों के लिए पूरे श्रावण मास में विशेष ऑनलाइन एवं ऑफलाइन रुद्राभिषेक, शिव पूजन एवं वैदिक अनुष्ठान | घर बैठे जुड़ें श्रावण के चारों सोमवार (3 अगस्त • 10 अगस्त • 17 अगस्त • 24 अगस्त) के दिव्य LIVE रुद्राभिषेक एवं पूजन में | 🐍 3 अगस्त एवं 17 अगस्त नागपंचमी विशेष –  🔱 10 अगस्त एवं 25 अगस्त प्रदोष व्रत विशेष - कालसर्प दोष, नाग दोष एवं पितृ दोष निवारण हेतु विशेष वैदिक ऑनलाइन पूजन | 📿 गुरुजी मनोज शास्त्री (B.L. Vashisth) के सान्निध्य में वैदिक विधि से पूजन | 🌍 अब स्थान या दूरी नहीं, आपकी श्रद्धा और भक्ति ही सबसे महत्वपूर्ण है – भारत, Dubai, USA, UK सहित विश्वभर से LIVE सहभागिता उपलब्ध | 🕉 आइए, इस पावन श्रावण में हम सभी एक साथ भगवान भोलेनाथ की आराधना करें और उनके दिव्य आशीर्वाद का लाभ प्राप्त करें। 📲 अभी WhatsApp पर संपर्क कर अपना पूजन संकल्प सुरक्षित करें। 🔱
+                        </span>
+                        <span>
+                          🕉️  श्रावण मास 2026 महोत्सव | 29 जुलाई से 28 अगस्त 2026 | समस्त शिव भक्तों के लिए पूरे श्रावण मास में विशेष ऑनलाइन एवं ऑफलाइन रुद्राभिषेक, शिव पूजन एवं वैदिक अनुष्ठान | घर बैठे जुड़ें श्रावण के चारों सोमवार (3 अगस्त • 10 अगस्त • 17 अगस्त • 24 अगस्त) के दिव्य LIVE रुद्राभिषेक एवं पूजन में | 🐍 3 अगस्त एवं 17 अगस्त नागपंचमी विशेष – कालसर्प दोष, नाग दोष एवं पितृ दोष निवारण हेतु विशेष वैदिक ऑनलाइन पूजन | 📿 गुरुजी मनोज शास्त्री (B.L. Vashisth) के सान्निध्य में वैदिक विधि से पूजन | 🌍 अब स्थान या दूरी नहीं, आपकी श्रद्धा और भक्ति ही सबसे महत्वपूर्ण है – भारत, Dubai, USA, UK सहित विश्वभर से LIVE सहभागिता उपलब्ध | 🕉 आइए, इस पावन श्रावण में हम सभी एक साथ भगवान भोलेनाथ की आराधना करें और उनके दिव्य आशीर्वाद का लाभ प्राप्त करें। 📲 अभी WhatsApp पर संपर्क कर अपना पूजन संकल्प सुरक्षित करें। 🔱
+                        </span>
+                      </marquee>
+                    </div>
+                  </section>
+                          </div>
+                           </section>
+          
         
       </div>
       
 
       <div className="mx-auto max-w-7xl px-3 pb-10 sm:px-5 mt-8">
+        
         <div className="grid grid-cols-1 gap-4 pt-10 sm:grid-cols-2">
 
           <a href="#v1" className="overflow-hidden rounded-xl border border-amber-200">
