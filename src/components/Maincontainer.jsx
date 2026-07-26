@@ -34,9 +34,7 @@ const Maincontainer = () => {
               </div>
             </section>
                     </div>
-                     </section>
-
-      
+                     </section>      
 
       <div className='mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8'>
               <section className='relative overflow-hidden rounded-[32px] border border-amber-300/20 bg-gradient-to-br from-[#111827] via-[#0f172a] to-[#030711] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:p-8 mt-10'>
@@ -70,6 +68,7 @@ const Maincontainer = () => {
             </div>
           </div>
         </section>
+        <div className="mt-16 h-px w-full bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
 
         {/* <section className='grid grid-cols-1 gap-6 pt-6 lg:grid-cols-3'>
           <Link to='/astrology' className='group flex min-h-full flex-col justify-between rounded-[24px] border border-amber-200/20 bg-gradient-to-br from-[#111827] to-[#060b16] p-6 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40 hover:shadow-[0_12px_35px_rgba(251,191,36,0.16)]'>
@@ -128,6 +127,8 @@ const Maincontainer = () => {
         <Card4 />
         <Card5 />
         <Card6 />
+
+        <div className="mt-16 h-px w-full bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
            <section className='relative rounded-[32px] border border-amber-300/20 bg-[radial-gradient(circle_at_100%_0,rgba(242,184,46,0.15),transparent_32%),linear-gradient(135deg,#761027_0%,#2e0715_52%,#0b1029_100%)] p-6  sm:p-8 my-5 hover:scale-[1.08] hover:my-10 duration-300 shadow-[0_20px_60px_rgba(0,0,0,0.35)] transition-all'>
           <div className='flex flex-col lg:flex-row lg:justify-between'>
             <div className='min-h-full max-w-2xl flex flex-col justify-around'>

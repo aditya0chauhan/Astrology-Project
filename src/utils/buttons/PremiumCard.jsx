@@ -23,8 +23,8 @@ export const PremiumCard = () => {
           </div>
           <div className="card__footer">
             <p className="card__price-text">₹-11,000</p>
-            <Book />
-          </div>
+            <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Handwritten%20Kundali*%20chahiye%20hai%20to%20Kripya%20delivery%20time,%20aur%20order%20process%20batayein.%0A%0ADhanyavaad." target='blank'><Whatsapp /></a>
+            </div>
         </div>
       </div>
     </StyledWrapper>
@@ -59,7 +59,7 @@ export const Card2 = () => {
           </div>
           <div className="card__footer">
             <p className="card__price-text"> Package According</p>
-            <Book />
+              <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Complete%20Vastu%20Defect%20Remedy*%20service%20ke%20baare%20mein%20jaankari%20chahiye.%20Kripya%20consultation,%20charges%20aur%20Vastu%20remedies%20ke%20baare%20mein%20guide%20kijiye.%0A%0ADhanyavaad." target='blank'><Whatsapp /></a>
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@ export const Card3 = () => {
           </div>
           <div className="card__footer">
             <p className="card__price-text"> ₹-499</p>
-            <Book />
+          <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Kaalsarp%20Dosh%20Consultation*%20ke%20baare%20mein%20jaankari%20chahiye.%20Kripya%20consultation%20process,%20upaay%20ke%20baare%20mein%20batayein.%0A%0ADhanyavaad." target='blank'><Whatsapp /></a>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ export const Card4 = () => {
           </div>
           <div className="card__footer">
             <p className="card__price-text"> ₹-2,100</p>
-            <Book />
+           <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*KP%20Premium%20Kundali*%20ke%20baare%20mein%20vistaar%20se%20jaankari%20chahiye.%20Kripya%20KP%20analysis,%20consultation%20process%20aur%20is%20service%20ke%20baare%20mein%20guide%20kijiye.%0A%0ADhanyavaad."target='blank'><Whatsapp /></a>
           </div>
         </div>
       </div>
@@ -154,7 +154,7 @@ export const Card5 = () => {
           </div>
           <div className="card__footer">
             <p className="card__price-text"> ₹-151</p>
-            <Book />
+           <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Children's%20Name%20Selection*%20service%20ke%20baare%20mein%20jaankari%20chahiye.%20Main%20janam%20vivaran%20ke%20anusaar%20apne%20bachche%20ke%20liye%20ek%20shubh,%20arthpoorn%20aur%20vaidik%20naam%20rakhna%20chahta/chahti%20hoon.%20Kripya%20mujhe%20guide%20kijiye.%0A%0ADhanyavaad."target='blank'><Whatsapp /></a>
           </div>
         </div>
       </div>
@@ -186,7 +186,7 @@ export const Card6 = () => {
           </div>
           <div className="card__footer">
             <p className="card__price-text"> ₹-251</p>
-            <Book />
+           <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Gemstone%20Recommendation*%20service%20ke%20baare%20mein%20jaankari%20chahiye.%20Kripya%20meri%20janma%20kundali%20ke%20anusaar%20uchit%20ratna,%20use%20dharan%20karne%20ki%20vidhi%20aur%20paramarsh%20ke%20baare%20mein%20guide%20kijiye.%0A%0ADhanyavaad."target='blank'><Whatsapp /></a>
           </div>
         </div>
       </div>
@@ -285,9 +285,12 @@ const StyledWrapper = styled.div`
     justify-content: space-between;
     border-radius: 24px;
     background:
-      linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
-      linear-gradient(170deg, rgba(58, 56, 56, 0.82) 0%, rgb(13, 18, 32) 100%);
-    border: 1px solid rgba(251, 191, 36, 0.2);
+    linear-gradient(
+      to bottom right,
+      #1f2937 0%,
+      #111827 55%,
+      #0f172a 100%
+    );
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
     cursor: pointer;
     transition: all 0.3s ease;

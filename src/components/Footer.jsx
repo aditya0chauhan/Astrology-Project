@@ -73,14 +73,9 @@ const Footer = () => {
 
         <div className="my-8 h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
 
-        <div className="flex flex-col items-center justify-between gap-4 text-center text-sm text-slate-400 md:flex-row">
+        <div className="flex flex-col items-center justify-center gap-4 text-center text-sm text-slate-400 md:flex-row">
           <p>© 2026 Manoj Vedic Astro. All Rights Reserved.</p>
-
-          <div className="flex gap-5">
-            <Link to="/privacy">Privacy Policy</Link>
-            <Link to="/terms">Terms & Conditions</Link>
-          </div>
-        </div>
+                </div>
 
       </div>
     </footer>

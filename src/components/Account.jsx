@@ -128,8 +128,19 @@ const Account = () => {
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-amber-300">Astrology Account Suite</p>
               <h1 className="mt-2 text-3xl font-semibold text-white sm:text-4xl">{t('accountTitle') || 'Professional account portal'}</h1>
-              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-                Manage your astrology profile, access premium services, and oversee admin analytics from one polished dashboard.
+              <p className="mt-3 max-w-2xl text-sm leading-7 sm:text-base font-bold text-red-400">
+                प्रिय उपयोगकर्ता,
+
+                Account सुविधा पर वर्तमान में कार्य चल रहा है। जल्द ही आप अपने व्यक्तिगत खाते के माध्यम से:
+
+                📄 अपनी कुंडली एवं रिपोर्ट डाउनलोड कर सकेंगे।
+                📅 बुक की गई पूजा एवं परामर्श की स्थिति देख सकेंगे।
+                ❤️ अपनी पसंदीदा सेवाओं को सुरक्षित रख सकेंगे।
+                📜 अपने ऑर्डर एवं हिस्ट्री को आसानी से प्रबंधित कर सकेंगे।
+
+                हम इस सुविधा को बेहतर अनुभव के साथ जल्द ही उपलब्ध कराएंगे।
+
+                आपके धैर्य और सहयोग के लिए धन्यवाद। 🙏
               </p>
             </div>
             <div className="rounded-2xl border border-amber-300/20 bg-slate-950/60 px-4 py-3 text-sm text-amber-200">

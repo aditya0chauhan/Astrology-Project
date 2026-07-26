@@ -8,7 +8,6 @@ import panchang from '../assets/images/panchang.png'
 import kp from '../assets/images/kpastro.png'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-// import { Help} from '../utils/buttons/Genrate'
 
 const Astrology = () => {
   const { t } = useTranslation()
@@ -51,25 +50,7 @@ const Astrology = () => {
               </div>
             </div>
 
-    <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-6 rounded-4xl border-2 border-amber-300 text-center text-white bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
-        <Link to={"/kundali"}><img src={kundali}
-          className='rounded-4xl border-2 border-amber-100 hover:scale-[1.05] duration-300'/>
-          <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>Kundali</h1>
-            <p>अपनी जन्म कुंडली के रहस्य जानें।</p>
-            <p>जन्म कुंडली का विस्तृत विश्लेषण।</p>
-            <p>ग्रहों की स्थिति, योग, दोष और भविष्य की संभावनाओं का विस्तृत अध्ययन।</p></Link>
-        </div>    
-
-      <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-6 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
-        <Link to={'/kundaliMilan'}><img src={kundaliMilan}
-          className='rounded-4xl border-2 border-amber-100 hover:scale-[1.05] duration-300'/>
-          <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>Kundali Milan</h1>
-            <p>36 गुण मिलान, मांगलिक दोष एवं वैवाहिक सुख का गहन विश्लेषण।</p>
-            <p>विवाह से पूर्व गुण मिलान एवं ग्रहों की अनुकूलता का विश्लेषण।</p>
-            <p>वैवाहिक जीवन की संभावनाओं की विस्तृत विश्लेषण अनुभवी मनोज एस्ट्रो परामर्श के साथ।</p></Link>
-        </div>  
-
-
+              
       <section className="overflow-hidden rounded-lg shadow-[0_0_15px_rgba(251,191,36,0.3)] my-10 px-3">
 
           <div className="marquee">
@@ -91,6 +72,24 @@ const Astrology = () => {
           </div>
 
         </section>
+
+    <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-6 rounded-4xl border-2 border-amber-300 text-center text-white bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
+        <Link to={"/kundali"}><img src={kundali}
+          className='rounded-4xl border-2 border-amber-100 hover:scale-[1.05] duration-300'/>
+          <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>Kundali</h1>
+            <p>अपनी जन्म कुंडली के रहस्य जानें।</p>
+            <p>जन्म कुंडली का विस्तृत विश्लेषण।</p>
+            <p>ग्रहों की स्थिति, योग, दोष और भविष्य की संभावनाओं का विस्तृत अध्ययन।</p></Link>
+        </div>    
+
+      <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-6 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
+        <Link to={'/kundaliMilan'}><img src={kundaliMilan}
+          className='rounded-4xl border-2 border-amber-100 hover:scale-[1.05] duration-300'/>
+          <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>Kundali Milan</h1>
+            <p>36 गुण मिलान, मांगलिक दोष एवं वैवाहिक सुख का गहन विश्लेषण।</p>
+            <p>विवाह से पूर्व गुण मिलान एवं ग्रहों की अनुकूलता का विश्लेषण।</p>
+            <p>वैवाहिक जीवन की संभावनाओं की विस्तृत विश्लेषण अनुभवी मनोज एस्ट्रो परामर्श के साथ।</p></Link>
+        </div>  
         
          <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
        <Link to={'/lalKitab'}><img src={lalkitab}
