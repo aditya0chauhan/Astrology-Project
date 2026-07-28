@@ -1,3 +1,7 @@
+import { CgMail } from "react-icons/cg";
+import { CiLocationOn } from "react-icons/ci";
+import { FaWhatsapp } from "react-icons/fa";
+import { IoCallOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -9,7 +13,7 @@ const Footer = () => {
 
           <div>
             <h2 className="text-2xl font-bold text-amber-400">
-              🕉 Manoj Vedic Astro
+              🕉 Manoj Astro
             </h2>
 
             <p className="mt-4 text-slate-300 leading-7">
@@ -54,17 +58,19 @@ const Footer = () => {
             </h3>
 
             <div className="space-y-3 text-slate-300">
-              <p>📞 <a href="tel:+91 88825 32259">Call Now</a></p>
-              <p>📧 <a href="mailto:manojshastriastrologer45@gmail.com?subject=Astrology%20Consultation%20Inquiry&body=Hello%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20astrology%20services.%20Please%20share%20details%20regarding%20consultations%2C%20kundali%20analysis%2C%20and%20pricing.%0A%0AThank%20you.">Gmail</a></p>
-              <p>📍<a href="https://maps.app.goo.gl/aCPczyQgJWPnFoKE8?g_st=aw">Google Maps →</a></p>
+              <p className="  flex items-center  hover:text-[#4285F4]"><IoCallOutline size={14} className="mr-1" /> <a  className='hover:underline '  href="tel:+91 88825 32259">Call Now →</a></p>
+
+              <p className="  flex items-center  hover:text-[#34A853]"><CgMail  size={16} className="mr-1" /> <a 
+              className='hover:underline hover:text-[#34A853]' href="mailto:manojshastriastrologer45@gmail.com?subject=Astrology%20Consultation%20Inquiry&body=Hello%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20astrology%20services.%20Please%20share%20details%20regarding%20consultations%2C%20kundali%20analysis%2C%20and%20pricing.%0A%0AThank%20you.">Gmail →</a></p>
+              <p className=" flex items-center  hover:text-red-300 "><CiLocationOn size={16} className="mr-1" /><a className='hover:underline' href="https://maps.app.goo.gl/aCPczyQgJWPnFoKE8?g_st=aw">Location →</a></p>
 
               <a
                 href="https://wa.me/918882532259"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-block rounded-full bg-green-600 px-5 py-3 font-semibold transition hover:bg-green-500"
+                className=" flex items-center rounded-xl hover:underline hover:text-green-600"
               >
-                WhatsApp Now
+                <FaWhatsapp size={14} className='mr-1' /> WhatsApp →
               </a>
             </div>
           </div>

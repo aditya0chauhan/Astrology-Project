@@ -93,8 +93,7 @@ const PoojanCard = () => {
           </div>
         </div>
 
-        <div className='flex items-center justify-between border-t border-white/10 py-3'>
-          <p className='text-lg font-semibold text-emerald-400'>₹ - Location According</p>
+        <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
           <button type='button'><Book /></button>
         </div>
       </div>

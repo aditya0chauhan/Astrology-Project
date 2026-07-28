@@ -157,8 +157,7 @@ const Maincontainer = () => {
               />
             </div>
           </div>
-          <div className="w-full lg:w-[80%] flex items-center justify-between lg:justify-around mt-5 lg:mt-1">
-            <p className="text-amber-300 font-semibold text-xl"> ₹-7100</p>
+          <div className="w-full lg:w-[80%] flex items-center justify-start mt-5 lg:mt-1">
             <a
               href="https://wa.me/918882532259?text=🙏%20Namaste%20Pandit%20Ji,%0A%0AMujhe%20*Shravan%20Maas%20Shiv%20Pujan%20Rudrabhishek*%20ke%20baare%20mein%20jaankari%20chahiye.%0A%0AKripya%20mujhe%20is%20pooja%20ki%20poori%20jaankari%20de."
               target="_blank"

@@ -22,7 +22,6 @@ export const PremiumCard = () => {
             <p className="card__description">{t('hl')}</p>
           </div>
           <div className="card__footer">
-            <p className="card__price-text">₹-11,000</p>
             <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Handwritten%20Kundali*%20chahiye%20hai%20to%20Kripya%20delivery%20time,%20aur%20order%20process%20batayein.%0A%0ADhanyavaad." target='blank'><Whatsapp /></a>
             </div>
         </div>
@@ -58,7 +57,6 @@ export const Card2 = () => {
             </div>
           </div>
           <div className="card__footer">
-            <p className="card__price-text"> Package According</p>
               <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Complete%20Vastu%20Defect%20Remedy*%20service%20ke%20baare%20mein%20jaankari%20chahiye.%20Kripya%20consultation,%20charges%20aur%20Vastu%20remedies%20ke%20baare%20mein%20guide%20kijiye.%0A%0ADhanyavaad." target='blank'><Whatsapp /></a>
           </div>
         </div>
@@ -90,7 +88,6 @@ export const Card3 = () => {
             </div>
           </div>
           <div className="card__footer">
-            <p className="card__price-text"> ₹-499</p>
           <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Kaalsarp%20Dosh%20Consultation*%20ke%20baare%20mein%20jaankari%20chahiye.%20Kripya%20consultation%20process,%20upaay%20ke%20baare%20mein%20batayein.%0A%0ADhanyavaad." target='blank'><Whatsapp /></a>
           </div>
         </div>
@@ -121,7 +118,6 @@ export const Card4 = () => {
             </div>
           </div>
           <div className="card__footer">
-            <p className="card__price-text"> ₹-2,100</p>
            <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*KP%20Premium%20Kundali*%20ke%20baare%20mein%20vistaar%20se%20jaankari%20chahiye.%20Kripya%20KP%20analysis,%20consultation%20process%20aur%20is%20service%20ke%20baare%20mein%20guide%20kijiye.%0A%0ADhanyavaad."target='blank'><Whatsapp /></a>
           </div>
         </div>
@@ -153,7 +149,6 @@ export const Card5 = () => {
             </div>
           </div>
           <div className="card__footer">
-            <p className="card__price-text"> ₹-151</p>
            <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Children's%20Name%20Selection*%20service%20ke%20baare%20mein%20jaankari%20chahiye.%20Main%20janam%20vivaran%20ke%20anusaar%20apne%20bachche%20ke%20liye%20ek%20shubh,%20arthpoorn%20aur%20vaidik%20naam%20rakhna%20chahta/chahti%20hoon.%20Kripya%20mujhe%20guide%20kijiye.%0A%0ADhanyavaad."target='blank'><Whatsapp /></a>
           </div>
         </div>
@@ -185,7 +180,6 @@ export const Card6 = () => {
             </div>
           </div>
           <div className="card__footer">
-            <p className="card__price-text"> ₹-251</p>
            <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Gemstone%20Recommendation*%20service%20ke%20baare%20mein%20jaankari%20chahiye.%20Kripya%20meri%20janma%20kundali%20ke%20anusaar%20uchit%20ratna,%20use%20dharan%20karne%20ki%20vidhi%20aur%20paramarsh%20ke%20baare%20mein%20guide%20kijiye.%0A%0ADhanyavaad."target='blank'><Whatsapp /></a>
           </div>
         </div>
@@ -218,7 +212,6 @@ export const Card7 = () => {
             </div>
           </div>
           <div className="card__footer">
-            <p className="card__price-text"> ₹-7100</p>
             <a
               href="https://wa.me/918882532259?text=🙏%20Namaste%20Pandit%20Ji,%0A%0AMujhe%20*Shravan%20Maas%20Shiv%20Pujan%20Rudrabhishek*%20ke%20baare%20mein%20jaankari%20chahiye.%0A%0AKripya%20mujhe%20is%20pooja%20ki%20poori%20jaankari%20de."
               target="_blank"
@@ -259,7 +252,6 @@ export const P1 = () => {
             </div>
           </div>
           <div className="card__footer">
-            <p className="card__price-text"> ₹-251</p>
             <Book />
           </div>
         </div>
@@ -395,7 +387,7 @@ const StyledWrapper = styled.div`
   .card__footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 1rem;
     margin-top: 1rem;
     padding-top: 0.75rem;
