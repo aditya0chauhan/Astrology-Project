@@ -9,7 +9,7 @@ import poojan7 from '../assets/images/poojan-8.png'
 import banner from '../assets/images/banner.png'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import {Book, Whatsapp} from '../utils/buttons/Genrate'
+import { Whatsapp } from '../utils/buttons/Genrate'
 
 const PoojanCard = () => {
   const { t } = useTranslation()
@@ -32,11 +32,8 @@ const PoojanCard = () => {
           <div className='text-amber-200 text-xl lg:text-3xl font-semibold mt-3 lg:mt-5'>
             <marquee scrollamount="4" >
               <span>
-                🕉️  श्रावण मास 2026 महोत्सव | 29 जुलाई से 28 अगस्त 2026 | समस्त शिव भक्तों के लिए पूरे श्रावण मास में विशेष ऑनलाइन एवं ऑफलाइन रुद्राभिषेक, शिव पूजन एवं वैदिक अनुष्ठान | घर बैठे जुड़ें श्रावण के चारों सोमवार (3 अगस्त • 10 अगस्त • 17 अगस्त • 24 अगस्त) के दिव्य LIVE रुद्राभिषेक एवं पूजन में | 🐍 3 अगस्त एवं 17 अगस्त नागपंचमी विशेष –  🔱 10 अगस्त एवं 25 अगस्त प्रदोष व्रत विशेष - कालसर्प दोष, नाग दोष एवं पितृ दोष निवारण हेतु विशेष वैदिक ऑनलाइन पूजन | 📿 गुरुजी मनोज शास्त्री (B.L. Vashisth) के सान्निध्य में वैदिक विधि से पूजन | 🌍 अब स्थान या दूरी नहीं, आपकी श्रद्धा और भक्ति ही सबसे महत्वपूर्ण है – भारत, Dubai, USA, UK सहित विश्वभर से LIVE सहभागिता उपलब्ध | 🕉 आइए, इस पावन श्रावण में हम सभी एक साथ भगवान भोलेनाथ की आराधना करें और उनके दिव्य आशीर्वाद का लाभ प्राप्त करें। 📲 अभी WhatsApp पर संपर्क कर अपना पूजन संकल्प सुरक्षित करें। 🔱
-              </span>
-              <span>
-                🕉️  श्रावण मास 2026 महोत्सव | 29 जुलाई से 28 अगस्त 2026 | समस्त शिव भक्तों के लिए पूरे श्रावण मास में विशेष ऑनलाइन एवं ऑफलाइन रुद्राभिषेक, शिव पूजन एवं वैदिक अनुष्ठान | घर बैठे जुड़ें श्रावण के चारों सोमवार (3 अगस्त • 10 अगस्त • 17 अगस्त • 24 अगस्त) के दिव्य LIVE रुद्राभिषेक एवं पूजन में | 🐍 3 अगस्त एवं 17 अगस्त नागपंचमी विशेष – कालसर्प दोष, नाग दोष एवं पितृ दोष निवारण हेतु विशेष वैदिक ऑनलाइन पूजन | 📿 गुरुजी मनोज शास्त्री (B.L. Vashisth) के सान्निध्य में वैदिक विधि से पूजन | 🌍 अब स्थान या दूरी नहीं, आपकी श्रद्धा और भक्ति ही सबसे महत्वपूर्ण है – भारत, Dubai, USA, UK सहित विश्वभर से LIVE सहभागिता उपलब्ध | 🕉 आइए, इस पावन श्रावण में हम सभी एक साथ भगवान भोलेनाथ की आराधना करें और उनके दिव्य आशीर्वाद का लाभ प्राप्त करें। 📲 अभी WhatsApp पर संपर्क कर अपना पूजन संकल्प सुरक्षित करें। 🔱
-              </span>
+                    🕉️  श्रावण मास 2026 महोत्सव | 29 जुलाई से 28 अगस्त 2026 | समस्त शिव भक्तों के लिए पूरे श्रावण मास में विशेष ऑनलाइन एवं ऑफलाइन रुद्राभिषेक, शिव पूजन एवं वैदिक अनुष्ठान | घर बैठे जुड़ें श्रावण के चारों सोमवार (3 अगस्त • 10 अगस्त • 17 अगस्त • 24 अगस्त) के दिव्य LIVE रुद्राभिषेक एवं पूजन में | 🐍 3 अगस्त एवं 17 अगस्त नागपंचमी विशेष –  🔱 10 अगस्त एवं 25 अगस्त प्रदोष व्रत विशेष - कालसर्प दोष, नाग दोष एवं पितृ दोष निवारण हेतु विशेष वैदिक ऑनलाइन पूजन | 📿 गुरुजी मनोज शास्त्री (B.L. Vashisth) के सान्निध्य में वैदिक विधि से पूजन | 🌍 अब स्थान या दूरी नहीं, आपकी श्रद्धा और भक्ति ही सबसे महत्वपूर्ण है – भारत, Dubai, USA, UK सहित विश्वभर से LIVE सहभागिता उपलब्ध | 🕉 आइए, इस पावन श्रावण में हम सभी एक साथ भगवान भोलेनाथ की आराधना करें और उनके दिव्य आशीर्वाद प्राप्त करें| एवं गुरुजी द्वारा प्राण प्रतिष्ठा किए गए, संपूर्ण श्रावण में 31 रुद्राभिषेक द्वारा सिद्ध किए हुए प्रतिष्ठित शिवलिंग अपने घर, व्यापार स्थल के लिए प्राप्त करें। |📲 अभी WhatsApp पर संपर्क कर अपना पूजन संकल्प सुरक्षित करें। 🔱
+                  </span>
             </marquee>
           </div>
         </section>
@@ -94,8 +91,10 @@ const PoojanCard = () => {
         </div>
 
         <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
-          <button type='button'><Book /></button>
-        </div>
+        <a href="https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20*मंगल%20दोष%20निवारण%20एवं%20अनुष्ठान*%20के%20बारे%20में%20विस्तृत%20जानकारी%20चाहिए।%20कृपया%20पूजा%20की%20विधि,%20लाभ,%20आवश्यक%20सामग्री%20तथा%20बुकिंग%20प्रक्रिया%20बताएं%0A%0Aधन्यवाद।🙏" target='blank'>
+        <button type='button'><Whatsapp /></button>
+        </a>
+          </div>
       </div>
 
       <div className='group lg:w-[30%] rounded-[24px] border border-amber-400/20 bg-gradient-to-br from-[#1f2937] via-[#111827] to-[#0f172a] p-4 shadow-[0_20px_45px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_24px_50px_rgba(251,191,36,0.18)]'>
@@ -121,10 +120,11 @@ const PoojanCard = () => {
           </div>
         </div>
 
-      <div className='flex items-center justify-between border-t border-white/10 py-3'>
-          <p className='text-lg font-semibold text-emerald-400'>₹ - location According</p>
-          <button type='button'><Book /></button>
-        </div>
+      <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
+        <a href="https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20*पितृदोष%20अनुष्ठान%20(पुष्कर)*%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20पूजा%20की%20विधि,%20लाभ,%20समय%20एवं%20बुकिंग%20की%20जानकारी%20साझा%20करें।%0A%0Aधन्यवाद।🙏" target='blank'>
+        <button type='button'><Whatsapp /></button>
+        </a>
+          </div>
       </div>
 
       <div className='group lg:w-[30%] rounded-[24px] border border-amber-400/20 bg-gradient-to-br from-[#1f2937] via-[#111827] to-[#0f172a] p-4 shadow-[0_20px_45px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_24px_50px_rgba(251,191,36,0.18)]'>
@@ -150,9 +150,10 @@ const PoojanCard = () => {
           </div>
         </div>
 
-      <div className='flex items-center justify-between border-t border-white/10 py-3'>
-          <p className='text-lg font-semibold text-emerald-400'>₹-Location According</p>
-          <button type='button'><Book /></button>
+      <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
+          <a href="https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20*महामृत्युंजय%20अनुष्ठान*%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20इस%20अनुष्ठान%20की%20विधि,%20लाभ%20एवं%20बुकिंग%20प्रक्रिया%20बताएं।%0A%0Aधन्यवाद।🙏" target='blank'>
+        <button type='button'><Whatsapp /></button>
+        </a>
         </div>
       </div>
 
@@ -178,9 +179,10 @@ const PoojanCard = () => {
           </div>
         </div>
 
-      <div className='flex items-center justify-between border-t border-white/10 py-3'>
-          <p className='text-lg font-semibold text-emerald-400'>₹-Time According</p>
-          <button type='button'><Book /></button>
+       <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
+            <a href="https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20*संतान%20प्राप्ति%20गोपाल%20अनुष्ठान*%20के%20बारे%20में%20विस्तृत%20जानकारी%20चाहिए।%20कृपया%20इस%20अनुष्ठान%20की%20विधि,%20लाभ%20एवं%20बुकिंग%20प्रक्रिया%20बताएं।%0A%0Aधन्यवाद।🙏" target='blank'>
+        <button type='button'><Whatsapp /></button>
+        </a>
         </div>
       </div>
 
@@ -206,9 +208,10 @@ const PoojanCard = () => {
           </div>
         </div>
 
-      <div className='flex items-center justify-between border-t border-white/10 py-3'>
-          <p className='text-lg font-semibold text-emerald-400'>₹-Location According</p>
-          <button type='button'><Book /></button>
+      <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
+           <a href="https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20*उज्जैन%20नागबली%20पूजन*%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20पूजा%20की%20विधि,%20लाभ,%20आवश्यक%20जानकारी%20एवं%20बुकिंग%20प्रक्रिया%20बताएं।%0A%0Aधन्यवाद।🙏" target='blank'>
+        <button type='button'><Whatsapp /></button>
+        </a>
         </div>
       </div>
 
@@ -235,9 +238,10 @@ const PoojanCard = () => {
           </div>
         </div>
 
-      <div className='flex items-center justify-between border-t border-white/10 py-3'>
-          <p className='text-lg font-semibold text-emerald-400'>₹-Location-According</p>
-          <button type='button'><Book /></button>
+       <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
+           <a href="https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20*शीघ्र%20विवाह%20अनुष्ठान*%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20इस%20अनुष्ठान%20की%20विधि,%20लाभ%20एवं%20बुकिंग%20प्रक्रिया%20के%20बारे%20में%20मार्गदर्शन%20दें।%0A%0Aधन्यवाद।🙏" target='blank'>
+        <button type='button'><Whatsapp /></button>
+        </a>
         </div>
       </div>
 
@@ -264,9 +268,10 @@ const PoojanCard = () => {
           </div>
         </div>
 
-      <div className='flex items-center justify-between border-t border-white/10 py-3'>
-          <p className='text-lg font-semibold text-emerald-400'>₹-Time According</p>
-          <button type='button'><Book /></button>
+       <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
+            <a href="https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20*मुकदमा%20विजय%20अनुष्ठान*%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20इस%20अनुष्ठान%20की%20विधि,%20लाभ,%20उपयुक्त%20समय%20एवं%20बुकिंग%20प्रक्रिया%20बताएं।%0A%0Aधन्यवाद।🙏" target='blank'>
+        <button type='button'><Whatsapp /></button>
+        </a>
         </div>
       </div>
      

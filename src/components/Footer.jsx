@@ -60,9 +60,8 @@ const Footer = () => {
             <div className="space-y-3 text-slate-300">
               <p className="  flex items-center  hover:text-[#4285F4]"><IoCallOutline size={14} className="mr-1" /> <a  className='hover:underline '  href="tel:+91 88825 32259">Call Now →</a></p>
 
-              <p className="  flex items-center  hover:text-[#34A853]"><CgMail  size={16} className="mr-1" /> <a 
-              className='hover:underline hover:text-[#34A853]' href="mailto:manojshastriastrologer45@gmail.com?subject=Astrology%20Consultation%20Inquiry&body=Hello%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20astrology%20services.%20Please%20share%20details%20regarding%20consultations%2C%20kundali%20analysis%2C%20and%20pricing.%0A%0AThank%20you.">Gmail →</a></p>
-              <p className=" flex items-center  hover:text-red-300 "><CiLocationOn size={16} className="mr-1" /><a className='hover:underline' href="https://maps.app.goo.gl/aCPczyQgJWPnFoKE8?g_st=aw">Location →</a></p>
+              <p className="  flex items-center  hover:text-[#BB001B]"><CgMail  size={16} className="mr-1" /> <a 
+              className='hover:underline hover:text-[#BB001B]' href="mailto:manojshastriastrologer45@gmail.com?subject=Astrology%20Consultation%20Inquiry&body=Hello%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20astrology%20services.%20Please%20share%20details%20regarding%20consultations%2C%20kundali%20analysis%2C%20and%20pricing.%0A%0AThank%20you.">Gmail →</a></p>
 
               <a
                 href="https://wa.me/918882532259"
@@ -72,6 +71,8 @@ const Footer = () => {
               >
                 <FaWhatsapp size={14} className='mr-1' /> WhatsApp →
               </a>
+
+              <p className=" flex  hover:text-red-300 "><CiLocationOn size={18} className="mr-1" /><a className='hover:underline flex' href="https://maps.app.goo.gl/aCPczyQgJWPnFoKE8?g_st=aw">Location →</a></p>
             </div>
           </div>
 
