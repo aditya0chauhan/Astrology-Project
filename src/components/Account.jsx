@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaCrown, FaUserCircle, FaShieldAlt, FaCreditCard, FaChartLine, FaUsers, FaGem } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
@@ -28,9 +28,17 @@ const Account = () => {
   }, []);
 
   const loadAdminData = async () => {
+
     try {
+      const token = localStorage.getItem("astro-token");
       const [dashboardRes, usersRes, paymentsRes] = await Promise.all([
-        fetch(`${API_BASE}/admin/dashboard`),
+        // fetch(`${API_BASE}/admin/dashboard`),
+
+        fetch(`${API_BASE}/admin/dashboard`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
         fetch(`${API_BASE}/admin/users`),
         fetch(`${API_BASE}/payments/history`),
       ]);
@@ -50,26 +58,42 @@ const Account = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setMessage('');
+    setMessage("");
 
     try {
-      const endpoint = authMode === 'register' ? '/auth/register' : '/auth/login';
+      const endpoint =
+        authMode === "register"
+          ? "/auth/register"
+          : "/auth/login";
+
       const response = await fetch(`${API_BASE}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(form),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Authentication failed');
+        throw new Error(data.message || "Authentication failed");
       }
 
       setUser(data.user);
-      localStorage.setItem('astro-user', JSON.stringify(data.user));
-      setMessage(authMode === 'register' ? 'Account created successfully.' : 'Welcome back!');
-      if (data.user.role === 'admin') {
+      localStorage.setItem("astro-user", JSON.stringify(data.user));
+
+      if (data.token) {
+        localStorage.setItem("astro-token", data.token);
+      }
+
+      setMessage(
+        authMode === "register"
+          ? "Account created successfully."
+          : "Welcome back!"
+      );
+
+      if (data.user?.role === "admin") {
         loadAdminData();
       }
     } catch (error) {

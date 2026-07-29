@@ -19,6 +19,7 @@ import Numerology from './components/Numrology/Numerology'
 import LalKitab from './components/lalKitabAstro/LalKitab'
 import KpFile from './components/kpAstro/KpFile'
 import Reports from './components/Reports/Reports'
+import Appointment from './Pages/Appointment'
 
 
 const appRouter = createBrowserRouter([{
@@ -90,8 +91,11 @@ const appRouter = createBrowserRouter([{
   element:<KpFile />
  
 },{
-  path:'report',
+  path:'/report',
   element:<Reports />
+},{
+   path:"/appointment",
+   element:<Appointment />
 }]
 }])
 const App = () => {

@@ -1,4 +1,4 @@
-import User from "../models/User.js";
+import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
 
@@ -33,10 +33,21 @@ export const registerUser = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({
-      success: true,
-      message: "User Registered Successfully",
-    });
+   const token = generateToken(user._id);
+
+res.status(201).json({
+  success: true,
+  message: "User Registered Successfully",
+  token,
+  user: {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    phone: user.phone,
+    plan: user.plan,
+  },
+});
   } catch (error) {
     console.log(error);
 

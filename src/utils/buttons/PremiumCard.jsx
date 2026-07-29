@@ -8,6 +8,7 @@ import poojan1 from '../../assets/images/poojan-1.png'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Book, Whatsapp } from '../../utils/buttons/Genrate'
+import { Link } from 'react-router-dom'
 
 export const PremiumCard = () => {
   const { t } = useTranslation()
@@ -22,8 +23,9 @@ export const PremiumCard = () => {
             <p className="card__description">{t('hl')}</p>
           </div>
           <div className="card__footer">
-            <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Handwritten%20Kundali*%20chahiye%20hai%20to%20Kripya%20delivery%20time,%20aur%20order%20process%20batayein.%0A%0ADhanyavaad." target='blank'><Whatsapp /></a>
-            </div>
+            <Link to="/appointment" 
+            state={{service: "Handwritten Kundali"}}><Book /></Link>
+          </div>
         </div>
       </div>
     </StyledWrapper>
@@ -57,7 +59,8 @@ export const Card2 = () => {
             </div>
           </div>
           <div className="card__footer">
-              <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Complete%20Vastu%20Defect%20Remedy*%20service%20ke%20baare%20mein%20jaankari%20chahiye.%20Kripya%20consultation,%20charges%20aur%20Vastu%20remedies%20ke%20baare%20mein%20guide%20kijiye.%0A%0ADhanyavaad." target='blank'><Whatsapp /></a>
+             <Link to="/appointment" 
+            state={{service: "vastu"}}><Book /></Link>
           </div>
         </div>
       </div>
@@ -88,7 +91,8 @@ export const Card3 = () => {
             </div>
           </div>
           <div className="card__footer">
-          <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Kaalsarp%20Dosh%20Consultation*%20ke%20baare%20mein%20jaankari%20chahiye.%20Kripya%20consultation%20process,%20upaay%20ke%20baare%20mein%20batayein.%0A%0ADhanyavaad." target='blank'><Whatsapp /></a>
+            <Link to="/appointment" 
+            state={{service: "kalsarap"}}><Book /></Link>
           </div>
         </div>
       </div>
@@ -118,7 +122,7 @@ export const Card4 = () => {
             </div>
           </div>
           <div className="card__footer">
-           <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*KP%20Premium%20Kundali*%20ke%20baare%20mein%20vistaar%20se%20jaankari%20chahiye.%20Kripya%20KP%20analysis,%20consultation%20process%20aur%20is%20service%20ke%20baare%20mein%20guide%20kijiye.%0A%0ADhanyavaad."target='blank'><Whatsapp /></a>
+             <Link to="/appointment"><Book /></Link>
           </div>
         </div>
       </div>
@@ -149,7 +153,7 @@ export const Card5 = () => {
             </div>
           </div>
           <div className="card__footer">
-           <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Children's%20Name%20Selection*%20service%20ke%20baare%20mein%20jaankari%20chahiye.%20Main%20janam%20vivaran%20ke%20anusaar%20apne%20bachche%20ke%20liye%20ek%20shubh,%20arthpoorn%20aur%20vaidik%20naam%20rakhna%20chahta/chahti%20hoon.%20Kripya%20mujhe%20guide%20kijiye.%0A%0ADhanyavaad."target='blank'><Whatsapp /></a>
+            <Link to="/appointment"><Book /></Link>
           </div>
         </div>
       </div>
@@ -180,7 +184,7 @@ export const Card6 = () => {
             </div>
           </div>
           <div className="card__footer">
-           <a href="https://wa.me/918882532259?text=🙏%20Namaste%20Manoj%20Guru%20Ji,%0A%0AMujhe%20*Gemstone%20Recommendation*%20service%20ke%20baare%20mein%20jaankari%20chahiye.%20Kripya%20meri%20janma%20kundali%20ke%20anusaar%20uchit%20ratna,%20use%20dharan%20karne%20ki%20vidhi%20aur%20paramarsh%20ke%20baare%20mein%20guide%20kijiye.%0A%0ADhanyavaad."target='blank'><Whatsapp /></a>
+             <Link to="/appointment"><Book /></Link>
           </div>
         </div>
       </div>
@@ -218,7 +222,7 @@ export const Card7 = () => {
               rel="noopener noreferrer"
               className="..."
             >
-             <Whatsapp />
+              <Whatsapp />
             </a>
           </div>
         </div>
