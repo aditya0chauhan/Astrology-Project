@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { FaCrown, FaUserCircle, FaShieldAlt, FaCreditCard, FaChartLine, FaUsers, FaGem } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE =
+import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const Account = () => {
   const { t } = useTranslation();
