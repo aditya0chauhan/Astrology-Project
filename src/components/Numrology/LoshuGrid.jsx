@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 const LoshuGrid = ({ userData }) => {
 
@@ -23,7 +24,7 @@ const LoshuGrid = ({ userData }) => {
         const formattedDate = `${day}/${month}/${year}`;
 
         const response = await fetch(
-            `/.netlify/functions/proxy/api/numerology/loshu-grid?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
+            ` ${API_BASE}/astro/numerology/loshu-grid?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
 
         const result = await response.json();
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Loader from '../../utils/buttons/Loader';
+import { API_BASE } from "../../config/api";
 
 const KpHouse = ({ userData }) => {
     const [house, setHouse] = useState(null);
@@ -15,7 +16,7 @@ const KpHouse = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `/.netlify/functions/proxy/api/kp/house_significators?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
+                    `${API_BASE}/astro/kp/house_significators?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
 
                 const response = await data.json();
                 setHouse(response.response);

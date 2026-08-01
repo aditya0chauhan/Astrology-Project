@@ -1,6 +1,7 @@
 import  { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import Loader from '../../utils/buttons/Loader';
+import { API_BASE } from "../../config/api";
 
 const KaalsarapDosha = ({userData}) => {
     const { t, i18n } = useTranslation();
@@ -17,7 +18,7 @@ const KaalsarapDosha = ({userData}) => {
                     setLoading(true);
     
                     const data = await fetch(
-                        `/.netlify/functions/proxy/api/dosha/kaalsarp-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === 'hi' ? 'hi' : 'en'}`)
+                        ` ${API_BASE}/astro/dosha/kaalsarp-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === 'hi' ? 'hi' : 'en'}`)
     
                     const dosha = await data.json();
                     setKalsarap(dosha.response);

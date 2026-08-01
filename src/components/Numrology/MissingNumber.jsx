@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+ import { API_BASE } from "../../config/api";
 
 
 const MissingNumber = ({ userData }) => {
@@ -22,7 +23,7 @@ const MissingNumber = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/numerology/missing-numbers?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
+                ` ${API_BASE}/astro/numerology/missing-numbers?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
             const result = await response.json();
             setData(result.response);
 
@@ -48,7 +49,7 @@ const MissingNumber = ({ userData }) => {
         const formattedDate = `${day}/${month}/${year}`;
 
         const response = await fetch(
-            `/.netlify/functions/proxy/api/numerology/available-numbers?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
+            ` ${API_BASE}/astro/numerology/available-numbers?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
         const result = await response.json();
         setAvailableData(result.response);
 

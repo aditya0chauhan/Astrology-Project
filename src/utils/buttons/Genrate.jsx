@@ -89,7 +89,7 @@ export const Whatsapp = () => {
     <StyledWrapper>
       <button className="btn bg-[radial-gradient(circle_at_100%_0,rgba(242,184,46,0.15),transparent_32%),linear-gradient(135deg,#761027_0%,#2e0715_52%,#0b1029_100%)]">
        <FaWhatsapp size={24} />
-        <span className="text">Get Whatsapp</span>
+        <span className="text ">Get Whatsapp</span>
       </button>
     </StyledWrapper>
   );
@@ -125,6 +125,7 @@ const StyledWrapper = styled.div`
 
   .btn:hover {
     background: linear-gradient(0deg,#abecd6,#fbed96);
+    color:black;
     box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
     inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
     0px 0px 0px 4px rgba(255, 255, 255, 0.2),

@@ -108,16 +108,20 @@ const MasikRashifal = () => {
         try {
             const zodicNumber = zodiacMap[rashi];
             const cacheKey = `monthly_${zodicNumber}_${lang}`;
-            
+            const API_BASE =
+             import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
+
             if (cacheRef.current[cacheKey]) {
                 setRashifal(cacheRef.current[cacheKey]);
                 return;
             }
-            
+
             setLoading(true);
             const langCode = lang === 'en' ? 'en' : 'hi';
             const response = await fetch(
-                `/.netlify/functions/proxy/api/prediction/monthly?zodiac=${zodicNumber}&day=today&lang=${langCode}`);
+                `${API_BASE}/astro/prediction/monthly?zodiac=${zodicNumber}&day=today&lang=${langCode}`
+            );
 
             const data = await response.json();
             // Store in cache
@@ -180,7 +184,7 @@ const MasikRashifal = () => {
                     <Loader />
                 </div>
             )}
-            
+
             {!loading && rashifal?.response && (
                 <div className="max-w-3xl mx-auto bg-white/10 p-6 rounded-2xl space-y-5">
                     <h1 className="text-3xl text-yellow-400 font-bold text-center">
@@ -220,7 +224,7 @@ const MasikRashifal = () => {
                     </div>
                 </div>
             )}
-            
+
             {!loading && (!rashifal?.response) && (
                 <div className="max-w-3xl mx-auto bg-white/10 p-6 rounded-2xl text-center">
                     <p className="text-red-400 text-lg">Unable to load monthly horoscope data. Please try again.</p>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Loader from '../../utils/buttons/Loader';
+import { API_BASE } from "../../config/api";
 
 const KpSanketStatus = ({ userData }) => {
     const [status, setStatus] = useState(null);
@@ -15,7 +16,7 @@ const KpSanketStatus = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `/.netlify/functions/proxy/api/kp/planet_signification?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
+                    `${API_BASE}/astro/kp/planet_signification?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
 
                 const response = await data.json();
                 setStatus(response.response);

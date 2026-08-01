@@ -33,7 +33,7 @@ value:"remedy"
 
 return (
   <div className="pt-16 px-3 md:px-5">
-    <div className="flex items-center gap-2 md:justify-center md:gap-3 overflow-x-auto">
+    <div className="mt-20 flex items-center gap-2 md:justify-center md:gap-3 overflow-x-auto">
       {navItems.map((item) => (
         <button
           key={item.value}

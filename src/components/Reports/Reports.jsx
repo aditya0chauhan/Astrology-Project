@@ -83,7 +83,7 @@ const Reports = () => {
         }
 
         try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${value}&format=json&addressdetails=1&limit=5`);
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${value}&format=json&addressdetails=1&limit=4`);
             const data = await response.json();
             setSuggesstion(data);
         } catch (error) {

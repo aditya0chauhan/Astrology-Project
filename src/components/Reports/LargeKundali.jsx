@@ -11,7 +11,7 @@ const LargeKundali = ({ userData }) => {
     const handleGenerate = async () => {
         try {
             setLoading(true)
-            const result = await generatePdfReport("generate", userData, "large");
+            const result = await generatePdfReport("generate", userData, "medium");
             if (!result || !result.downloadUrl) {
                  alert("📄 Aapki Premium Kundali Report WhatsApp ke madhyam se uplabdh karaai jayegi. Kripya 'Get WhatsApp' button par click karke apni janm jankari bheje. lagbhag 15 minute ke andar PDF Report WhatsApp par bhej di jayegi. 🙏");
                 return;

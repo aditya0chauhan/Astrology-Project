@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 const CurrentMD = ({ userData }) => {
     const { t, i18n } = useTranslation();
@@ -17,7 +18,7 @@ const CurrentMD = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `/.netlify/functions/proxy/api/dasha/current-mahadasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
+                    `${API_BASE}/astro/dasha/current-mahadasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
 
                 const dasha = await data.json();
                 setMahadasha(dasha.response);

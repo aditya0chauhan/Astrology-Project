@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 
 const VehicleAnalysis = ({vehicleData}) => {
@@ -22,7 +23,7 @@ setLoading(true);
 
 try{
 const response = await fetch(
-`/.netlify/functions/proxy/api/numerology/vehicle-analysis?vehicle=${vehicleData.vehicle}&lang=hi`);
+`${API_BASE}/astro/numerology/vehicle-analysis?vehicle=${vehicleData.vehicle}&lang=hi`);
 
 
 

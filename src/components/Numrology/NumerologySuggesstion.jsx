@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 
 const NumerologySuggesstion = ({ userData }) => {
@@ -21,7 +22,7 @@ const NumerologySuggesstion = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/numerology/numerology-suggestion?date=${formattedDate}&lang=hi`);
+                ` ${API_BASE}/astro/numerology/numerology-suggestion?date=${formattedDate}&lang=hi`);
 
             const result = await response.json();   
             if (result.response) {
@@ -46,7 +47,7 @@ const NumerologySuggesstion = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/numerology/numerology-analysis?date=${formattedDate}&lang=hi`);
+                `${API_BASE}/astro/numerology/numerology-analysis?date=${formattedDate}&lang=hi`);
 
             const result = await response.json();   
             if (result.response) {

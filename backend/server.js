@@ -1,14 +1,14 @@
+import "dotenv/config";
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
+import astroRoutes from "./routes/astroRoutes.js";
 
-dotenv.config();
 connectDB();
 
 export const app = express();
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/bookings", bookingRoutes);
-
+app.use("/api/astro", astroRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, service: 'astrology-account-backend' });

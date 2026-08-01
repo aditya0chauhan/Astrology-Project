@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Loader from "../utils/buttons/Loader";
 import ChoghadiyaCard from "./ChoghadiyaCard";
+import { API_BASE } from "../config/api";
 
 const Panchang = () => {
   const [panchang, setPanchang] = useState(null);
@@ -69,7 +70,7 @@ const Panchang = () => {
       const timezone = getTimezone();
 
       const response = await fetch(
-        `/.netlify/functions/proxy/api/panchang/panchang?date=${date}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=${timezone}&lang=hi`);
+        `${API_BASE}/astro/panchang/panchang?date=${date}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=${timezone}&lang=hi`);
       const data = await response.json();
       setPanchang(data);
     }
@@ -85,9 +86,12 @@ const Panchang = () => {
 
   const getchoghadiya = async (latitude, longitude) => {
     const { date, time } = getDateTime();
+    const API_BASE =
+      import.meta.env.VITE_API_URL || "http://localhost:5000/api";
     const timezone = getTimezone();
     const response = await fetch(
-      `/.netlify/functions/proxy/api/panchang/choghadiya-muhurta?date=${date}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=${timezone}&lang=hi`);
+      `${API_BASE}/astro/panchang/choghadiya-muhurta?date=${date}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=${timezone}&lang=hi`
+    );
     const data = await response.json();
     setChoghadiya(data);
   }
@@ -171,13 +175,13 @@ const Panchang = () => {
 
             </h2>
 
-          <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
 
-             <div className="bg-black/30 p-4 rounded-xl">
+              <div className="bg-black/30 p-4 rounded-xl">
 
-             🌅 सूर्योदय
+                🌅 सूर्योदय
 
-               <p className="text-yellow-300">
+                <p className="text-yellow-300">
                   {panchang.response.advanced_details.sun_rise}
                 </p>
               </div>
@@ -190,13 +194,13 @@ const Panchang = () => {
 
             </div>
 
-       <div className="bg-black/30 p-4 rounded-xl space-y-2">
-         <p>
-         📅 विक्रम संवत :
-             <span className="text-yellow-300 ml-2">
-              {panchang.response.advanced_details.years.vikram_samvaat}
-          </span>
-             </p>
+            <div className="bg-black/30 p-4 rounded-xl space-y-2">
+              <p>
+                📅 विक्रम संवत :
+                <span className="text-yellow-300 ml-2">
+                  {panchang.response.advanced_details.years.vikram_samvaat}
+                </span>
+              </p>
 
               <p>
                 🗓 महीना :
@@ -214,48 +218,48 @@ const Panchang = () => {
               </p>
             </div>
 
-         <Card
+            <Card
 
-          title="🌙 तिथि"
+              title="🌙 तिथि"
 
-          name={panchang.response.tithi.name}
+              name={panchang.response.tithi.name}
 
-          start={panchang.response.tithi.start}
+              start={panchang.response.tithi.start}
 
-          end={panchang.response.tithi.end}
+              end={panchang.response.tithi.end}
 
-          special={panchang.response.tithi.special}
+              special={panchang.response.tithi.special}
 
-          summary={panchang.response.tithi.meaning}
+              summary={panchang.response.tithi.meaning}
             />
 
             <Card
 
-          title="⭐ नक्षत्र"
+              title="⭐ नक्षत्र"
 
-          name={panchang.response.nakshatra.name}
+              name={panchang.response.nakshatra.name}
 
-          start={panchang.response.nakshatra.start}
+              start={panchang.response.nakshatra.start}
 
-          end={panchang.response.nakshatra.end}
+              end={panchang.response.nakshatra.end}
 
-          special={panchang.response.nakshatra.special}
+              special={panchang.response.nakshatra.special}
 
-          summary={panchang.response.nakshatra.summary}
+              summary={panchang.response.nakshatra.summary}
             />
 
 
             <Card
 
-        title="🪐 योग"
+              title="🪐 योग"
 
-        name={panchang.response.yoga.name}
+              name={panchang.response.yoga.name}
 
-        start={panchang.response.yoga.start}
+              start={panchang.response.yoga.start}
 
-        end={panchang.response.yoga.end}
+              end={panchang.response.yoga.end}
 
-        special={panchang.response.yoga.special}
+              special={panchang.response.yoga.special}
 
             />
 
@@ -332,38 +336,39 @@ const Panchang = () => {
                   </h1>
 
 
-            <h2 className="text-green-200 text-xl font-semibold">
-               ☀️ दिन का चौघड़िया
-                 </h2>
+                  <h2 className="text-green-200 text-xl font-semibold">
+                    ☀️ दिन का चौघड़िया
+                  </h2>
 
-         {
-             choghadiya.response.day.map((item, index) => (
-               <ChoghadiyaCard
-                 key={index}
-                 data={item}
-                  />
+                  {
+                    choghadiya.response.day.map((item, index) => (
+                      <ChoghadiyaCard
+                        key={index}
+                        data={item}
+                      />
                     ))
                   }
 
-            <h2 className="text-blue-400 font-semibold text-xl">
-               🌙 रात का चौघड़िया
-                </h2>
+                  <h2 className="text-blue-400 font-semibold text-xl">
+                    🌙 रात का चौघड़िया
+                  </h2>
 
-           {
-              choghadiya.response.night.map((item, index) => (
-                <ChoghadiyaCard
-                  key={index}
-                  data={item}
-                  />
+                  {
+                    choghadiya.response.night.map((item, index) => (
+                      <ChoghadiyaCard
+                        key={index}
+                        data={item}
+                      />
 
                     ))
                   }
-               </div>
+                </div>
               )}
           </div>
         )}
     </div>
-  )}
+  )
+}
 
 const Card = ({
   title,

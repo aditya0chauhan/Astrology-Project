@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+ import { API_BASE } from "../../config/api";
 
 
 const NameAnalysis = ({ userData }) => {
@@ -21,7 +22,7 @@ const NameAnalysis = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/numerology/name-analysis?name=${userData.name}&date=${formattedDate}&gender=${userData.gender}&lang=hi`);
+                `${API_BASE}/astro/numerology/name-analysis?name=${userData.name}&date=${formattedDate}&gender=${userData.gender}&lang=hi`);
 
             const result = await response.json();
                 setData(result.response);
@@ -44,7 +45,7 @@ const NameAnalysis = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/numerology/lucky-things?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
+                ` ${API_BASE}/astro/numerology/lucky-things?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
 
             const result = await response.json();
                 setLuckyData(result.response);

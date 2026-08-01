@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 const Gem = ({ userData }) => {
     const [gem, setGem] = useState(null);
@@ -14,7 +15,7 @@ const Gem = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `/.netlify/functions/proxy/api/extended_horoscope/gem_suggestion?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
+                    ` ${API_BASE}/astro/extended_horoscope/gem_suggestion?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
 
                 const response = await data.json();
                 setGem(response.response);
@@ -30,7 +31,7 @@ const Gem = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `/.netlify/functions/proxy/api/extended_horoscope/rudraksh_suggestion?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
+                    ` ${API_BASE}/astro/extended_horoscope/rudraksh_suggestion?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
 
                 const response = await data.json();
                 setRudraksha(response.response);

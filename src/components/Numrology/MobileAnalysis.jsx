@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 
 const MobileAnalysis = ({ userData }) => {
@@ -19,7 +20,7 @@ const MobileAnalysis = ({ userData }) => {
         try {
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/numerology/mobile-analysis?phone=${userData.phone}&lang=hi`);
+                `${API_BASE}/astro/numerology/mobile-analysis?phone=${userData.phone}&lang=hi`);
             const result = await response.json();
             setData(result.response);
         }

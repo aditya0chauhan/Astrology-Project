@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Loader from '../../utils/buttons/Loader'
 import svgCache from '../../utils/svgCache'
+import { API_BASE } from "../../config/api";
 
 const normalizeSvg = (svgText) => {
   if (!svgText) return ''
@@ -37,7 +38,7 @@ const AsthmanshKundali = ({ userData }) => {
       setLoading(true)
       try {
         const res = await fetch(
-          `/.netlify/functions/proxy/api/chart_image/d8?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&style=north&lang=hi&colored_planets=true`)
+          `${API_BASE}/astro/chart_image/d8?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&style=north&lang=hi&colored_planets=true`)
         if (!res.ok) {
           console.warn('Asthmansh chart fetch failed:', res.status, res.statusText)
         } else {

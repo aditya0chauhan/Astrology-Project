@@ -115,7 +115,7 @@ const KpFile = () => {
     };
 
     return (
-        <div className='mt-24'>
+        <div>
             <div className='fixed top-20 py-1 w-full text-xl font-semibold bg-amber-300 flex justify-center z-30 '>
                 <button
                     type="button"
@@ -141,7 +141,7 @@ const KpFile = () => {
                 />
             )}
             <div className={`min-h-screen bg-[#08122D] pt-28 px-4 ${showNavbar ? 'pt-44' : ''}`}>
-                <div className="max-w-4xl mx-auto bg-[#1A2742] rounded-2xl p-8 border border-amber-400">
+                <div className="mt-16 max-w-4xl mx-auto bg-[#1A2742] rounded-2xl p-8 border border-amber-400">
 
                     {showForm && (
                         <div ref={formRef} className="grid md:grid-cols-2 gap-6">

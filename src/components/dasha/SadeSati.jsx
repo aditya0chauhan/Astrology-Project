@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 const SadeSati = ({ userData }) => {
     const { t, i18n } = useTranslation();
@@ -21,7 +22,7 @@ const SadeSati = ({ userData }) => {
                 setLoading(true);
 
                 const response = await fetch(
-                    `/.netlify/functions/proxy/api/extended_horoscope/current_sadesati?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${apiLang}`);
+                    ` ${API_BASE}/astro/extended_horoscope/current_sadesati?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${apiLang}`);
 
                 const dosha = await response.json();
 

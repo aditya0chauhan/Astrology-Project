@@ -1,6 +1,7 @@
   import { useEffect, useState } from 'react'
   import Loader from '../../utils/buttons/Loader'
   import svgCache from '../../utils/svgCache'
+  import { API_BASE } from "../../config/api";
 
   const normalizeSvg = (svgText) => {
     if (!svgText) return ''
@@ -37,7 +38,7 @@
         setLoading(true)
         try {
           const res = await fetch(
-            `/.netlify/functions/proxy/api/kp/kundli_chart?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi&style=north&colored_planets=true&color=%23000000`)
+            ` ${API_BASE}/astro/kp/kundli_chart?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi&style=north&colored_planets=true&color=%23000000`)
           if (!res.ok) {
             console.warn('kp chart fetch failed:', res.status, res.statusText)
           } else {

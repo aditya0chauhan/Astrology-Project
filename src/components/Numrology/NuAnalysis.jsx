@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 const NuAnalysis = ({userData}) => {
      const [data, setData] = useState(null);
@@ -22,7 +23,7 @@ const NuAnalysis = ({userData}) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/numerology/karmic-number?date=${formattedDate}&lang=hi`);
+                `${API_BASE}/astro/numerology/karmic-number?date=${formattedDate}&lang=hi`);
 
             const result = await response.json();
             setData (result.response)
@@ -45,7 +46,7 @@ const NuAnalysis = ({userData}) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const yearResponse = await fetch(
-                `/.netlify/functions/proxy/api/numerology/personal-year?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
+                `${API_BASE}/astro/numerology/personal-year?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
 
             const result = await yearResponse.json();
             setYear (result.response)
@@ -67,7 +68,7 @@ const NuAnalysis = ({userData}) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const master = await fetch(
-                `/.netlify/functions/proxy/api/numerology/master-numbers?date=${formattedDate}&lang=hi`);
+                `${API_BASE}/astro/numerology/master-numbers?date=${formattedDate}&lang=hi`);
 
             const result = await master.json();
             setMasterNumber (result.response)

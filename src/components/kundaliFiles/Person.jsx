@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Loader from '../../utils/buttons/Loader';
 import { useTranslation } from 'react-i18next'
+import { API_BASE } from "../../config/api";
 
 const Person = ({userData}) => {
     const { t } = useTranslation()
@@ -16,7 +17,7 @@ const Person = ({userData}) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `/.netlify/functions/proxy/api/prediction/panchang?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
+                     `${API_BASE}/astro/prediction/panchang?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
 
                 const json = await data.json();
              

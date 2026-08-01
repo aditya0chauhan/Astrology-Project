@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
-
+import { API_BASE } from "../../config/api";
 
 const Aggregate = ({ boyData, girlData }) => {
     const [aggregate, setAggregate] = useState(null);
@@ -13,7 +13,7 @@ const Aggregate = ({ boyData, girlData }) => {
             const girlDob = girlData.dob.replace(/-/g, "/");
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/matching/aggregate-match?boy_dob=${boyDob}&boy_tob=${boyData.time}&boy_lat=${boyData.latitude}&boy_lon=${boyData.longitude}&boy_tz=5.5&girl_dob=${girlDob}&girl_tob=${girlData.time}&girl_lat=${girlData.latitude}&girl_lon=${girlData.longitude}&girl_tz=5.5&lang=hi`);
+                `${API_BASE}/astro/matching/aggregate-match?boy_dob=${boyDob}&boy_tob=${boyData.time}&boy_lat=${boyData.latitude}&boy_lon=${boyData.longitude}&boy_tz=5.5&girl_dob=${girlDob}&girl_tob=${girlData.time}&girl_lat=${girlData.latitude}&girl_lon=${girlData.longitude}&girl_tz=5.5&lang=hi`);
 
             const json = await response.json();
             setAggregate(json.response)
@@ -45,7 +45,7 @@ const Aggregate = ({ boyData, girlData }) => {
 
     if (!aggregate) {
         return <div className="text-center text-red-400 mt-10">
-            डेटा उपलब्ध नहीं है।
+            Server Down !!
         </div>
     }
 

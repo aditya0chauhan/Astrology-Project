@@ -117,7 +117,7 @@ const LalKitab = () => {
     };
 
     return (
-        <div className='mt-20'>
+        <div className='mt-3'>
             <div className='fixed top-20 lg:top-16 py-1 w-full text-md lg:text-lg font-semibold bg-amber-300 flex justify-center z-30 '>
                 <button
                     type="button"
@@ -142,8 +142,8 @@ const LalKitab = () => {
                     setActiveTab={setActiveTab}
                 />
             )}
-            <div className={`min-h-screen bg-[#08122D] pt-20 px-3 md:px-4 ${showNavbar ? 'pt-28 md:pt-32' : ''}`}>
-                <div className="mx-auto max-w-4xl rounded-2xl border border-amber-400 bg-[#1A2742] p-5 md:p-8">
+            <div className={`min-h-screen pt-10 bg-[#08122D] pt-20 px-3 md:px-4 ${showNavbar ? 'pt-28 md:pt-32' : ''}`}>
+                <div className="mx-auto mt-16 max-w-4xl rounded-2xl border border-amber-400 bg-[#1A2742] p-5 md:p-8">
 
                     {showForm && (
                         <div ref={formRef} className="grid md:grid-cols-2 gap-6">

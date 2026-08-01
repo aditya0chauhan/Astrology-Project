@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import Loader from '../../utils/buttons/Loader';
+import { API_BASE } from "../../config/api";
 
 const LalkitabHoroscope = ({userData}) => {
     const [horoscope, setHoroscope] = useState(null);
@@ -18,7 +19,7 @@ const LalkitabHoroscope = ({userData}) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/lalKitab/horoscope?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi`);
+                `${API_BASE}/astro/lalKitab/horoscope?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi`);
 
             const result = await response.json();
             setHoroscope(result.response);

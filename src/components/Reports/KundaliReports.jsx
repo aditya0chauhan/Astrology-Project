@@ -1,10 +1,11 @@
 import { FaFilePdf } from "react-icons/fa";
 import { GenrateReport } from '../../utils/buttons/Genrate';
+// import { generatePdfReport } from '../../utils/pdfReports'
 
 const reports = [
   {
     id: "kundali1",
-    title: "Basic kundali Report",
+    title: " kundali Report",
     subtitle: "📊 जन्म एवं नवांश कुंडली, ⭐ नक्षत्र एवं राशि विवरण, 🪐 ग्रहों की स्थिति एवं विश्लेषण,⏳ विम्शोत्तरी महादशा, ग्रह मित्रता, 🏠 लग्न एवं भाव विश्लेषण, 👤 व्यक्तित्व एवं जीवन संकेत, हिन्दी एवं English में उपलब्ध"
   },
   {
@@ -36,7 +37,7 @@ const reports = [
 
 const KundaliReports = () => {
   const handleWhatsApp = (reportName) => {
-    const phone = "918882532259"; 
+    const phone = "918882532259";
 
     const message = `🙏 Namaste Manoj Astro Guruji,
     Mujhe "${reportName}" ki Full PDF report chahiye.
@@ -85,7 +86,9 @@ const KundaliReports = () => {
             </div>
 
             <button
-              onClick={() => handleWhatsApp(report.title)}
+              onClick={           
+                  handleWhatsApp(report.title)}
+                 
               className="mt-8 py-3 rounded-xl duration-300 flex justify-center items-center"
             >
               <GenrateReport />

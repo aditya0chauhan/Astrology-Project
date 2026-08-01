@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 
 const Number = ({ userData }) => {
@@ -22,7 +23,7 @@ const Number = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/numerology/number-analysis?name=${userData.name}&date=${formattedDate}&phone=${userData.phone}&lang=hi`);
+                ` ${API_BASE}/astro/numerology/number-analysis?name=${userData.name}&date=${formattedDate}&phone=${userData.phone}&lang=hi`);
                 
             const result = await response.json();
             setData(result.response);

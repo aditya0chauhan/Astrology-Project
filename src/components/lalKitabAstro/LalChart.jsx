@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
-
+import { API_BASE } from "../../config/api";
 
 const LalChart = ({ userData }) => {
     const [chart, setChart] = useState(null);
@@ -21,7 +21,7 @@ const LalChart = ({ userData }) => {
             
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/lalKitab/chart?tz=5.5&colored_planets=true&color=%23E96B02&style=north&date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&lang=hi`);
+                `${API_BASE}/astro/lalKitab/chart?tz=5.5&colored_planets=true&color=%23E96B02&style=north&date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&lang=hi`);
 
             const result = await response.text();
             const cleanSvg = JSON.parse(result);

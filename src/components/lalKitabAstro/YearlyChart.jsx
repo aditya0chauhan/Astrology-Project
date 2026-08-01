@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+ import { API_BASE } from "../../config/api";
 
 
 const YearlyChart = ({ userData }) => {
@@ -22,7 +23,7 @@ const YearlyChart = ({ userData }) => {
             const varshDate = `${day}/${month}/${currentYear}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/lalKitab/varshphal_chart?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi&style=north&colored_planets=true&color=%2304de6f&varshphal_date=${varshDate}`);
+                `${API_BASE}/astro/lalKitab/varshphal_chart?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi&style=north&colored_planets=true&color=%2304de6f&varshphal_date=${varshDate}`);
 
             const result = await response.text();
             const cleanSvg = JSON.parse(result);

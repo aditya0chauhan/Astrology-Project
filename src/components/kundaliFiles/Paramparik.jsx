@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 import Loader from '../../utils/buttons/Loader'
 import svgCache from '../../utils/svgCache'
+import { API_BASE } from "../../config/api";
 
 const Paramparik = ({ userData }) => {
   const { t } = useTranslation()
@@ -44,7 +45,7 @@ const Paramparik = ({ userData }) => {
       try {
       
         const response = await axios.get(
-          '/.netlify/functions/proxy/api/horoscope/ascendant-report',
+          `${API_BASE}/astro/horoscope/ascendant-report`,
           {
             params: {
               date: formattedDate,
@@ -60,7 +61,7 @@ const Paramparik = ({ userData }) => {
         const kundali = response.data.response?.[0]
 
         const chartResponse = await fetch(
-          `/.netlify/functions/proxy/api/chart_image/d1?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&style=north&lang=hi&colored_planets=true`)
+          `${API_BASE}/astro/chart_image/d1?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&style=north&lang=hi&colored_planets=true`)
         const chartSvg = await chartResponse.text()
         const cleanSvg = normalizeSvg(chartSvg)
 

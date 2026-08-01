@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 const YoginiDasha = ({ userData }) => {
     const { t, i18n } = useTranslation();
@@ -15,7 +16,7 @@ const YoginiDasha = ({ userData }) => {
                 setLoading(true);
 
                 const data = await fetch(
-                    `/.netlify/functions/proxy/api/dasha/yogini-dasha-main?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
+                    `${API_BASE}/astro/dasha/yogini-dasha-main?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
 
                 const dasha = await data.json();
                 setYogini(dasha.response);

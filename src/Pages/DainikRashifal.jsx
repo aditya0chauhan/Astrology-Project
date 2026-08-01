@@ -108,6 +108,9 @@ const DainikRashifal = () => {
         try {
             const zodicNumber = zodiacMap[rashi];
             const cacheKey = `${zodicNumber}_${lang}`;
+            
+            const API_BASE =
+             import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
             if (cacheRef.current[cacheKey]) {
                 setRashifal(cacheRef.current[cacheKey]);
@@ -117,10 +120,9 @@ const DainikRashifal = () => {
             setLoading(true);
             const langCode = lang === 'en' ? 'en' : 'hi';
             const response = await fetch(
-                `/.netlify/functions/proxy/api/prediction/daily?zodiac=${zodicNumber}&day=today&lang=${langCode}`
+                `${API_BASE}/astro/prediction/daily?zodiac=${zodicNumber}&day=today&lang=${langCode}`
             );
             const data = await response.json();
-            console.log(data)
             cacheRef.current[cacheKey] = data;
             setRashifal(data);
         }
@@ -140,7 +142,7 @@ const DainikRashifal = () => {
     }, [rashi, i18n.language])
 
     if (loading) {
-       
+
         return (
 
             <div className="min-h-screen flex justify-center items-center bg-[#0a0a0a]">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Loader from '../../utils/buttons/Loader';
+import { API_BASE } from "../../config/api";
 
 const LalkitabHouses = ({ userData }) => {
     const [houses, setHouses] = useState(null);
@@ -18,7 +19,7 @@ const LalkitabHouses = ({ userData }) => {
             const formattedDate = `${day}/${month}/${year}`;
 
             const response = await fetch(
-                `/.netlify/functions/proxy/api/lalKitab/houses?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi`);
+                `${API_BASE}/astro/lalKitab/houses?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi`);
 
             const result = await response.json();
             setHouses(result.response);

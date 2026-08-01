@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
+import { API_BASE } from "../../config/api";
 
 const Astakvarga = ({ userData }) => {
   const [astakvarga, setAstakvarga] = useState(null);
@@ -16,7 +17,7 @@ const Astakvarga = ({ userData }) => {
         setLoading(true);
 
         const data = await fetch(
-          `/.netlify/functions/proxy/api/horoscope/ashtakvarga?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`);
+          `${API_BASE}/astro/horoscope/ashtakvarga?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`);
 
         const json = await data.json();
         setAstakvarga(json.response);
@@ -32,7 +33,7 @@ const Astakvarga = ({ userData }) => {
         setLoading(true);
 
         const data = await fetch(
-          `/.netlify/functions/proxy/api/horoscope/ashtakvarga_chart?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`);
+          `${API_BASE}/astro/horoscope/ashtakvarga_chart?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`);
         const svg = await data.text();
         const cleanSvg = svg
           .replace(/^"/, "")
