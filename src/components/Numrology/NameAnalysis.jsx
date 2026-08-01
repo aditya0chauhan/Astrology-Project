@@ -48,6 +48,7 @@ const NameAnalysis = ({ userData }) => {
                 ` ${API_BASE}/astro/numerology/lucky-things?date=${formattedDate}&gender=${userData.gender}&lang=hi`);
 
             const result = await response.json();
+            console.log(result.response)
                 setLuckyData(result.response);
         }
 
@@ -226,7 +227,7 @@ luckyData && (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 ">
 
     {
-        [["☀️ राशि", luckyData.sunSign],
+        [["☀️ राशि", luckyData.luckyThings?.sunSign],
         ["🌍 तत्व", luckyData.luckyThings?.element],
         ["👑 ग्रह स्वामी",  luckyData.luckyThings?.ruler],
         ].map((item,index)=>(
@@ -335,11 +336,13 @@ luckyData && (
         </h3>
 
     {
-        luckyData.traits?.map((item,index)=>(
-    <span key={index} className="inline-block border border-yellow-500 rounded-full px-5 py-2 m-2 text-yellow-400 " >
+       luckyData.luckyThings?.traits?.map((item,index)=>(
+    <span
+        key={index}
+        className="inline-block border border-yellow-500 rounded-full px-5 py-2 m-2 text-yellow-400"
+    >
         {item}
     </span>
-
 ))
 }
 </div>

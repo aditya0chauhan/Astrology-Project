@@ -19,7 +19,7 @@ const CurrentFullMD = ({ userData }) => {
         setLoading(true);
 
         const data = await fetch(
-            `${API_BASE}/astro//dasha/current-mahadasha-full?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
+            `${API_BASE}/astro/dasha/current-mahadasha-full?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
 
         const fullDasha = await data.json();
         setMahadashaFull(fullDasha.response);

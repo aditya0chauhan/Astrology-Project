@@ -43,7 +43,6 @@
             console.warn('kp chart fetch failed:', res.status, res.statusText)
           } else {
             const svg = await res.text()
-            console.log(svg)
             const clean = normalizeSvg(svg)
             if (!cancelled) {
               setKpChart(clean)

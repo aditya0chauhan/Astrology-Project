@@ -1,10 +1,8 @@
 import kundali from '../assets/images/kundali-MA.png'
 import kun from '../assets/images/kundali.png'
 import kundaliMilan from '../assets/images/kundaliMilan-MA.png'
-import hastlikhit from '../assets/images/hastlikhit-MA.png'
 import lalkitab from '../assets/images/lalkitab-MA.png'
 import rashifal from '../assets/images/rashifal.png'
-import panchang from '../assets/images/panchang.png'
 import kp from '../assets/images/kpastro.png'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -107,16 +105,7 @@ const Astrology = () => {
             <p> ग्रह स्थिति के अनुसार राशिफल शुभ-अशुभ संकेतों के साथ दिनभर का सटीक मार्गदर्शन करियर, धन, स्वास्थ्य और प्रेम जीवन का विश्लेषण अनुभवी मनोज एस्ट्रो परामर्श के साथ सटीक मार्गदर्शन | </p></Link>   
         </div>
 
-         <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
-      <Link to={"/panchang"}><img src={panchang}
-          className='rounded-4xl border-2 border-amber-100'/>
-          <h1 className='text-2xl font-semibold text-center my-5 underline text-amber-200'>Dainik Panchang</h1>
-            <p>शुभ मुहूर्त एवं राहुकाल का समय</p>
-            <p>अभिजीत मुहूर्त और चौघड़िया विवरण</p>
-            <p>व्रत, त्योहार और विशेष पर्व की जानकारी</p>
-            <p>दैनिक शुभ-अशुभ समय का मार्गदर्शन</p>
-            <p> आज की तिथि, वार, नक्षत्र मनोज एस्ट्रो की दैनिक पंचांग के साथ। </p></Link>    
-        </div>
+         
          <div className='mt-5 w-full lg:w-[40%] flex flex-col justify-between p-3 rounded-4xl border-2 border-amber-300 text-white text-center bg-gradient-to-r from-[#111827] to-[#0a0a0a] hover:scale-[1.05] duration-300'>
       <Link to={"/kpAstrology"}><img src={kp}
           className='rounded-4xl border-2 border-amber-100'/>

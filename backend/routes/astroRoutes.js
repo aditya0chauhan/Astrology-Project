@@ -49,6 +49,7 @@ router.get("/kp/kundli_chart", astroController);
 router.get("/kp/planet_signification_level_wise", astroController);
 router.get("/kp/rasi_chart", astroController);
 router.get("/kp/cusp_details", astroController);
+router.get("/kp/planet_details", astroController);
 router.get("/kp/planet_signification", astroController);
 router.get("/lalKitab/chart", astroController);
 router.get("/lalKitab/debts", astroController);
@@ -59,6 +60,9 @@ router.get("/lalKitab/remedies", astroController);
 router.get("/lalKitab/varshphal_chart", astroController);
 router.get("/matching/aggregate-match", astroController);
 router.get("/matching/ashtakoot-astro", astroController);
+router.get("/matching/dashakoot-astro", astroController);
+router.get("/matching/papasamaya-match", astroController);
+router.get("/matching/dasha-sandhi", astroController);
 router.get("/numerology/loshu-grid", astroController);
 router.get("/numerology/missing-numbers", astroController);
 router.get("/numerology/available-numbers",astroController);
@@ -72,6 +76,7 @@ router.get("/numerology/numerology-suggestion",astroController);
 router.get("/numerology/numerology-analysis",astroController);
 router.get("/numerology/plane-details",astroController);
 router.get("/numerology/vehicle-analysis",astroController);
+router.get("/numerology/name-analysis",astroController);
 
 
 
