@@ -49,9 +49,9 @@ const Menu = () => {
         <div className="menu-list">
           <Link to="/panchang" onClick={handleLinkClick}>{t('panchang')}</Link>
         </div>
-        <div className="menu-list">
+        {/* <div className="menu-list">
           <Link to="/report" onClick={handleLinkClick}>{t('rep')}</Link>
-        </div>
+        </div> */}
         <div className="menu-list">
           <Link to="/rashifal" onClick={handleLinkClick}>{t('rashifal')}</Link>
         </div>

@@ -5,12 +5,28 @@ import generateToken from "../utils/generateToken.js";
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    // Validation
+
+    // Required Fields
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "All fields are required",
+      });
+    }
+
+    // Email Validation
+    const emailRegex =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        message: "Please enter a valid email address",
+      });
+    }
+
+    // Password Validation
+    if (password.length < 6) {
+      return res.status(400).json({
+        message: "Password must be at least 6 characters long",
       });
     }
 
@@ -23,6 +39,9 @@ export const registerUser = async (req, res) => {
       });
     }
 
+    // Hash Password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Create User
     const user = new User({
       name,
@@ -33,21 +52,21 @@ export const registerUser = async (req, res) => {
 
     await user.save();
 
-   const token = generateToken(user._id);
+    const token = generateToken(user._id);
 
-res.status(201).json({
-  success: true,
-  message: "User Registered Successfully",
-  token,
-  user: {
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    phone: user.phone,
-    plan: user.plan,
-  },
-});
+    res.status(201).json({
+      success: true,
+      message: "User Registered Successfully",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone,
+        plan: user.plan,
+      },
+    });
   } catch (error) {
     console.log(error);
 
@@ -55,7 +74,7 @@ res.status(201).json({
       message: "Internal Server Error",
     });
   }
-};
+}
 
 export const loginUser = async (req, res) => {
   try {
@@ -91,7 +110,7 @@ export const loginUser = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Login Successful",
-        token,
+      token,
       user: {
         id: user._id,
         name: user.name,

@@ -4,7 +4,6 @@ const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
-    // Token hai ya nahi
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
         success: false,
@@ -12,7 +11,6 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-    // Bearer hatao
     const token = authHeader.split(" ")[1];
 
     // Token Verify

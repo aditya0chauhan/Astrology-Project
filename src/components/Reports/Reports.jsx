@@ -5,9 +5,9 @@ import Loader from '../../utils/buttons/Loader';
 import { GenrateReport } from '../../utils/buttons/Genrate';
 import ReportNav from './ReportNav';
 import VedicReport from './VedicReport';
-import SmallKundali from './SmallKundali';
-import LargeKundali from './LargeKundali';
-import KundaliSamyak from './KundaliSamyak';
+// import SmallKundali from './SmallKundali';
+// import LargeKundali from './LargeKundali';
+// import KundaliSamyak from './KundaliSamyak';
 import KundaliReports from './KundaliReports';
 
 const Reports = () => {

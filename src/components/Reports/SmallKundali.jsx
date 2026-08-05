@@ -1,5 +1,5 @@
 import { FaFilePdf } from "react-icons/fa";
-import { generatePdfReport } from "../../utils/pdfReports";
+import { generatePdfReport } from "../../utils/pdf/pdfReports";
 import { GenrateReport,Whatsapp } from "../../utils/buttons/Genrate";
 import { useState } from "react";
 import Loader from '../../utils/buttons/Loader';

@@ -1,56 +1,98 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaCrown, FaUserCircle, FaShieldAlt, FaCreditCard, FaChartLine, FaUsers, FaGem } from 'react-icons/fa';
+import { FaCrown, FaUserCircle, FaShieldAlt, FaCreditCard, FaChartLine, FaUsers, FaGem, FaEye, FaEyeSlash, } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
+import PremiumLock from './Premium/PremiumLock';
 
 const API_BASE =
-import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const Account = () => {
   const { t } = useTranslation();
   const [authMode, setAuthMode] = useState('login');
-  const [form, setForm] = useState({ name: '', email: '', password: '', phone: '' });
+  const [form, setForm] = useState({ name: "", email: "", password: "", confirmPassword: "", phone: "", });
   const [user, setUser] = useState(null);
   const [dashboard, setDashboard] = useState(null);
   const [users, setUsers] = useState([]);
   const [payments, setPayments] = useState([]);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [selectedPlans, setSelectedPlans] = useState({});
+  const [selectedStatus, setSelectedStatus] = useState({});
 
-  useEffect(() => {
-    const savedUser = localStorage.getItem('astro-user');
-    if (savedUser) {
-      const parsedUser = JSON.parse(savedUser);
-      setUser(parsedUser);
-      if (parsedUser.role === 'admin') {
+  const loadProfile = async () => {
+    try {
+      const token = localStorage.getItem("astro-token");
+
+      if (!token) return;
+
+      const response = await fetch(`${API_BASE}/auth/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to load profile");
+      }
+
+      const data = await response.json();
+
+      setUser(data.user);
+      localStorage.setItem("astro-user", JSON.stringify(data.user));
+
+      if (data.user.role === "admin") {
         loadAdminData();
       }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("astro-token");
+
+    if (token) {
+      loadProfile();
     }
   }, []);
 
   const loadAdminData = async () => {
-
     try {
       const token = localStorage.getItem("astro-token");
-      const [dashboardRes, usersRes, paymentsRes] = await Promise.all([
-        // fetch(`${API_BASE}/admin/dashboard`),
 
+      const [dashboardRes, usersRes] = await Promise.all([
         fetch(`${API_BASE}/admin/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }),
-        fetch(`${API_BASE}/admin/users`),
-        fetch(`${API_BASE}/payments/history`),
+
+        fetch(`${API_BASE}/admin/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+
+        // fetch(`${API_BASE}/payments/history`, {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }),
       ]);
 
       const dashboardData = await dashboardRes.json();
       const usersData = await usersRes.json();
-      const paymentsData = await paymentsRes.json();
+      // const paymentsData = await paymentsRes.json();
 
       setDashboard(dashboardData);
-      setUsers(usersData.users || []);
-      setPayments(paymentsData.payments || []);
+
+      // Backend getUsers() res.json(users) return karta hai
+      setUsers(usersData);
+
+      // setPayments(paymentsData.payments || []);
     } catch (error) {
       console.error(error);
     }
@@ -60,6 +102,13 @@ const Account = () => {
     event.preventDefault();
     setLoading(true);
     setMessage("");
+    if (authMode === "register") {
+      if (form.password !== form.confirmPassword) {
+        setMessage("Passwords dosen't match");
+        setLoading(false);
+        return;
+      }
+    }
 
     try {
       const endpoint =
@@ -93,6 +142,13 @@ const Account = () => {
           ? "Account created successfully."
           : "Welcome back!"
       );
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        phone: "",
+      });
 
       if (data.user?.role === "admin") {
         loadAdminData();
@@ -130,6 +186,108 @@ const Account = () => {
       setMessage(error.message);
     }
   };
+
+  const handleUpdatePlan = async (userId) => {
+    try {
+      const token = localStorage.getItem("astro-token");
+
+      const response = await fetch(
+        `${API_BASE}/admin/users/${userId}/plan`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            plan: selectedPlans[userId],
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update plan");
+      }
+
+      alert("✅ Plan updated successfully");
+
+      loadAdminData();
+
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  };
+
+  const handleUpdateStatus = async (userId) => {
+    try {
+      const token = localStorage.getItem("astro-token");
+
+      const response = await fetch(
+        `${API_BASE}/admin/users/${userId}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            status: selectedStatus[userId],
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update status");
+      }
+
+      alert("✅ Status updated successfully");
+
+      loadAdminData();
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  };
+
+  const handleSaveUser = async (userId) => {
+  try {
+    const token = localStorage.getItem("astro-token");
+
+    const response = await fetch(
+      `${API_BASE}/admin/users/${userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          plan: selectedPlans[userId] || users.find(u => u._id === userId)?.plan,
+          status: selectedStatus[userId] || users.find(u => u._id === userId)?.status,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to update user");
+    }
+
+    alert("✅ User updated successfully");
+
+    loadAdminData();
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+};
 
   const summaryCards = useMemo(() => {
     if (!dashboard?.summary) return [];
@@ -199,15 +357,55 @@ const Account = () => {
                   placeholder="Email address"
                   type="email"
                   value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, email: e.target.value.toLowerCase().trim(), })
+                  }
                 />
-                <input
-                  className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-4 py-3 outline-none ring-0"
-                  placeholder="Password"
-                  type="password"
-                  value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
-                />
+                <div className="relative">
+                  <input
+                    className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-4 py-3 pr-12 outline-none ring-0"
+                    placeholder="Password"
+                    type={showPassword ? "text" : "password"}
+                    value={form.password}
+                    onChange={(e) =>
+                      setForm({ ...form, password: e.target.value })
+                    }
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+                {authMode === "register" && (
+                  <div className="relative">
+                    <input
+                      className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-4 py-3 pr-12 outline-none ring-0"
+                      placeholder="Confirm Password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={form.confirmPassword}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          confirmPassword: e.target.value,
+                        })
+                      }
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                    >
+                      {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                )}
                 {authMode === 'register' && (
                   <input
                     className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-4 py-3 outline-none ring-0"
@@ -216,10 +414,29 @@ const Account = () => {
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   />
                 )}
-                <button type="submit" className="w-full rounded-xl bg-amber-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-300">
-                  {loading ? 'Please wait...' : authMode === 'login' ? 'Login' : 'Register'}
+                <button type="submit" disabled={loading}
+                  className={`w-full rounded-xl px-4 py-3 font-semibold transition 
+                ${loading ? "bg-gray-500 cursor-not-allowed text-white" : "bg-amber-400 hover:bg-amber-300 text-slate-950"}`}
+                >
+                  {loading
+                    ? "Please Wait..."
+                    : authMode === "login"
+                      ? "Login"
+                      : "Register"}
                 </button>
               </form>
+
+              {message && (
+                <div
+                  className={`mt-4 rounded-xl px-4 py-3 text-sm font-medium ${message.toLowerCase().includes("success") ||
+                    message.toLowerCase().includes("welcome")
+                    ? "bg-green-500/20 border border-green-500 text-green-300"
+                    : "bg-red-500/20 border border-red-500 text-red-300"
+                    }`}
+                >
+                  {message}
+                </div>
+              )}
 
               <div className="mt-4 text-sm text-slate-400">
                 {authMode === 'login' ? 'New here?' : 'Already have an account?'}{' '}
@@ -283,7 +500,14 @@ const Account = () => {
 
               {message && <div className="mt-6 rounded-xl border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">{message}</div>}
 
-              <button onClick={() => { localStorage.removeItem('astro-user'); setUser(null); setMessage('Logged out successfully.'); }} className="mt-6 rounded-xl border border-white/10 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10">
+              <button
+                onClick={() => {
+                  localStorage.removeItem('astro-user');
+                  localStorage.removeItem("astro-token");
+                  setUser(null);
+                  setMessage('Logged out successfully.');
+                }}
+                className="mt-6 rounded-xl border border-white/10 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10">
                 Logout
               </button>
             </motion.div>
@@ -317,9 +541,40 @@ const Account = () => {
                             <p className="font-medium text-white">{entry.name}</p>
                             <p className="text-sm text-slate-400">{entry.email}</p>
                           </div>
-                          <div className="mt-2 text-sm text-amber-200 sm:mt-0">
-                            {entry.plan} • {entry.status}
+                          <div className="mt-3 flex flex-col gap-2 sm:mt-0 sm:items-end">
+
+                            <select value={selectedPlans[entry._id] || entry.plan}
+                              onChange={(e) => setSelectedPlans({ ...selectedPlans, [entry._id]: e.target.value, })
+                              }
+                              className="rounded-lg bg-slate-900 border border-white/10 px-3 py-2 text-white"
+                            >
+                              <option value="Basic">Basic</option>
+                              <option value="Premium">Premium</option>
+                            </select>
+
+                            <select
+                              value={selectedStatus[entry._id] || entry.status}
+                              onChange={(e) =>
+                                setSelectedStatus({
+                                  ...selectedStatus,
+                                  [entry._id]: e.target.value,
+                                })
+                              }
+                              className="rounded-lg bg-slate-900 border border-white/10 px-2 py-2 text-white"
+                            >
+                              <option value="Active">Active</option>
+                              <option value="Suspended">Suspended</option>
+                              <option value="Blocked">Blocked</option>
+                            </select>
+
                           </div>
+                          <button
+                           onClick={() => handleSaveUser(entry._id)}
+                            className="rounded-lg bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-300"
+                          >
+                            Save
+                          </button>
+
                         </div>
                       ))}
                     </div>
@@ -349,13 +604,24 @@ const Account = () => {
                       <p className="text-sm text-slate-400">Upgrade your astrology experience</p>
                     </div>
                   </div>
-                  <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <div className="my-6 rounded-2xl border border-white/10 bg-white/5 p-5">
                     <p className="text-sm text-slate-400">Current plan</p>
                     <p className="mt-2 text-2xl font-semibold text-white">{user.plan || 'Basic'}</p>
-                    <p className="mt-3 text-sm leading-7 text-slate-400">Enjoy detailed planetary insights, priority support, and premium reports.</p>
-                    <button onClick={handlePayment} className="mt-5 rounded-xl bg-amber-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-300">
+                    <p className="my-3 text-sm leading-7 text-slate-400">Enjoy detailed planetary insights, priority support, and premium reports.</p>
+                    {/* <button onClick={handlePayment} className="mt-5 rounded-xl bg-amber-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-300">
                       Upgrade to Premium
-                    </button>
+                    </button> */}
+                    <PremiumLock user={user}>
+                      <div className="mt-10 rounded-2xl border border-green-500 bg-green-500/10 p-5">
+                        <h2 className="text-xl font-bold text-green-300">
+                          🎉 Premium Content Unlocked
+                        </h2>
+
+                        <p className="mt-2 text-slate-300">
+                          Congratulations! Only Premium users can see this section.
+                        </p>
+                      </div>
+                    </PremiumLock>
                   </div>
                 </div>
               )}

@@ -12,15 +12,16 @@ const Maincontainer = () => {
     <div className='w-full bg-[radial-gradient(circle_at_top_left,_#13203f,_#08122D_55%,_#030711)] pt-20'>
         <section className='rounded-xl lg:rounded-[32px] border border-amber-300/20 bg-[radial-gradient(circle_at_100%_0,rgba(242,184,46,0.15),transparent_32%),linear-gradient(135deg,#761027_0%,#2e0715_52%,#0b1029_100%)] p-2 lg:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:p-8 my-5'>
                     <div className='flex flex-col'>
-                      <div className='min-h-full flex flex-col justify-around'>
-                        <a href='https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20श्रावण%202026%20स्पेशल%20पूजा%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20ऑनलाइन%20पूजा,%20रुद्राभिषेक,%20कालसर्प%20शांति,%20वास्तु%20एवं%20अन्य%20सेवाओं%20की%20जानकारी%20साझा%20करें।%0A%0Aधन्यवाद।🙏'>
+                      <div className='min-h-full flex flex-col lg:flex-row'>
+                        <a className='mb-5' href='https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20श्रावण%202026%20स्पेशल%20पूजा%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20ऑनलाइन%20पूजा,%20रुद्राभिषेक,%20कालसर्प%20शांति,%20वास्तु%20एवं%20अन्य%20सेवाओं%20की%20जानकारी%20साझा%20करें।%0A%0Aधन्यवाद।🙏'>
                          <img
                           src={banner}
                           alt='shiv'
-                          className='rounded-xl lg:rounded-4xl hover:scale-[1.01] duration-300'
+                          className='rounded-xl lg:rounded-4xl  border border-amber-400'
                         />
                         </a>
                   </div>
+                  
                      <section >
               <div className='text-amber-200 text-xl lg:text-3xl font-semibold mt-3 lg:mt-5'>
                 <marquee scrollamount="6" >
@@ -31,9 +32,10 @@ const Maincontainer = () => {
               </div>
             </section>
                     </div>
-                     </section>      
+                     </section>     
 
-      <div className='mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8'>
+                   
+      <div className='mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 '>
               <section className='relative overflow-hidden rounded-[32px] border border-amber-300/20 bg-gradient-to-br from-[#111827] via-[#0f172a] to-[#030711] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:p-8 mt-10'>
           <div className='absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(251,191,36,0.18),_transparent_45%)]' />
           <div className='relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between'>
@@ -65,7 +67,10 @@ const Maincontainer = () => {
             </div>
           </div>
         </section>
+            
+
         <div className="mt-16 h-px w-full bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
+        
 
         {/* <section className='grid grid-cols-1 gap-6 pt-6 lg:grid-cols-3'>
           <Link to='/astrology' className='group flex min-h-full flex-col justify-between rounded-[24px] border border-amber-200/20 bg-gradient-to-br from-[#111827] to-[#060b16] p-6 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40 hover:shadow-[0_12px_35px_rgba(251,191,36,0.16)]'>

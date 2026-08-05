@@ -15,10 +15,19 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
 
     password: {
       type: String,
       required: true,
+    },
+
+    verificationToken: {
+      type: String,
+      default: null,
     },
 
     phone: {
@@ -36,6 +45,26 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "Basic",
     },
+
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+
+    premiumExpiry: {
+      type: Date,
+      default: null,
+    },
+
+    purchasedReports: [
+      {
+        reportType: String,
+        purchasedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
 
     status: {
       type: String,

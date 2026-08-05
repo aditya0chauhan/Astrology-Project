@@ -9,6 +9,7 @@ import Western from "../components/milanFiles/Papasamaya";
 import Papasamaya from "../components/milanFiles/Papasamaya";
 import DashaSandhi from "../components/milanFiles/DashaSandhi";
 import { GenrateMilan } from "../utils/buttons/Genrate";
+import MatchingPdf from "../utils/pdf/MatchingPdf";
 
 const KundaliMilan = () => {
   const { t } = useTranslation();
@@ -136,6 +137,10 @@ const KundaliMilan = () => {
    ),
    sandhi : (
     <DashaSandhi
+    boyData={boyData} girlData={girlData} />
+   ),
+   pdf:(
+    <MatchingPdf 
     boyData={boyData} girlData={girlData} />
    )
   }
