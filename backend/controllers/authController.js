@@ -105,6 +105,14 @@ export const loginUser = async (req, res) => {
       });
     }
 
+    // Check User Status
+    if (user.status === "Blocked") {
+      return res.status(403).json({
+        success: false,
+        message: "Your account has been blocked.",
+      });
+    }
+
     const token = generateToken(user._id);
 
     res.status(200).json({

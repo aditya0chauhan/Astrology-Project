@@ -15,6 +15,9 @@ const Account = () => {
   const [dashboard, setDashboard] = useState(null);
   const [users, setUsers] = useState([]);
   const [payments, setPayments] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [myBookings, setMyBookings] = useState([]);
+  const [selectedBookingStatus, setSelectedBookingStatus] = useState({});
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -45,6 +48,8 @@ const Account = () => {
 
       if (data.user.role === "admin") {
         loadAdminData();
+      } else {
+        loadMyBookings();
       }
     } catch (error) {
       console.error(error);
@@ -63,7 +68,7 @@ const Account = () => {
     try {
       const token = localStorage.getItem("astro-token");
 
-      const [dashboardRes, usersRes] = await Promise.all([
+      const [dashboardRes, usersRes, bookingsRes] = await Promise.all([
         fetch(`${API_BASE}/admin/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,6 +76,12 @@ const Account = () => {
         }),
 
         fetch(`${API_BASE}/admin/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+
+        fetch(`${API_BASE}/bookings/all`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -85,14 +96,38 @@ const Account = () => {
 
       const dashboardData = await dashboardRes.json();
       const usersData = await usersRes.json();
+      const bookingsData = await bookingsRes.json();
       // const paymentsData = await paymentsRes.json();
 
       setDashboard(dashboardData);
 
       // Backend getUsers() res.json(users) return karta hai
       setUsers(usersData);
+      setBookings(bookingsData.bookings || []);
 
       // setPayments(paymentsData.payments || []);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const loadMyBookings = async () => {
+    try {
+      const token = localStorage.getItem("astro-token");
+
+      const response = await fetch(`${API_BASE}/bookings/my-bookings`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+      console.log(data.bookings);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to load bookings");
+      }
+
+      setMyBookings(data.bookings || []);
     } catch (error) {
       console.error(error);
     }
@@ -254,40 +289,73 @@ const Account = () => {
     }
   };
 
-  const handleSaveUser = async (userId) => {
-  try {
-    const token = localStorage.getItem("astro-token");
+  const handleUpdateBookingStatus = async (bookingId) => {
+    try {
+      const token = localStorage.getItem("astro-token");
 
-    const response = await fetch(
-      `${API_BASE}/admin/users/${userId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          plan: selectedPlans[userId] || users.find(u => u._id === userId)?.plan,
-          status: selectedStatus[userId] || users.find(u => u._id === userId)?.status,
-        }),
+      const response = await fetch(
+        `${API_BASE}/bookings/${bookingId}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            status: selectedBookingStatus[bookingId],
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update booking");
       }
-    );
 
-    const data = await response.json();
+      alert("✅ Booking status updated successfully");
 
-    if (!response.ok) {
-      throw new Error(data.message || "Failed to update user");
+      loadAdminData();
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
     }
+  };
 
-    alert("✅ User updated successfully");
+  const handleSaveUser = async (userId) => {
+    try {
+      const token = localStorage.getItem("astro-token");
 
-    loadAdminData();
+      const response = await fetch(
+        `${API_BASE}/admin/users/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            plan: selectedPlans[userId] || users.find(u => u._id === userId)?.plan,
+            status: selectedStatus[userId] || users.find(u => u._id === userId)?.status,
+          }),
+        }
+      );
 
-  } catch (error) {
-    console.error(error);
-    alert(error.message);
-  }
-};
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update user");
+      }
+
+      alert("✅ User updated successfully");
+
+      loadAdminData();
+
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  };
 
   const summaryCards = useMemo(() => {
     if (!dashboard?.summary) return [];
@@ -569,12 +637,66 @@ const Account = () => {
 
                           </div>
                           <button
-                           onClick={() => handleSaveUser(entry._id)}
-                            className="rounded-lg bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-300"
+                            onClick={() => handleSaveUser(entry._id)}
+                            className=" mt-5 lg:mt-0 rounded-lg bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-300"
                           >
                             Save
                           </button>
 
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6">
+                    <h3 className="text-lg font-semibold text-white">Bookings</h3>
+                    <div className="mt-3 space-y-2">
+                      {bookings.map((booking) => (
+                        <div
+                          key={booking._id}
+                          className="rounded-2xl border border-white/10 bg-white/5 p-4"
+                        >
+                          <p className="font-semibold text-white">
+                            {booking.name}
+                          </p>
+
+                          <p className="text-sm text-slate-400">
+                            {booking.email}
+                          </p>
+
+                          <p className="mt-2 text-sm text-amber-300">
+                            Service : {booking.service}
+                          </p>
+
+                          <p className="text-sm text-slate-300">
+                            Date : {booking.bookingDate}
+                          </p>
+
+                          <p className="text-sm text-slate-300">
+                            Time : {booking.bookingTime}
+                          </p>
+
+                          <select
+                            value={selectedBookingStatus[booking._id] || booking.status}
+                            onChange={(e) =>
+                              setSelectedBookingStatus({
+                                ...selectedBookingStatus,
+                                [booking._id]: e.target.value,
+                              })
+                            }
+                            className="mt-3 rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-white"
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                          </select>
+                          <button
+                            onClick={() => handleUpdateBookingStatus(booking._id)}
+                            className="mt-3 rounded-lg bg-amber-400 px-3 py-2 ml-10 text-sm font-semibold text-slate-900 hover:bg-amber-300"
+                          >
+                            Save
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -623,7 +745,72 @@ const Account = () => {
                       </div>
                     </PremiumLock>
                   </div>
+                  <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
+                    <h2 className="text-2xl font-bold text-white">
+                      📅 My Bookings
+                    </h2>
+
+                    <div className="mt-4 space-y-3">
+                      {myBookings.length === 0 ? (
+                        <p className="text-slate-400">
+                          You haven't booked any appointment yet.
+                        </p>
+                      ) : (
+                        myBookings.map((booking) => (
+                          <div
+                            key={booking._id}
+                            className="rounded-2xl border border-white/10 bg-slate-900/40 p-4"
+                          >
+                            <div className="flex items-center justify-between">
+                              <h3 className="text-lg font-semibold text-white">
+                                {booking.service}
+                              </h3>
+
+                              <span
+                                className={`rounded-full px-3 py-1 text-sm font-medium
+            ${booking.status === "Pending"
+                                    ? "bg-yellow-500/20 text-yellow-300"
+                                    : booking.status === "Confirmed"
+                                      ? "bg-blue-500/20 text-blue-300"
+                                      : booking.status === "Completed"
+                                        ? "bg-green-500/20 text-green-300"
+                                        : "bg-red-500/20 text-red-300"
+                                  }`}
+                              >
+                                {booking.status}
+                              </span>
+                            </div>
+
+                            <div className="mt-3 grid gap-2 text-sm text-slate-300">
+                              <p>
+                                📅 <strong>Date:</strong> {booking.bookingDate}
+                              </p>
+
+                              <p>
+                                🕒 <strong>Time:</strong> {booking.bookingTime}
+                              </p>
+
+                              <p>
+                                📧 <strong>Email:</strong> {booking.email}
+                              </p>
+
+                              <p>
+                                📞 <strong>Phone:</strong> {booking.phone}
+                              </p>
+
+                              {booking.message && (
+                                <p>
+                                  💬 <strong>Message:</strong> {booking.message}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
                 </div>
+
               )}
             </motion.div>
           </div>

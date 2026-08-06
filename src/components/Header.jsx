@@ -18,8 +18,8 @@ const Header = () => {
     { to: '/panchang', label: t('panchang') },
     // { to: '/report', label: t('rep') },
     { to: '/contact', label: t('contact') },
-    { to: '/account', label: t('account') },
     { to: '/poojan', label: t('pujan') },
+    { to: '/account', label: t('account') },
   ]
 
   return (
@@ -34,12 +34,12 @@ const Header = () => {
         </a>
 
         <div className="hidden flex-1 items-center justify-end gap-4 text-[13px] font-semibold text-yellow-300 lg:flex xl:gap-5">
+          
           {navLinks.map((link) => (
             <Link key={link.to} to={link.to} className="transition hover:text-amber-600 hover:scale-[1.10] duration-300">
               {link.label}
             </Link>
           ))}
-
           <div
             className="relative hover:scale-[1.08] duration-300"
             onMouseEnter={() => setHover(true)}

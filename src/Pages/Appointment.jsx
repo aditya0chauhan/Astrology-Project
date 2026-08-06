@@ -3,16 +3,28 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const API_BASE = 
-import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE =
+    import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 const services = [
-    "Handwritten Kundali",
-    "Vastu Consultation",
-    "Kaalsarp Dosh",
-    "KP Astrology",
-    "Gemstone Recommendation",
-    "Baby Name Selection",
     "Shravan Maas Poojan",
+    "Astrology consultation",
+    "Kundali Milan consultation",
+    "Dosh/Dasha consultation",
+    "Numerology consultation",
+    "Vastu Consultation",
+    "Lal Kitab Consultation",
+    "HastLikhit Kundali",
+    "Kaalsarp Dosh Poojan & Consultation",
+    "KP Astrology Consultation",
+    "Baby Name Selection Consultation",
+    "Gemstone Recommendation",
+    "Mangal Dosh Removal poojan & Consultation",
+    "Pitra Dosh Removal Poojan & Consultation",
+    "Mahamrityunjaya Poojan & Consultation",
+    "Gopan Poojan & Consultation to Get a child",
+    "Nagbali Poojan & Consultation",
+    "Early Marriage Poojan & Consultation",
+    "Victory in a Lawsuit Poojan & Consultation",
 ];
 
 export default function Appointment() {
@@ -100,6 +112,13 @@ export default function Appointment() {
         }
     };
 
+    const today = new Date().toISOString().split("T")[0];
+
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 30);
+
+    const lastBookingDate = maxDate.toISOString().split("T")[0];
+
     return (
         <div className="min-h-screen mt-18 bg-gradient-to-b from-[#050d19] via-[#0b1627] to-[#07111f] text-white">
             <section className="mx-auto max-w-6xl px-5 py-12">
@@ -165,14 +184,37 @@ export default function Appointment() {
                                 ))}
                             </select>
 
-                            <div className="grid gap-5 md:grid-cols-2">
-                                <input type="date" name="bookingDate" value={form.bookingDate}
-                                    onChange={handleChange}
-                                    className="rounded-xl border border-slate-700 bg-[#15233b] p-4 min-w-full" />
+                            <div className="">
 
-                                <input type="time" name="bookingTime" value={form.bookingTime}
-                                    onChange={handleChange}
-                                    className="rounded-xl border border-slate-700 bg-[#15233b] p-4 min-w-full" />
+                                <div className="w-full">
+                                    <label className="mb-2 block text-sm font-medium text-amber-300 my-3">
+                                        Booking Date
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        name="bookingDate"
+                                        value={form.bookingDate}
+                                        onChange={handleChange}
+                                        min={today}
+                                        max={lastBookingDate}
+                                        className="rounded-xl border border-slate-700 bg-[#15233b] p-4 min-w-full"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-amber-300 mt-5">
+                                        Booking Time
+                                    </label>
+
+                                    <input
+                                        type="time"
+                                        name="bookingTime"
+                                        value={form.bookingTime}
+                                        onChange={handleChange}
+                                        className="rounded-xl border border-slate-700 bg-[#15233b] p-4 min-w-full"
+                                    />
+                                </div>
                             </div>
 
                             <textarea
@@ -180,7 +222,7 @@ export default function Appointment() {
                                 name="message"
                                 value={form.message}
                                 onChange={handleChange}
-                                placeholder="Tell us about your concern..."
+                                placeholder="optional"
                                 className="w-full rounded-xl border border-slate-700 bg-[#15233b] p-4"
                             />
 
