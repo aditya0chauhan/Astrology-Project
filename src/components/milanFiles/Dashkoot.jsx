@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
 import { API_BASE } from "../../config/api";
+import PremiumLock from '../Premium/PremiumLock'
 
 
 const Dashkoot = ({ boyData, girlData }) => {
@@ -13,8 +14,16 @@ const Dashkoot = ({ boyData, girlData }) => {
             const boyDob = boyData.dob.replace(/-/g, "/");
             const girlDob = girlData.dob.replace(/-/g, "/");
 
+            const token = localStorage.getItem("astro-token");
+
             const response = await fetch(
-                `${API_BASE}/astro/matching/dashakoot-astro?boy_dob=${boyDob}&boy_tob=${boyData.time}&boy_lat=${boyData.latitude}&boy_lon=${boyData.longitude}&boy_tz=5.5&girl_dob=${girlDob}&girl_tob=${girlData.time}&girl_lat=${girlData.latitude}&girl_lon=${girlData.longitude}&girl_tz=5.5&lang=hi`);
+                `${API_BASE}/astro/matching/dashakoot-astro?boy_dob=${boyDob}&boy_tob=${boyData.time}&boy_lat=${boyData.latitude}&boy_lon=${boyData.longitude}&boy_tz=5.5&girl_dob=${girlDob}&girl_tob=${girlData.time}&girl_lat=${girlData.latitude}&girl_lon=${girlData.longitude}&girl_tz=5.5&lang=hi`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
             const json = await response.json();
             setDashkoot(json.response)
@@ -50,105 +59,149 @@ const Dashkoot = ({ boyData, girlData }) => {
         </div>
     }
 
+    const user = JSON.parse(
+        localStorage.getItem("astro-user") || "null"
+    );
+
+    const isGold =
+        user?.plan === "Gold" &&
+        user?.goldExpiry &&
+        new Date(user.goldExpiry) > new Date();
+
     return (
-      <div className="mt-10 text-white">
-     
-         <div className="mt-10 bg-[#1A2742] rounded-xl border border-amber-400 p-6">
-        <h1 className="text-3xl font-bold text-center text-amber-400">
-              दशकूट गुण मिलान
-                 </h1>
+        <div className="mt-10 text-white">
 
-    <div className="mt-8 bg-[#243454] rounded-xl p-6">
+            {!isGold ? (
+                <div className="mt-10 bg-[#1A2742] rounded-xl border border-amber-400 p-6">
 
-     <h2 className="text-2xl text-green-400 font-bold">
-       कुल स्कोर
-        </h2>
-          <p className="text-5xl text-amber-400 font-bold mt-3">
-              {dashkoot.score} </p>
+                    <h1 className="text-3xl font-bold text-center text-amber-400">
+                        दशकूट गुण मिलान
+                    </h1>
 
-          <p className="mt-5 text-gray-300">
-           {dashkoot.bot_response}</p>
-              </div>
-            </div>           
+                    <div className="mt-8">
+                        <PremiumLock
+                            title="दशकूट गुण मिलान की पूरी जानकारी के लिए"
+                        />
+                    </div>
 
-      <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[
-             dashkoot.dina,
-             dashkoot.gana,
-             dashkoot.mahendra,
-             dashkoot.sthree,
-             dashkoot.yoni,
-             dashkoot.rasi,
-             dashkoot.rasiathi,
-             dashkoot.rajju,
-             dashkoot.vedha,
-             dashkoot.vasya,
-            ]
-       .filter(Boolean)
-           .map((item, index) => (
-        <div key={index}
-            className="bg-[#243454] rounded-xl p-5 border border-amber-400">
+                </div>
+            ) : (
+                <>
+                    <div className="mt-10 bg-[#1A2742] rounded-xl border border-amber-400 p-6">
 
-             <h3 className="text-xl font-bold text-amber-400 mb-3">
-               {item?.name}
-         </h3>
-            {item.boy_star && (
-             <p>
-             <b>वर :</b> {item.boy_star}
-                </p>
-                    )}
-        {item.girl_star && (
-             <p><b>वधू :</b> {item.girl_star}</p>
-              )}
-          
-           {
-              item.boy_rasi && (
-              <p> <b>वर राशि :</b>
-               {item.boy_rasi}
-                   </p>
-                 ) }
+                        <h1 className="text-3xl font-bold text-center text-amber-400">
+                            दशकूट गुण मिलान
+                        </h1>
 
-           {
-             item.girl_rasi && (
-           <p>
-              <b>वधू राशि :</b> {item.girl_rasi}
-                </p> ) }
-              {
-              item.boy_lord && (
-               <p>
-                   <b>वर स्वामी :</b> {item.boy_lord}
-               </p>
-              )}
+                        <div className="mt-8 bg-[#243454] rounded-xl p-6">
 
-         { item.girl_lord && (
-            <p> <b>वधू स्वामी :</b> 
-            {item.girl_lord}
-                  </p>
-                     ) }
+                            <h2 className="text-2xl text-green-400 font-bold">
+                                कुल स्कोर
+                            </h2>
 
-    <p className="text-green-400 font-bold mt-3">
-      अंक : {
-             item.dina ||
-             item.gana ||
-             item.mahendra ||
-             item.sthree ||
-             item.yoni ||
-             item.rasi ||
-             item.rasiathipathi ||
-             item.rajju ||
-             item.vedha ||
-             item.vasya
-            } / {item.full_score}
-                </p>
+                            <p className="text-5xl text-amber-400 font-bold mt-3">
+                                {dashkoot.score}
+                            </p>
 
-       <p className="text-gray-300 text-sm mt-3">
-         {item.description}
-             </p>
-          </div>
-  ))}
-            </div>
+                            <p className="mt-5 text-gray-300">
+                                {dashkoot.bot_response}
+                            </p>
+
+                        </div>
+                    </div>
+
+                    <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+                        {[
+                            dashkoot.dina,
+                            dashkoot.gana,
+                            dashkoot.mahendra,
+                            dashkoot.sthree,
+                            dashkoot.yoni,
+                            dashkoot.rasi,
+                            dashkoot.rasiathi,
+                            dashkoot.rajju,
+                            dashkoot.vedha,
+                            dashkoot.vasya,
+                        ]
+                            .filter(Boolean)
+                            .map((item, index) => (
+
+                                <div
+                                    key={index}
+                                    className="bg-[#243454] rounded-xl p-5 border border-amber-400"
+                                >
+
+                                    <h3 className="text-xl font-bold text-amber-400 mb-3">
+                                        {item?.name}
+                                    </h3>
+
+                                    {item.boy_star && (
+                                        <p>
+                                            <b>वर :</b> {item.boy_star}
+                                        </p>
+                                    )}
+
+                                    {item.girl_star && (
+                                        <p>
+                                            <b>वधू :</b> {item.girl_star}
+                                        </p>
+                                    )}
+
+                                    {item.boy_rasi && (
+                                        <p>
+                                            <b>वर राशि :</b> {item.boy_rasi}
+                                        </p>
+                                    )}
+
+                                    {item.girl_rasi && (
+                                        <p>
+                                            <b>वधू राशि :</b> {item.girl_rasi}
+                                        </p>
+                                    )}
+
+                                    {item.boy_lord && (
+                                        <p>
+                                            <b>वर स्वामी :</b> {item.boy_lord}
+                                        </p>
+                                    )}
+
+                                    {item.girl_lord && (
+                                        <p>
+                                            <b>वधू स्वामी :</b> {item.girl_lord}
+                                        </p>
+                                    )}
+
+                                    <p className="text-green-400 font-bold mt-3">
+                                        अंक:{" "}
+                                        {
+                                            item.dina ||
+                                            item.gana ||
+                                            item.mahendra ||
+                                            item.sthree ||
+                                            item.yoni ||
+                                            item.rasi ||
+                                            item.rasiathipathi ||
+                                            item.rajju ||
+                                            item.vedha ||
+                                            item.vasya
+                                        }{" "}
+                                        / {item.full_score}
+                                    </p>
+
+                                    <p className="text-gray-300 text-sm mt-3">
+                                        {item.description}
+                                    </p>
+
+                                </div>
+                            ))}
+
+                    </div>
+                </>
+            )}
+
         </div>
-            );
+    );
 };
 
-    export default Dashkoot;
+export default Dashkoot;

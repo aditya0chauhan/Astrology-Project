@@ -1,4 +1,166 @@
 import Booking from "../models/Booking.js";
+import razorpay from "../config/razorpay.js";
+import crypto from "crypto";
+
+const SERVICE_PRICES = {
+  "Shravan Maas Poojan": 1999,
+  "Astrology consultation": 250,
+  "Vastu consultation": 500,
+  "Numerology consultation": 799,
+  "Dosh & Dasha Consultation" : 250,
+  "Lal Kitab Consultation": 999,
+  "HastLikhit Kundali": 11000,
+  "Kaalsarp Dosh Poojan (Ujjain)": 11000,
+  "Kaalsarp Dosh Poojan + Rudrabhishek (Lohargal)": 25000,
+  "Kaalsarp Dosh Poojan + Rudrabhishek (Kirodi)": 27500,
+  "Kaalsarp Dosh Poojan + Rudrabhishek (Kadamkund)": 31000,
+  "Vastu Dosh Niwaran Poojan (siddh yantra, sampurn kit)" :7100,
+  "Vastu Dosh Niwaran Poojan (personal solution)" :3100,
+  "Vastu Dosh Niwaran Poojan (Navakalash)" :31000,
+  "Vastu Dosh Niwaran Navakalash Poojan (Rajasthan)" :21000,
+  "Vastu Dosh Niwaran Saptdivasia Poojan (Rajasthan)" :21000,
+  "KP Astrology Consultation": 999,
+  "Baby Name Selection Consultation": 599,
+  "Gemstone Recommendation": 499,
+  "Mangal Dosh Removal poojan & Consultation": 2499,
+  "Pitra Dosh Removal Poojan & Consultation": 2499,
+  "Mahamrityunjaya Poojan & Consultation": 2999,
+  "Gopal Poojan & Consultation to Get a child": 3999,
+  "Nagbali Poojan & Consultation": 4999,
+  "Early Marriage Poojan & Consultation": 2499,
+  "Victory in a Lawsuit Poojan & Consultation": 2499,
+};
+
+export const createBookingOrder = async (req, res) => {
+  try {
+    const { service } = req.body;
+
+    const amount = SERVICE_PRICES[service];
+
+    if (!amount) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid service selected",
+      });
+    }
+
+    const options = {
+      amount: amount * 100,
+      currency: "INR",
+      receipt: `booking_${Date.now()}`,
+      notes: {
+        userId: req.userId,
+        service,
+      },
+    };
+
+    const order = await razorpay.orders.create(options);
+
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to create booking order",
+    });
+  }
+};
+
+export const verifyBookingPayment = async (req, res) => {
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      bookingData,
+    } = req.body;
+
+    const body =
+      razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedSignature = crypto
+      .createHmac(
+        "sha256",
+        process.env.RAZORPAY_KEY_SECRET
+      )
+      .update(body.toString())
+      .digest("hex");
+
+    if (expectedSignature !== razorpay_signature) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Payment Signature",
+      });
+    }
+
+    const order = await razorpay.orders.fetch(
+      razorpay_order_id
+    );
+
+    if (
+      order.notes?.userId !== req.userId ||
+      order.currency !== "INR"
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Booking Payment",
+      });
+    }
+
+    const amount = SERVICE_PRICES[bookingData.service];
+
+    if (!amount || order.amount !== amount * 100) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Booking Amount",
+      });
+    }
+
+    const existingBooking = await Booking.findOne({
+      razorpay_payment_id,
+    });
+
+    if (existingBooking) {
+      return res.status(400).json({
+        success: false,
+        message: "Payment already processed",
+      });
+    }
+
+    const booking = await Booking.create({
+      user: req.userId,
+      name: bookingData.name,
+      phone: bookingData.phone,
+      email: bookingData.email,
+      service: bookingData.service,
+      bookingDate: bookingData.bookingDate,
+      bookingTime: bookingData.bookingTime,
+      message: bookingData.message || "",
+      amount,
+      paymentStatus: "Success",
+      razorpay_order_id,
+      razorpay_payment_id,
+      status: "Pending",
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Payment verified and booking created",
+      booking,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Booking payment verification failed",
+    });
+  }
+};
 
 export const createBooking = async (req, res) => {
   try {
@@ -24,6 +186,15 @@ export const createBooking = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Please fill all required fields",
+      });
+    }
+
+    const amount = SERVICE_PRICES[service];
+
+    if (!amount) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid service selected",
       });
     }
 

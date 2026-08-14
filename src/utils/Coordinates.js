@@ -1,22 +1,19 @@
+import { API_BASE } from "../config/api";
+
 const Coordinates = async (place) => {
   try {
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        place
-      )}&limit=5`
+      `${API_BASE}/location/coordinates?place=${encodeURIComponent(place)}`
     );
 
     const data = await response.json();
 
-    if (!data || data.length === 0) {
-      throw new Error("Location not found");
+    if (!response.ok || !data.success || !data.location) {
+      throw new Error(data.message || "Location not found");
     }
 
-    return {
-      latitude: Number(data[0].lat),
-      longitude: Number(data[0].lon),
-      displayName: data[0].display_name,
-    };
+    return data.location;
+
   } catch (error) {
     console.error("Location Error:", error);
     throw error;

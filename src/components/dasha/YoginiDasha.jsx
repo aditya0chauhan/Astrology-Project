@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 import { API_BASE } from "../../config/api";
+import PremiumLock from "../Premium/PremiumLock";
+import { hasSilverAccess } from "../../utils/premiumAccess";
 
 const YoginiDasha = ({ userData }) => {
     const { t, i18n } = useTranslation();
@@ -14,9 +16,14 @@ const YoginiDasha = ({ userData }) => {
         const fetchYoginiDasha = async () => {
             try {
                 setLoading(true);
-
+                  const token = localStorage.getItem("astro-token");
                 const data = await fetch(
-                    `${API_BASE}/astro/dasha/yogini-dasha-main?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
+                    `${API_BASE}/astro/dasha/yogini-dasha-main?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`,
+                {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
 
                 const dasha = await data.json();
                 setYogini(dasha.response);
@@ -28,8 +35,8 @@ const YoginiDasha = ({ userData }) => {
         }
         fetchYoginiDasha()
     }, [userData, i18n.language])
-   
-     if (loading) {
+
+    if (loading) {
         return (
             <div className="min-h-[60vh] flex items-center justify-center">
                 <Loader />
@@ -42,20 +49,40 @@ const YoginiDasha = ({ userData }) => {
             {t("noDataAvailable")}
         </div>
     }
-    return (
-        <div className="mt-24 text-white">
 
-            <h1 className="text-3xl font-bold text-center text-amber-400">
-                {t("yoginiDasha")}
-            </h1>
+    const user = JSON.parse(
+        localStorage.getItem("astro-user") || "null"
+    );
 
-            <p className="text-center text-gray-300 mt-2">
-                {t("yoginiDashaSubtitle")}
-            </p>
+    const isPremium = hasSilverAccess(user);
 
-            <div className="mt-10 space-y-5">
+return (
+    <div className="mt-24 text-white">
 
-                {yogini.dasha_list.map((item, index) => (
+        <h1 className="text-3xl font-bold text-center text-amber-400">
+            {t("yoginiDasha")}
+        </h1>
+
+        {/* Premium Lock - Basic User */}
+        {!isPremium && (
+            <div className="mt-6">
+                <PremiumLock
+                    title={`${t("yoginiDasha")} की जानकारी के लिए`}
+                />
+            </div>
+        )}
+
+        {/* Dasha List */}
+        <div className="mt-10 space-y-5">
+
+            {yogini.dasha_list
+                .slice(
+                    0,
+                    isPremium
+                        ? yogini.dasha_list.length
+                        : 2
+                )
+                .map((item, index) => (
 
                     <div
                         key={index}
@@ -64,8 +91,7 @@ const YoginiDasha = ({ userData }) => {
 
                         <div className="flex justify-between items-center flex-wrap gap-4">
 
-                            {/* Number */}
-
+                            {/* Number + Dasha Name */}
                             <div className="flex items-center gap-4">
 
                                 <div className="h-12 w-12 rounded-full bg-amber-400 text-black font-bold flex justify-center items-center">
@@ -73,7 +99,6 @@ const YoginiDasha = ({ userData }) => {
                                 </div>
 
                                 <div>
-
                                     <h2 className="text-2xl font-bold text-amber-300">
                                         {item}
                                     </h2>
@@ -81,13 +106,11 @@ const YoginiDasha = ({ userData }) => {
                                     <p className="text-gray-400 mt-1">
                                         {t("yoginiDasha")}
                                     </p>
-
                                 </div>
 
                             </div>
 
                             {/* Lord */}
-
                             <div className="text-center">
 
                                 <p className="text-gray-400">
@@ -101,7 +124,6 @@ const YoginiDasha = ({ userData }) => {
                             </div>
 
                             {/* End Date */}
-
                             <div className="text-right">
 
                                 <p className="text-gray-400">
@@ -120,10 +142,10 @@ const YoginiDasha = ({ userData }) => {
 
                 ))}
 
-            </div>
-
         </div>
-    );
+
+    </div>
+);
 }
 
 export default YoginiDasha

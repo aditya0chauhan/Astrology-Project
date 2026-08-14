@@ -8,15 +8,20 @@ export const getDashboard = async (req, res) => {
       status: "Active",
     });
 
-    const premiumUsers = await User.countDocuments({
-      plan: "Premium",
+    const silverUsers = await User.countDocuments({
+      plan: "Silver",
+    });
+
+    const goldUsers = await User.countDocuments({
+      plan: "Gold",
     });
 
     res.json({
       summary: {
         totalUsers,
         activeUsers,
-        premiumUsers,
+        silverUsers,
+        goldUsers,
         revenue: 0,
       },
     });
@@ -48,7 +53,7 @@ export const updateUserPlan = async (req, res) => {
     const { id } = req.params;
     const { plan } = req.body;
 
-    const allowedPlans = ["Basic", "Premium"];
+    const allowedPlans = ["Basic", "Silver", "Gold"];
 
     if (!allowedPlans.includes(plan)) {
       return res.status(400).json({
@@ -66,7 +71,22 @@ export const updateUserPlan = async (req, res) => {
     }
 
     user.plan = plan;
-    user.isPremium = plan === "Premium";
+
+    user.isPremium = plan === "Silver" || plan === "Gold";
+
+    if (plan === "Basic") {
+      user.isPremium = false;
+      user.premiumExpiry = null;
+      user.goldExpiry = null;
+    }
+
+    if (plan === "Silver") {
+      user.goldExpiry = null;
+    }
+
+    if (plan === "Gold") {
+      user.premiumExpiry = null;
+    }
 
     await user.save();
 

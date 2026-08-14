@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
 import { API_BASE } from "../../config/api";
+import PremiumLock from "../Premium/PremiumLock";
+import { hasSilverAccess } from "../../utils/premiumAccess";
 
 const Gem = ({ userData }) => {
     const [gem, setGem] = useState(null);
@@ -13,9 +15,14 @@ const Gem = ({ userData }) => {
         const fetchGem = async () => {
             try {
                 setLoading(true);
-
+                const token = localStorage.getItem("astro-token");
                 const data = await fetch(
-                    ` ${API_BASE}/astro/extended_horoscope/gem_suggestion?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
+                    ` ${API_BASE}/astro/extended_horoscope/gem_suggestion?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
 
                 const response = await data.json();
                 setGem(response.response);
@@ -29,9 +36,14 @@ const Gem = ({ userData }) => {
         const fetchRudraksha = async () => {
             try {
                 setLoading(true);
-
+                const token = localStorage.getItem("astro-token");
                 const data = await fetch(
-                    ` ${API_BASE}/astro/extended_horoscope/rudraksh_suggestion?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`)
+                    ` ${API_BASE}/astro/extended_horoscope/rudraksh_suggestion?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=hi`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
 
                 const response = await data.json();
                 setRudraksha(response.response);
@@ -58,6 +70,12 @@ const Gem = ({ userData }) => {
             डेटा उपलब्ध नहीं है।
         </div>
     }
+
+    const user = JSON.parse(
+        localStorage.getItem("astro-user") || "null"
+    );
+
+    const isPremium = hasSilverAccess(user);
 
     return (
 
@@ -102,148 +120,128 @@ const Gem = ({ userData }) => {
 
                         </div>
 
-                <div className=" grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 ">
-            {
-              [
-               ["🎨 रंग", gem.color],
-               ["📅 दिन", gem.day],
-               ["👉 उंगली", gem.finger],
-               ["🪐 धातु", gem.metal],
-               ["💎 Lucky Stone", gem.lucky_stone],
-               ["🔮 Life Stone", gem.life_stone],
+                        {!isPremium && (
+                            <div className="mt-6">
+                                <PremiumLock title={`रत्न सुझाव की पूरी जानकारी के लिए`} />
+                            </div>
+                        )}
 
-                    ].map((item, index) => (
-
-
-                <div key={index} 
-                className=" border border-yellow-500 rounded-xl p-5 text-center ">
-
-
-                <p className="text-gray-300">
-                {item[0]}
-                </p>
-
-
-                <h3 className="text-xl text-yellow-400 font-bold mt-2">
-                   {item[1]}
-                </h3>
-
-            </div>
-
-
-            ))
-              }
-               </div>
-
-            <div className="border border-yellow-500 rounded-2xl p-5 mb-8 ">
-
-
-               <h3 className="text-2xl text-yellow-400 mb-3 ">
-                     📜 विवरण
-                        </h3>
-
-
-               <p className="leading-8 text-gray-300">
-                   {gem.description}
-                            </p>
-                        </div>
-
-                <h3 className="text-2xl text-yellow-400 mb-4 ">
-                    ✨ फायदे
-                     </h3>
+                        {isPremium && (
+                            <div className="mt-6">
 
 
 
-           <div className="grid md:grid-cols-2 gap-4 mb-8">
-               {
-                gem.good_results?.map((item, index) => (
-            <div key={index} className="border border-yellow-500 rounded-xl p-4 bg-[#020817]">
+                                <div className=" grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 ">
+                                    {
+                                        [
+                                            ["🎨 रंग", gem.color],
+                                            ["📅 दिन", gem.day],
+                                            ["👉 उंगली", gem.finger],
+                                            ["🪐 धातु", gem.metal],
+                                            ["💎 Lucky Stone", gem.lucky_stone],
+                                            ["🔮 Life Stone", gem.life_stone],
 
-                     ✅ {item}
-
-                </div>
-
-            ))
-              }
-               </div>
-
-             <h3 className="text-2xl text-yellow-400 mb-4">
-                   ⚠️ किन समस्याओं में सहायक
-                        </h3>
+                                        ].map((item, index) => (
 
 
-            <div className="space-y-3 mb-8">
-              {
-                 gem.flaw_results?.map((item, index) => (
-                    <div key={index} 
-                className="border border-yellow-500 rounded-xl p-4 ">
+                                            <div key={index}
+                                                className=" border border-yellow-500 rounded-xl p-5 text-center ">
 
 
-                                        <span className="text-red-400">
-                                            {item.flaw_type}
-                                        </span>
+                                                <p className="text-gray-300">
+                                                    {item[0]}
+                                                </p>
 
 
-                                        <br />
+                                                <h3 className="text-xl text-yellow-400 font-bold mt-2">
+                                                    {item[1]}
+                                                </h3>
+
+                                            </div>
 
 
-                                        <span className="text-gray-300">
+                                        ))
+                                    }
+                                </div>
 
-                                            {item.flaw_effects}
-
-                                        </span>
-
-
-                                    </div>
+                                <div className="border border-yellow-500 rounded-2xl p-5 mb-8 ">
 
 
-                                ))
-
-                            }
-
-
-                        </div>
+                                    <h3 className="text-2xl text-yellow-400 mb-3 ">
+                                        📜 विवरण
+                                    </h3>
 
 
+                                    <p className="leading-8 text-gray-300">
+                                        {gem.description}
+                                    </p>
+                                </div>
+
+                                <h3 className="text-2xl text-yellow-400 mb-4 ">
+                                    ✨ फायदे
+                                </h3>
 
 
 
-                        {/* Mantra */}
+                                <div className="grid md:grid-cols-2 gap-4 mb-8">
+                                    {
+                                        gem.good_results?.map((item, index) => (
+                                            <div key={index} className="border border-yellow-500 rounded-xl p-4 bg-[#020817]">
+
+                                                ✅ {item}
+
+                                            </div>
+
+                                        ))
+                                    }
+                                </div>
+
+                                <h3 className="text-2xl text-yellow-400 mb-4">
+                                    ⚠️ किन समस्याओं में सहायक
+                                </h3>
 
 
-
-                        <div className="
-border
-border-yellow-500
-rounded-2xl
-p-5
-text-center
-">
+                                <div className="space-y-3 mb-8">
+                                    {
+                                        gem.flaw_results?.map((item, index) => (
+                                            <div key={index}
+                                                className="border border-yellow-500 rounded-xl p-4 ">
 
 
-                            <h3 className="
-text-2xl
-text-yellow-400
-">
-                                🕉 मंत्र
-                            </h3>
+                                                <span className="text-red-400">
+                                                    {item.flaw_type}
+                                                </span>
 
 
-                            <p className="
-mt-3
-text-xl
-">
-
-                                {gem.mantra}
-
-                            </p>
+                                                <br />
 
 
-                        </div>
+                                                <span className="text-gray-300">
+
+                                                    {item.flaw_effects}
+
+                                                </span>
 
 
+                                            </div>
 
 
+                                        ))
+
+                                    }
+
+
+                                </div>
+
+
+                                <div className="border border-yellow-500 rounded-2xl p-5 text-center ">
+
+                                    <h3 className="text-2xl text-yellow-400 ">🕉 मंत्र</h3>
+                                    <p className="mt-3 text-xl "> {gem.mantra} </p>
+
+                                </div>
+
+                            </div>)}
                     </div>
 
                 )
@@ -251,308 +249,97 @@ text-xl
             }
 
             {
-rudraksha && (
+                rudraksha && (
 
-<div className="
-max-w-6xl
-mx-auto
-bg-[#050b20]
-border
-border-yellow-500
-rounded-3xl
-p-8
-mt-10
-">
+                    <div className="max-w-6xl mx-auto bg-[#050b20] border border-yellow-500 rounded-3xl p-8 mt-10 ">
 
+                        <h2 className="text-center text-3xl font-bold text-yellow-400 mb-8 "> 📿 रुद्राक्ष सुझाव </h2>
 
-<h2 className="
-text-center
-text-3xl
-font-bold
-text-yellow-400
-mb-8
-">
-📿 रुद्राक्ष सुझाव
-</h2>
+                        <div className="border border-yellow-500 rounded-2xl p-6 text-center mb-8 ">
+                            <h3 className="text-3xl font-bold text-yellow-400 ">{rudraksha.name?.join(" + ")}</h3>
+                            <p className="text-gray-300 mt-4 leading-8 ">{rudraksha.personalized_response}</p>
+                        </div>
 
+                        {!isPremium && (
+                            <div className="mt-6">
+                                <PremiumLock title={`रुद्राक्ष सुझाव की पूरी जानकारी के लिए`} />
+                            </div>
+                        )}
 
-{/* Main Card */}
+                        {isPremium && (
+                            <div className="mt-6">
 
-<div className="
-border
-border-yellow-500
-rounded-2xl
-p-6
-text-center
-mb-8
-">
 
+                                <h3 className="text-2xl text-yellow-400 mb-4 ">📿 धारण करने योग्य रुद्राक्ष</h3>
 
-<h3 className="
-text-4xl
-font-bold
-text-yellow-400
-">
+                                <div className="grid md:grid-cols-2 gap-5 mb-8 ">
 
-{
-rudraksha.name?.join(" + ")
-}
+                                    {
+                                        rudraksha.rudraksh?.map((item, index) => (
 
-</h3>
+                                            <div key={index}
+                                                className="border border-yellow-500 rounded-xl p-5 bg-[#020817] text-center ">
 
+                                                <p className="text-2xl font-bold text-yellow-400 ">{item}</p>
 
-<p className="
-text-gray-300
-mt-4
-leading-8
-">
+                                            </div>
 
-{rudraksha.personalized_response}
+                                        ))
+                                    }
 
-</p>
+                                </div>
 
+                                <h3 className="text-2xl text-yellow-400 mb-4 ">✨ विशेष गुण </h3>
 
-</div>
+                                <div className="grid md:grid-cols-2 gap-4 mb-8 ">
 
+                                    {
+                                        rudraksha.qualities?.map((item, index) => (
 
+                                            <div key={index}
+                                                className="border border-yellow-500 rounded-xl p-4 ">
 
+                                                ✅ {item}
+                                            </div>
 
+                                        ))
+                                    }
 
-{/* Rudraksha List */}
+                                </div>
 
+                                <h3 className="text-2xl text-yellow-400 mb-4 "> 🕉 मंत्र </h3>
 
-<h3 className="
-text-2xl
-text-yellow-400
-mb-4
-">
-📿 धारण करने योग्य रुद्राक्ष
-</h3>
+                                <div className="space-y-3 mb-8">
 
+                                    {
+                                        rudraksha.mantra?.map((item, index) => (
 
+                                            <div key={index}
+                                                className="border border-yellow-500 rounded-xl p-4 bg-[#020817] ">
+                                                {item}
+                                            </div>
+                                        ))
+                                    }
 
-<div className="
-grid
-md:grid-cols-2
-gap-5
-mb-8
-">
+                                </div>
 
+                                <div className="border border-yellow-500 rounded-2xl p-5 mb-8 ">
 
-{
-rudraksha.rudraksh?.map((item,index)=>(
+                                    <h3 className="text-2xl text-yellow-400 mb-3 "> 🙏 पहनने की विधि </h3>
+                                    <p className="text-gray-300">{rudraksha.how_to_wear}</p>
 
+                                </div>
 
-<div
-key={index}
+                                <div className="border border-yellow-500 rounded-2xl p-5 text-center ">
 
-className="
-border
-border-yellow-500
-rounded-xl
-p-5
-bg-[#020817]
-text-center
-"
->
+                                    <h3 className="text-xl text-yellow-400 ">⏰ शुभ समय</h3>
+                                    <p className="mt-3">{rudraksha.time_to_wear}</p>
 
-<p className="
-text-2xl
-font-bold
-text-yellow-400
-">
-
-{item}
-
-</p>
-
-
-</div>
-
-
-))
-}
-
-
-</div>
-
-
-
-
-
-{/* Qualities */}
-
-
-
-<h3 className="
-text-2xl
-text-yellow-400
-mb-4
-">
-✨ विशेष गुण
-</h3>
-
-
-<div className="
-grid
-md:grid-cols-2
-gap-4
-mb-8
-">
-
-
-{
-rudraksha.qualities?.map((item,index)=>(
-
-
-<div
-key={index}
-className="
-border
-border-yellow-500
-rounded-xl
-p-4
-"
->
-
-
-✅ {item}
-
-
-</div>
-
-
-))
-}
-
-</div>
-
-
-
-
-
-
-
-{/* Mantra */}
-
-
-
-<h3 className="
-text-2xl
-text-yellow-400
-mb-4
-">
-🕉 मंत्र
-</h3>
-
-
-<div className="space-y-3 mb-8">
-
-
-{
-rudraksha.mantra?.map((item,index)=>(
-
-
-<div
-key={index}
-
-className="
-border
-border-yellow-500
-rounded-xl
-p-4
-bg-[#020817]
-"
->
-
-
-{item}
-
-
-</div>
-
-
-))
-}
-
-
-</div>
-
-
-
-
-
-{/* Wearing */}
-
-
-
-<div className="
-border
-border-yellow-500
-rounded-2xl
-p-5
-mb-8
-">
-
-
-<h3 className="
-text-2xl
-text-yellow-400
-mb-3
-">
-🙏 पहनने की विधि
-</h3>
-
-
-<p className="text-gray-300">
-
-{rudraksha.how_to_wear}
-
-</p>
-
-
-</div>
-
-
-
-
-
-{/* Time */}
-
-
-<div className="
-border
-border-yellow-500
-rounded-2xl
-p-5
-text-center
-">
-
-
-<h3 className="
-text-xl
-text-yellow-400
-">
-⏰ शुभ समय
-</h3>
-
-
-<p className="mt-3">
-
-{rudraksha.time_to_wear}
-
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
-)
-}
+                                </div>
+                            </div>)}
+                    </div>
+                )
+            }
 
         </div>
 

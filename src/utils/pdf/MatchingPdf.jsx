@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Loader from "../../utils/buttons/Loader";
-import { generateMatchingPdfReport } from "../pdf/pdfReports";
+// import { generateMatchingPdfReport } from "../pdf/pdfReports";
 
 const MatchingPdf = ({ boyData, girlData }) => {
   const [loading, setLoading] = useState(false);

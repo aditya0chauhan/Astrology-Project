@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Loader from "../../utils/buttons/Loader";
 import { API_BASE } from "../../config/api";
+import PremiumLock from "../Premium/PremiumLock";
 
 
 const Number = ({ userData }) => {
@@ -22,9 +23,17 @@ const Number = ({ userData }) => {
             const [year, month, day] = userData.date.split("-");
             const formattedDate = `${day}/${month}/${year}`;
 
+            const token = localStorage.getItem("astro-token");
+
             const response = await fetch(
-                ` ${API_BASE}/astro/numerology/number-analysis?name=${userData.name}&date=${formattedDate}&phone=${userData.phone}&lang=hi`);
-                
+                `${API_BASE}/astro/numerology/number-analysis?name=${userData.name}&date=${formattedDate}&phone=${userData.phone}&lang=hi`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
             const result = await response.json();
             setData(result.response);
         }
@@ -35,117 +44,124 @@ const Number = ({ userData }) => {
 
         finally {
             setLoading(false);
-        }}
+        }
+    }
+
+    const user = JSON.parse(
+        localStorage.getItem("astro-user") || "null"
+    );
+
+    const isGold =
+        user?.plan === "Gold" &&
+        user?.goldExpiry &&
+        new Date(user.goldExpiry) > new Date();
 
     <div className="min-h-[60vh] flex items-center justify-center">
         <Loader />
     </div>
 
-    return (
+  return (
+  <div className="mt-10 px-5 text-white min-h-screen flex justify-center items-center">
 
-        <div className="mt-10 px-5 text-white min-h-screen flex justify-center items-center">
+    {loading && <Loader />}
 
-            {
-                loading && <Loader />
-            }
+    {!loading && !isGold && (
+      <div className="w-full max-w-5xl mx-auto bg-[#050b20] border border-yellow-500 rounded-3xl p-8 shadow-xl">
 
-            {
-                !loading && data && (
+        <h2 className="text-center text-3xl font-bold text-yellow-400 mb-8">
+          🔢 Number Analysis
+        </h2>
 
-           <div className="max-w-5xl mx-auto bg-[#050b20] border border-yellow-500 rounded-3xl p-8 shadow-xl ">
+        <PremiumLock
+          title="Full Numerology की पूरी जानकारी के लिए"
+        />
 
-               <h2 className=" text-center text-3xl font-bold text-yellow-400 mb-8 ">
-                            🔢 Number Analysis
-                        </h2>
+      </div>
+    )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
+    {!loading && isGold && data && (
+      <div className="w-full max-w-5xl mx-auto bg-[#050b20] border border-yellow-500 rounded-3xl p-8 shadow-xl">
 
-            <div className="border border-yellow-500 rounded-2xl p-5 text-center">
+        <h2 className="text-center text-3xl font-bold text-yellow-400 mb-8">
+          🔢 Number Analysis
+        </h2>
 
-        <h3 className="text-gray-300">
-                Destiny Number </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-               <p className="text-5xl text-yellow-400 font-bold">
-                    {data.destinyNumber}
-                        </p>
-                </div>
-
-        <div className="border border-yellow-500 rounded-2xl p-5 text-center">
+          <div className="border border-yellow-500 rounded-2xl p-5 text-center">
             <h3 className="text-gray-300">
-                Name Number
-                   </h3>
-
-                <p className="text-5xl text-yellow-400 font-bold">
-                    {data.nameNumber}
-                         </p>
-                </div>
-
-
-     <div className="border border-yellow-500 rounded-2xl p-5 text-center">
-
-            <h3 className="text-gray-300">
-                Radical Number
-                        </h3>
-
-        <p className="text-5xl text-yellow-400 font-bold">
-                {data.radicalNumber}
-                    </p></div>
-
-    <div className="border border-yellow-500 rounded-2xl p-5 text-center">
-
-        <h3 className="text-gray-300">
-                Mobile Number
-                         </h3>
-
+              Destiny Number
+            </h3>
             <p className="text-5xl text-yellow-400 font-bold">
-               {data.mobileNumber}
-                   </p>
+              {data.destinyNumber}
+            </p>
+          </div>
 
-                   </div>
-
-
-        <div className="border border-yellow-500 rounded-2xl p-5 text-center">
-
+          <div className="border border-yellow-500 rounded-2xl p-5 text-center">
             <h3 className="text-gray-300">
-               Month Number
-                   </h3>
-
+              Name Number
+            </h3>
             <p className="text-5xl text-yellow-400 font-bold">
-                     {data.monthNumber}</p>
+              {data.nameNumber}
+            </p>
+          </div>
 
-                </div>
+          <div className="border border-yellow-500 rounded-2xl p-5 text-center">
+            <h3 className="text-gray-300">
+              Radical Number
+            </h3>
+            <p className="text-5xl text-yellow-400 font-bold">
+              {data.radicalNumber}
+            </p>
+          </div>
 
-        <div className="border border-yellow-500 rounded-2xl p-5 text-center">
+          <div className="border border-yellow-500 rounded-2xl p-5 text-center">
+            <h3 className="text-gray-300">
+              Mobile Number
+            </h3>
+            <p className="text-5xl text-yellow-400 font-bold">
+              {data.mobileNumber}
+            </p>
+          </div>
 
-           <h3 className="text-gray-300">
-                   Year Number
-                       </h3>
+          <div className="border border-yellow-500 rounded-2xl p-5 text-center">
+            <h3 className="text-gray-300">
+              Month Number
+            </h3>
+            <p className="text-5xl text-yellow-400 font-bold">
+              {data.monthNumber}
+            </p>
+          </div>
 
-         <p className="text-5xl text-yellow-400 font-bold">
-            {data.yearNumber}
-                </p>
+          <div className="border border-yellow-500 rounded-2xl p-5 text-center">
+            <h3 className="text-gray-300">
+              Year Number
+            </h3>
+            <p className="text-5xl text-yellow-400 font-bold">
+              {data.yearNumber}
+            </p>
+          </div>
 
         </div>
-        </div>
 
-        <div className="mt-8 border border-yellow-500 rounded-2xl p-5 text-center ">
+        <div className="mt-8 border border-yellow-500 rounded-2xl p-5 text-center">
 
-           <h3 className="text-xl text-gray-300">
-                Western Zodiac Sign
-                </h3>
+          <h3 className="text-xl text-gray-300">
+            Western Zodiac Sign
+          </h3>
 
-
-           <p className="text-3xl font-bold text-yellow-400 mt-3 ">
-                    ♒ {data.westernZodiacSign}
-                </p>
-
+          <p className="text-3xl font-bold text-yellow-400 mt-3">
+            ♒ {data.westernZodiacSign}
+          </p>
 
         </div>
-</div>
 
-            )}
-        </div>
-        )}
+      </div>
+    )}
+
+  </div>
+);
+}
 
 
 export default Number;

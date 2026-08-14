@@ -30,6 +30,7 @@ import Astakvarga from '../components/astakvarga/Astakvarga';
 import {Genrate} from '../utils/buttons/Genrate';
 import SadeSati from '../components/dasha/SadeSati';
 import Gem from '../components/kundaliFiles/Gem';
+import PremiumLock from '../components/Premium/PremiumLock'
 
 const readStoredFormData = () => {
     if (typeof window === 'undefined') return null;

@@ -2,26 +2,55 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 import { API_BASE } from "../../config/api";
+import PremiumLock from "../Premium/PremiumLock";
+import { hasSilverAccess } from "../../utils/premiumAccess";
 
 const CurrentFullMD = ({ userData }) => {
+  const [user, setUser] = useState(null);
+
   const { t, i18n } = useTranslation();
+
   const [mahadashaFull, setMahadashaFull] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openSection, setOpenSection] = useState("mahadasha");
 
+  // Logged-in user load
+  useEffect(() => {
+    const storedUser = localStorage.getItem("astro-user");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  // Mahadasha data fetch
   useEffect(() => {
     if (!userData) return;
 
-    const { formattedDate, time, latitude, longitude } = userData;
+    const {
+      formattedDate,
+      time,
+      latitude,
+      longitude,
+    } = userData;
 
     const fetchfullMahadasha = async () => {
       try {
         setLoading(true);
 
+        const token = localStorage.getItem("astro-token");
         const data = await fetch(
-            `${API_BASE}/astro/dasha/current-mahadasha-full?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`)
+          `${API_BASE}/astro/dasha/current-mahadasha-full?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"
+          }`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const fullDasha = await data.json();
+
         setMahadashaFull(fullDasha.response);
       } catch (err) {
         console.log(err);
@@ -33,139 +62,170 @@ const CurrentFullMD = ({ userData }) => {
     fetchfullMahadasha();
   }, [userData, i18n.language]);
 
- if (loading) {
-        return (
-            <div className="min-h-[60vh] flex items-center justify-center">
-                <Loader />
-            </div>
-        );
-    }
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
 
   if (!mahadashaFull) {
-  return  <div className="text-center text-red-400 mt-10">
-      {t("noDataAvailable")}
-    </div>
-}
+    return (
+      <div className="text-center text-red-400 mt-10">
+        {t("noDataAvailable")}
+      </div>
+    );
+  }
 
   const fullMahadasha = [
-  {
-    id: "mahadasha",
-    title: t("mahadasha"),
-    data: mahadashaFull.mahadasha,
-  },
-  {
-    id: "antardasha",
-    title: t("antardasha"),
-    data: mahadashaFull.antardasha,
-  },
-  {
-    id: "paryantardasha",
-    title: t("paryantardasha"),
-    data: mahadashaFull.paryantardasha,
-  },
-  {
-    id: "Shookshamadasha",
-    title: t("shookshamaDasha"),
-    data: mahadashaFull.Shookshamadasha,
-  },
-  {
-    id: "Pranadasha",
-    title: t("pranaDasha"),
-    data: mahadashaFull.Pranadasha,
-  },
-];
+    {
+      id: "mahadasha",
+      title: t("mahadasha"),
+      data: mahadashaFull.mahadasha,
+    },
+    {
+      id: "antardasha",
+      title: t("antardasha"),
+      data: mahadashaFull.antardasha,
+    },
+    {
+      id: "paryantardasha",
+      title: t("paryantardasha"),
+      data: mahadashaFull.paryantardasha,
+    },
+    {
+      id: "Shookshamadasha",
+      title: t("shookshamaDasha"),
+      data: mahadashaFull.Shookshamadasha,
+    },
+    {
+      id: "Pranadasha",
+      title: t("pranaDasha"),
+      data: mahadashaFull.Pranadasha,
+    },
+  ];
 
   return (
-      <div className="mt-16">
+    <div className="mt-16">
 
-<h2 className="text-3xl font-bold text-center text-amber-400 mt-24 my-5">
+      <h2 className="text-3xl font-bold text-center text-amber-400 mt-24 my-5">
+        {t("fullDashaDetails")}
+      </h2>
 
-{t("fullDashaDetails")}
+      <div className="space-y-5 my-5">
 
-</h2>
+        {fullMahadasha.map((dasha) => (
 
-<div className="space-y-5">
+          <div
+            key={dasha.id}
+            className="rounded-xl border border-amber-400 bg-[#1A2742] overflow-hidden"
+          >
 
-{fullMahadasha.map((dasha)=>(
+            {/* Section Header */}
 
-<div
-key={dasha.id}
-className="rounded-xl border border-amber-400 bg-[#1A2742] overflow-hidden"
->
+            <button
+              className="w-full flex justify-between items-center px-6 py-5 text-left"
+              onClick={() =>
+                setOpenSection(
+                  openSection === dasha.id
+                    ? null
+                    : dasha.id
+                )
+              }
+            >
 
-<button
-className="w-full flex justify-between items-center px-6 py-5 text-left"
-onClick={()=>setOpenSection(
-openSection===dasha.id
-?null
-:dasha.id
-)}
->
+              <span className="text-xl font-bold text-amber-300">
+                {dasha.title}
+              </span>
 
-<span className="text-xl font-bold text-amber-300">
+              <span className="text-2xl">
+                {openSection === dasha.id ? "−" : "+"}
+              </span>
 
-{dasha.title}
+            </button>
 
-</span>
 
-<span className="text-2xl">
+            {/* Section Content */}
 
-{openSection===dasha.id ? "−" : "+"}
+            {openSection === dasha.id && (
 
-</span>
+              <div className="px-6 pb-6">
 
-</button>
+                <div className="space-y-4">
 
-{openSection===dasha.id && (
+                  {/* FREE — first 2 entries */}
 
-<div className="px-6 pb-6">
+                  {dasha.data.slice(0, 2).map((item, index) => (
 
-<div className="space-y-4">
+                    <div
+                      key={index}
+                      className="border-l-4 border-amber-400 pl-5 py-3 relative"
+                    >
 
-{dasha.data.map((item,index)=>(
+                      <div className="absolute -left-[10px] top-6 h-4 w-4 rounded-full bg-amber-400"></div>
 
-<div
-key={index}
-className="border-l-4 border-amber-400 pl-5 py-3 relative"
->
+                      <h3 className="text-lg font-semibold text-white">
+                        {item.name}
+                      </h3>
 
-<div className="absolute -left-[10px] top-6 h-4 w-4 rounded-full bg-amber-400"></div>
+                      <p className="text-green-300">
+                        {t("start")}: {item.start}
+                      </p>
 
-<h3 className="text-lg font-semibold text-white">
+                      <p className="text-red-300">
+                        {t("end")}: {item.end}
+                      </p>
 
-{item.name}
+                    </div>
 
-</h3>
+                  ))}
 
-<p className="text-green-300">
 
-{t("start")}: {item.start}
+                  {/* PREMIUM — remaining entries */}
 
-</p>
+                  {hasSilverAccess(user) ? (
+                    <div className="space-y-4">
+                      {dasha.data.slice(2).map((item, index) => (
+                        <div
+                          key={index}
+                          className="border-l-4 border-amber-400 pl-5 py-3 relative"
+                        >
+                          <div className="absolute -left-[10px] top-6 h-4 w-4 rounded-full bg-amber-400"></div>
 
-<p className="text-red-300">
+                          <h3 className="text-lg font-semibold text-white">
+                            {item.name}
+                          </h3>
 
-{t("end")}: {item.end}
+                          <p className="text-green-300">
+                            {t("start")}: {item.start}
+                          </p>
 
-</p>
+                          <p className="text-red-300">
+                            {t("end")}: {item.end}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <PremiumLock
+                      user={user}
+                      title={`${dasha.title} की पूरी जानकारी के लिए`}
+                    />
+                  )}
 
-</div>
+                </div>
 
-))}
+              </div>
 
-</div>
+            )}
 
-</div>
+          </div>
 
-)}
+        ))}
 
-</div>
-
-))}
-
-</div>
-
-</div>
+      </div>
+    </div>
   );
 };
 

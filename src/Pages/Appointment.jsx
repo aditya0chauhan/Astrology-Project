@@ -1,5 +1,3 @@
-
-
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -79,33 +77,117 @@ export default function Appointment() {
             setLoading(true);
             setMessage("");
 
-            const response = await fetch(`${API_BASE}/bookings`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(form),
-            });
+            // 1. Create Razorpay Booking Order
+            const orderResponse = await fetch(
+                `${API_BASE}/bookings/create-order`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        service: form.service,
+                    }),
+                }
+            );
 
-            const data = await response.json();
+            const orderData = await orderResponse.json();
 
-            if (!response.ok) {
-                throw new Error(data.message || "Booking Failed");
+            if (!orderResponse.ok) {
+                throw new Error(
+                    orderData.message || "Failed to create booking order"
+                );
             }
 
-            setMessage("✅ Appointment booked successfully.");
+            // 2. Open Razorpay Checkout
+            const options = {
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
 
-            setForm({
-                name: "",
-                phone: "",
-                email: "",
-                service: initialService,
-                bookingDate: "",
-                bookingTime: "",
-                message: "",
-            });
+                amount: orderData.order.amount,
+                currency: orderData.order.currency,
+
+                name: "Manoj Vedic Astro",
+                description: `${form.service} Booking`,
+
+                order_id: orderData.order.id,
+
+                prefill: {
+                    name: form.name,
+                    email: form.email,
+                    contact: form.phone,
+                },
+
+                theme: {
+                    color: "#fbbf24",
+                },
+
+                // 3. Payment Success
+                handler: async function (response) {
+                    try {
+                        const verifyResponse = await fetch(
+                            `${API_BASE}/bookings/verify-payment`,
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Authorization: `Bearer ${token}`,
+                                },
+                                body: JSON.stringify({
+                                    razorpay_order_id:
+                                        response.razorpay_order_id,
+
+                                    razorpay_payment_id:
+                                        response.razorpay_payment_id,
+
+                                    razorpay_signature:
+                                        response.razorpay_signature,
+
+                                    bookingData: form,
+                                }),
+                            }
+                        );
+
+                        const verifyData = await verifyResponse.json();
+
+                        if (!verifyResponse.ok) {
+                            throw new Error(
+                                verifyData.message ||
+                                "Payment verification failed"
+                            );
+                        }
+
+                        setMessage(
+                            "✅ Payment successful! Your booking has been created."
+                        );
+
+                        setForm({
+                            name: "",
+                            phone: "",
+                            email: "",
+                            service: initialService,
+                            bookingDate: "",
+                            bookingTime: "",
+                            message: "",
+                        });
+                    } catch (error) {
+                        console.error(error);
+                        setMessage(error.message);
+                    }
+                },
+
+                modal: {
+                    ondismiss: function () {
+                        setMessage("Payment cancelled.");
+                    },
+                },
+            };
+
+            const razorpay = new window.Razorpay(options);
+
+            razorpay.open();
         } catch (error) {
+            console.error(error);
             setMessage(error.message);
         } finally {
             setLoading(false);

@@ -2,6 +2,9 @@ import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
 
+
+
+
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
@@ -113,6 +116,30 @@ export const loginUser = async (req, res) => {
       });
     }
 
+    if (
+      user.plan === "Silver" &&
+      user.premiumExpiry &&
+      new Date(user.premiumExpiry) <= new Date()
+    ) {
+      user.plan = "Basic";
+      user.isPremium = false;
+      user.premiumExpiry = null;
+
+      await user.save();
+    }
+
+    if (
+      user.plan === "Gold" &&
+      user.goldExpiry &&
+      new Date(user.goldExpiry) <= new Date()
+    ) {
+      user.plan = "Basic";
+      user.isPremium = false;
+      user.goldExpiry = null;
+
+      await user.save();
+    }
+
     const token = generateToken(user._id);
 
     res.status(200).json({
@@ -146,6 +173,30 @@ export const getProfile = async (req, res) => {
         success: false,
         message: "User not found",
       });
+    }
+
+    if (
+      user.plan === "Silver" &&
+      user.premiumExpiry &&
+      new Date(user.premiumExpiry) <= new Date()
+    ) {
+      user.plan = "Basic";
+      user.isPremium = false;
+      user.premiumExpiry = null;
+
+      await user.save();
+    }
+
+    if (
+      user.plan === "Gold" &&
+      user.goldExpiry &&
+      new Date(user.goldExpiry) <= new Date()
+    ) {
+      user.plan = "Basic";
+      user.isPremium = false;
+      user.goldExpiry = null;
+
+      await user.save();
     }
 
     res.status(200).json({

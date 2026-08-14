@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import Loader from '../../utils/buttons/Loader';
 import { API_BASE } from "../../config/api";
+import PremiumLock from "../Premium/PremiumLock";
+import { hasSilverAccess } from "../../utils/premiumAccess";
 
 const PitraDosh = ({ userData }) => {
     const { t, i18n } = useTranslation();
@@ -17,11 +19,19 @@ const PitraDosh = ({ userData }) => {
             try {
                 setLoading(true);
 
+                const token = localStorage.getItem("astro-token");
+
                 const data = await fetch(
-                    `${API_BASE}/astro/dosha/pitra-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === 'hi' ? 'hi' : 'en'}`)
+                    `${API_BASE}/astro/dosha/pitra-dosh?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === 'hi' ? 'hi' : 'en'}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
 
                 const dosha = await data.json();
-               
+
                 setPitra(dosha.response);
             } catch (err) {
                 console.log(err);
@@ -33,7 +43,7 @@ const PitraDosh = ({ userData }) => {
         pitraDosh();
     }, [userData, i18n.language]);
 
-     if (loading) {
+    if (loading) {
         return (
             <div className="min-h-[60vh] flex items-center justify-center">
                 <Loader />
@@ -46,6 +56,12 @@ const PitraDosh = ({ userData }) => {
             {t('noDataAvailable')}
         </div>
     }
+
+    const user = JSON.parse(
+        localStorage.getItem("astro-user") || "null"
+    );
+
+    const isPremium = hasSilverAccess(user);
     return (
         <div>
             <div className="space-y-8 text-white">
@@ -67,8 +83,8 @@ const PitraDosh = ({ userData }) => {
 
                             <p
                                 className={`text-2xl font-bold ${pitra.is_dosha_present
-                                        ? "text-red-400"
-                                        : "text-green-400"
+                                    ? "text-red-400"
+                                    : "text-green-400"
                                     }`}
                             >
                                 {pitra.is_dosha_present ? t('present') : t('absent')}
@@ -92,77 +108,84 @@ const PitraDosh = ({ userData }) => {
 
                 </div>
 
+                {!isPremium && (
+                    <div className="mt-6">
+                        <PremiumLock title={`${t("pitraDoshReport")} की पूरी जानकारी के लिए`} />
+                    </div>
+                )}
 
+                {isPremium && (
+                    <div className="mt-6">
 
-                {/* Effects */}
+                        <div className="bg-[#1A2742] rounded-xl border border-amber-400 p-6">
 
-                <div className="bg-[#1A2742] rounded-xl border border-amber-400 p-6">
+                            <h2 className="text-xl font-bold text-amber-300 mb-6">
+                                ⚠️ {t('pitraDoshEffects')}
+                            </h2>
 
-                    <h2 className="text-xl font-bold text-amber-300 mb-6">
-                        ⚠️ {t('pitraDoshEffects')}
-                    </h2>
+                            <div className="space-y-4">
 
-                    <div className="space-y-4">
+                                {pitra.effects.map((item, index) => (
 
-                        {pitra.effects.map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex gap-4 bg-[#243454] rounded-lg p-5"
+                                    >
 
-                            <div
-                                key={index}
-                                className="flex gap-4 bg-[#243454] rounded-lg p-5"
-                            >
+                                        <div className="h-8 w-8 rounded-full bg-red-500 text-white flex justify-center items-center font-bold shrink-0">
+                                            {index + 1}
+                                        </div>
 
-                                <div className="h-8 w-8 rounded-full bg-red-500 text-white flex justify-center items-center font-bold shrink-0">
-                                    {index + 1}
-                                </div>
+                                        <p className="leading-8">
+                                            {item}
+                                        </p>
 
-                                <p className="leading-8">
-                                    {item}
-                                </p>
+                                    </div>
+
+                                ))}
 
                             </div>
 
-                        ))}
-
-                    </div>
-
-                </div>
+                        </div>
 
 
 
-                {/* Remedies */}
+                        {/* Remedies */}
 
-                <div className="bg-[#1A2742] rounded-xl border border-amber-400 p-6">
+                        <div className="bg-[#1A2742] rounded-xl border border-amber-400 p-6">
 
-                    <h2 className="text-xl font-bold text-amber-300 mb-6">
-                        🪔 {t('pitraDoshRemedies')}
-                    </h2>
+                            <h2 className="text-xl font-bold text-amber-300 mb-6">
+                                🪔 {t('pitraDoshRemedies')}
+                            </h2>
 
-                    <div className="space-y-4">
+                            <div className="space-y-4">
 
-                        {pitra.remedies.map((item, index) => (
+                                {pitra.remedies.map((item, index) => (
 
-                            <div
-                                key={index}
-                                className="flex gap-4 bg-[#243454] rounded-lg p-5"
-                            >
+                                    <div
+                                        key={index}
+                                        className="flex gap-4 bg-[#243454] rounded-lg p-5"
+                                    >
 
-                                <div className="h-8 w-8 rounded-full bg-amber-400 text-black flex justify-center items-center font-bold shrink-0">
-                                    {index + 1}
-                                </div>
+                                        <div className="h-8 w-8 rounded-full bg-amber-400 text-black flex justify-center items-center font-bold shrink-0">
+                                            {index + 1}
+                                        </div>
 
-                                <p className="leading-8">
-                                    {item}
-                                </p>
+                                        <p className="leading-8">
+                                            {item}
+                                        </p>
+
+                                    </div>
+
+                                ))}
 
                             </div>
 
-                        ))}
-
+                        </div>
                     </div>
-
-                </div>
-
+                )}
             </div>
+
         </div>
     )
 }

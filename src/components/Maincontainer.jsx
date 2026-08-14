@@ -2,7 +2,7 @@ import image from '../assets/images/pic.png'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { PremiumCard, Card2, Card3, Card4, Card5, Card6 } from '../utils/buttons/PremiumCard'
-import { Whatsapp } from '../utils/buttons/Genrate'
+import { Book } from '../utils/buttons/Genrate'
 import banner from '../assets/images/banner.png'
 
 const Maincontainer = () => {
@@ -166,7 +166,8 @@ const Maincontainer = () => {
               rel="noopener noreferrer"
               className="..."
             >
-              <Whatsapp />
+              <Link to="/appointment" 
+            state={{service: "Handwritten Kundali"}}><Book /></Link>
             </a>
           </div>
         </section>

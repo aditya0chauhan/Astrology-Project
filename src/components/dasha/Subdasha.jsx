@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 import { API_BASE } from "../../config/api";
+import PremiumLock from "../Premium/PremiumLock";
+import { hasSilverAccess } from "../../utils/premiumAccess";
 
 const Subdasha = ({ userData }) => {
   const { t, i18n } = useTranslation();
@@ -15,9 +17,14 @@ const Subdasha = ({ userData }) => {
     const fetchSubDasha = async () => {
       try {
         setLoading(true);
-
+         const token = localStorage.getItem("astro-token");
         const data = await fetch(
-          ` ${API_BASE}/astro/dasha/specific-sub-dasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`
+          ` ${API_BASE}/astro/dasha/specific-sub-dasha?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${i18n.language === "hi" ? "hi" : "en"}`,
+           {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         )
 
         const dasha = await data.json();
@@ -30,14 +37,14 @@ const Subdasha = ({ userData }) => {
     }
     fetchSubDasha()
   }, [userData, i18n.language])
-  
- if (loading) {
-        return (
-            <div className="min-h-[60vh] flex items-center justify-center">
-                <Loader />
-            </div>
-        );
-    }
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
 
   if (!subDasha) {
     return <div className="text-center text-red-400 mt-10">
@@ -45,26 +52,33 @@ const Subdasha = ({ userData }) => {
     </div>
   }
 
+  const user = JSON.parse(
+    localStorage.getItem("astro-user") || "null"
+  );
+
+  const isPremium = hasSilverAccess(user);
+
   return (
-    <div>
-      <div className="space-y-8 text-white">
+  <div>
+    <div className="space-y-8 text-white">
 
-        <div className="bg-[#1A2742] rounded-xl  p-6">
+      <div className="bg-[#1A2742] rounded-xl p-6">
 
-          <h2 className="text-3xl font-bold text-center text-amber-400 mb-8">
-            🌙 {t("specificSubDasha")}
-          </h2>
+        <h2 className="text-3xl font-bold text-center text-amber-400 mb-8">
+          🌙 {t("specificSubDasha")}
+        </h2>
 
-          <div className="space-y-5">
+        <div className="space-y-5">
 
-            {subDasha.mahadasha.map((item, index) => (
+          {subDasha.mahadasha
+            ?.slice(0, isPremium ? subDasha.mahadasha.length : 2)
+            .map((item, index) => (
 
               <div
                 key={index}
                 className="flex gap-5 bg-[#243454] rounded-xl p-5 border border-amber-500/20 border-2 border-amber-200 transition"
               >
 
-                {/* Number */}
 
                 <div className="flex flex-col items-center">
 
@@ -72,14 +86,14 @@ const Subdasha = ({ userData }) => {
                     {index + 1}
                   </div>
 
-                  {index !== subDasha.mahadasha.length - 1 && (
+                  {index !== Math.min(
+                    subDasha.mahadasha.length,
+                    isPremium ? subDasha.mahadasha.length : 2
+                  ) - 1 && (
                     <div className="w-1 flex-1 bg-amber-400 mt-2 rounded-full"></div>
                   )}
 
                 </div>
-
-
-                {/* Data */}
 
                 <div className="flex-1">
 
@@ -129,13 +143,21 @@ const Subdasha = ({ userData }) => {
 
             ))}
 
-          </div>
-
         </div>
 
+        {!isPremium && (
+          <div className="mt-8">
+            <PremiumLock
+              title={`${t("specificSubDasha")} की पूरी जानकारी के लिए`}
+            />
+          </div>
+        )}
+
       </div>
+
     </div>
-  )
+  </div>
+);
 }
 
 export default Subdasha

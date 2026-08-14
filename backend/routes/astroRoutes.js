@@ -1,22 +1,24 @@
 import express from "express";
 import { astroController } from "../controllers/astroController.js";
+import optionalAuth from "../middleware/optionalAuth.js";
+
 
 const router = express.Router();
+router.use(optionalAuth);
 router.get("/prediction/daily", astroController);
 router.get("/prediction/monthly", astroController);
 router.get("/panchang/panchang", astroController);
 router.get("/panchang/choghadiya-muhurta", astroController);
 router.get("/horoscope/ashtakvarga", astroController);
 router.get("/horoscope/ashtakvarga_chart", astroController);
-router.get("/dasha/current-mahadasha-full", astroController);
 router.get("/dasha/current-mahadasha", astroController);
-router.get("/extended_horoscope/current_sadesati", astroController);
-router.get("/dasha/specific-sub-dasha", astroController);
-router.get("/dasha/yogini-dasha-sub", astroController);
-router.get("/dasha/yogini-dasha-sub", astroController);
-router.get("/dasha/yogini-dasha-main", astroController);
-router.get("/dasha/mahadasha", astroController);
-router.get("/dosha/kaalsarp-dosh", astroController);
+router.get("/extended_horoscope/current_sadesati", optionalAuth, astroController);
+router.get("/dasha/specific-sub-dasha",optionalAuth, astroController);
+router.get("/dasha/yogini-dasha-sub",optionalAuth, astroController);
+router.get("/dasha/yogini-dasha-main",optionalAuth, astroController);
+router.get(  "/dasha/mahadasha",optionalAuth,astroController );
+router.get( "/dasha/current-mahadasha-full",optionalAuth, astroController );
+router.get("/dosha/kaalsarp-dosh",optionalAuth, astroController);
 router.get("/horoscope/ascendant-report", astroController);
 router.get("/chart_image/d1", astroController);
 router.get("/prediction/panchang", astroController);
@@ -33,15 +35,15 @@ router.get("/chart_image/d24", astroController);
 router.get("/chart_image/d20", astroController);
 router.get("/chart_image/d16", astroController);
 router.get("/chart_image/d12", astroController);
-router.get("/extended_horoscope/gem_suggestion", astroController);
-router.get("/extended_horoscope/rudraksh_suggestion", astroController);
+router.get("/extended_horoscope/gem_suggestion",optionalAuth, astroController);
+router.get("/extended_horoscope/rudraksh_suggestion",optionalAuth, astroController);
 router.get("/chart_image/d6", astroController);
 router.get("/chart_image/d7", astroController);
 router.get("/chart_image/d8", astroController);
 router.get("/chart_image/d10", astroController);
 router.get("/chart_image/bhav_chalit_chart", astroController);
-router.get("/dosha/mangal_dosh", astroController);
-router.get("/dosha/manglik-dosh", astroController);
+router.get("/dosha/mangal_dosh",optionalAuth,astroController);
+router.get("/dosha/manglik-dosh", optionalAuth, astroController);
 router.get("/dosha/pitra-dosh", astroController);
 router.get("/pdf/:endpoint", astroController);
 router.get("/kp/house_significators", astroController);
@@ -65,22 +67,17 @@ router.get("/matching/papasamaya-match", astroController);
 router.get("/matching/dasha-sandhi", astroController);
 router.get("/numerology/loshu-grid", astroController);
 router.get("/numerology/missing-numbers", astroController);
-router.get("/numerology/available-numbers",astroController);
-router.get("/numerology/mobile-analysis",astroController);
-router.get("/numerology/lucky-things",astroController);
-router.get("/numerology/karmic-number",astroController);
-router.get("/numerology/personal-year",astroController);
-router.get("/numerology/master-numbers",astroController);
-router.get("/numerology/number-analysis",astroController);
-router.get("/numerology/numerology-suggestion",astroController);
-router.get("/numerology/numerology-analysis",astroController);
-router.get("/numerology/plane-details",astroController);
-router.get("/numerology/vehicle-analysis",astroController);
-router.get("/numerology/name-analysis",astroController);
-
-
+router.get("/numerology/available-numbers", astroController);
+router.get("/numerology/mobile-analysis", astroController);
+router.get("/numerology/lucky-things", astroController);
+router.get("/numerology/karmic-number", astroController);
+router.get("/numerology/personal-year", astroController);
+router.get("/numerology/master-numbers", astroController);
+router.get("/numerology/number-analysis", astroController);
+router.get("/numerology/numerology-suggestion", astroController);
+router.get("/numerology/numerology-analysis", astroController);
+router.get("/numerology/plane-details", astroController);
+router.get("/numerology/vehicle-analysis", astroController);
+router.get("/numerology/name-analysis", astroController);
 
 export default router;
-
-//  import { API_BASE } from "../../config/api";
-// ${API_BASE}/astro/

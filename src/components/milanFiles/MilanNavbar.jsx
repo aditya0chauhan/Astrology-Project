@@ -10,7 +10,7 @@ const tabs = [
 
 const MilanNavbar = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="fixed  left-0 right-0 z-50 bg-[#08122D]/95 backdrop-blur-md border-y border-amber-500 shadow-lg flex justify-around">
+    <div className="fixed  left-0 right-0 z-50 bg-[#08122D]/95 backdrop-blur-md border-y border-amber-500 shadow-lg flex justify-around mt-10">
       <div className="overflow-x-auto scrollbar-hide">
      <div className="flex w-max gap-3 px-4 py-3">
           {tabs.map((tab) => (

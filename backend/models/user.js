@@ -30,6 +30,21 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
 
+    verificationTokenExpiry: {
+      type: Date,
+      default: null,
+    },
+
+    resetOtp: {
+      type: String,
+      default: null,
+    },
+
+    resetOtpExpiry: {
+      type: Date,
+      default: null,
+    },
+
     phone: {
       type: String,
       default: "",
@@ -43,6 +58,7 @@ const userSchema = new mongoose.Schema(
 
     plan: {
       type: String,
+      enum: ["Basic", "Silver", "Gold"],
       default: "Basic",
     },
 
@@ -52,6 +68,11 @@ const userSchema = new mongoose.Schema(
     },
 
     premiumExpiry: {
+      type: Date,
+      default: null,
+    },
+    
+    goldExpiry: {
       type: Date,
       default: null,
     },

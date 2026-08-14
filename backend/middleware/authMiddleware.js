@@ -11,6 +11,7 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
+
     const token = authHeader.split(" ")[1];
 
     // Token Verify
@@ -21,6 +22,7 @@ const authMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
+      console.log(error);
     return res.status(401).json({
       success: false,
       message: "Invalid or Expired Token",

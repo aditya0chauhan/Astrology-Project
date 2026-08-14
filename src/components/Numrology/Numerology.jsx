@@ -38,7 +38,7 @@ const Numerology = () => {
                   },
 
                   {
-                    name: "Number Analysis",
+                    name: "Lucky Number",
                     value: "number"
                   },
 

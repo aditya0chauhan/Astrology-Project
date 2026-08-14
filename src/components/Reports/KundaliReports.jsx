@@ -1,6 +1,6 @@
 import { FaFilePdf } from "react-icons/fa";
 import { GenrateReport } from '../../utils/buttons/Genrate';
-// import { generatePdfReport } from '../../utils/pdfReports'
+import { generatePdfReport } from '../../utils/pdf/pdfReports'
 
 const reports = [
   {
@@ -35,7 +35,29 @@ const reports = [
   },
 ];
 
-const KundaliReports = () => {
+const KundaliReports = ({userData}) => {
+
+  const handleGeneratePdf = async (reportName) => {
+  try {
+    const result = await generatePdfReport(
+      "generate",
+      userData,
+      "large"
+    );
+
+    console.log("PDF RESULT:", result);
+
+    if (result?.url) {
+      window.open(result.url, "_blank");
+    } else {
+      alert("PDF generate ho gayi, lekin URL nahi mila.");
+    }
+  } catch (error) {
+    console.error("PDF Error:", error);
+    alert("PDF generate nahi ho payi.");
+  }
+};
+
   const handleWhatsApp = (reportName) => {
     const phone = "918882532259";
 
@@ -86,8 +108,7 @@ const KundaliReports = () => {
             </div>
 
             <button
-              onClick={           
-                  handleWhatsApp(report.title)}
+              onClick={() => handleGeneratePdf(report.title)}
                  
               className="mt-8 py-3 rounded-xl duration-300 flex justify-center items-center"
             >

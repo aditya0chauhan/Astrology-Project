@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaCrown, FaUserCircle, FaShieldAlt, FaCreditCard, FaChartLine, FaUsers, FaGem, FaEye, FaEyeSlash, } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
-import PremiumLock from './Premium/PremiumLock';
+import Premium from './Premium/Premium';
 
 const API_BASE =
   import.meta.env.VITE_API_URL || "http://localhost:5000/api";
@@ -14,6 +14,19 @@ const Account = () => {
   const [user, setUser] = useState(null);
   const [dashboard, setDashboard] = useState(null);
   const [users, setUsers] = useState([]);
+
+  const isSilverActive =
+    user?.plan === "Silver" &&
+    user?.premiumExpiry &&
+    new Date(user.premiumExpiry) > new Date();
+
+  const isGoldActive =
+    user?.plan === "Gold" &&
+    user?.goldExpiry &&
+    new Date(user.goldExpiry) > new Date();
+
+  const isPremiumActive = isSilverActive || isGoldActive;
+
   const [payments, setPayments] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [myBookings, setMyBookings] = useState([]);
@@ -68,7 +81,7 @@ const Account = () => {
     try {
       const token = localStorage.getItem("astro-token");
 
-      const [dashboardRes, usersRes, bookingsRes] = await Promise.all([
+      const [dashboardRes, usersRes, bookingsRes, paymentsRes] = await Promise.all([
         fetch(`${API_BASE}/admin/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -87,17 +100,17 @@ const Account = () => {
           },
         }),
 
-        // fetch(`${API_BASE}/payments/history`, {
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //   },
-        // }),
+        fetch(`${API_BASE}/payments/history`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
       ]);
 
       const dashboardData = await dashboardRes.json();
       const usersData = await usersRes.json();
       const bookingsData = await bookingsRes.json();
-      // const paymentsData = await paymentsRes.json();
+      const paymentsData = await paymentsRes.json();
 
       setDashboard(dashboardData);
 
@@ -105,7 +118,7 @@ const Account = () => {
       setUsers(usersData);
       setBookings(bookingsData.bookings || []);
 
-      // setPayments(paymentsData.payments || []);
+      setPayments(paymentsData.payments || []);
     } catch (error) {
       console.error(error);
     }
@@ -121,7 +134,6 @@ const Account = () => {
       });
 
       const data = await response.json();
-      console.log(data.bookings);
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to load bookings");
@@ -199,26 +211,95 @@ const Account = () => {
     if (!user) return;
 
     try {
-      const response = await fetch(`${API_BASE}/payments/checkout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userEmail: user.email, plan: 'Premium', amount: 2999 }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Payment failed');
+      setLoading(true);
 
-      if (data.user) {
-        const updatedUser = { ...user, ...data.user };
-        setUser(updatedUser);
-        localStorage.setItem('astro-user', JSON.stringify(updatedUser));
+      const token = localStorage.getItem("astro-token");
+
+      // 1. Create Razorpay Order
+      const orderResponse = await fetch(
+        `${API_BASE}/payments/create-order`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const orderData = await orderResponse.json();
+
+      if (!orderResponse.ok) {
+        throw new Error(
+          orderData.message || "Failed to create payment order"
+        );
       }
 
-      setMessage(`Payment completed for ${data.transaction.plan}`);
-      if (user.role === 'admin') {
-        loadAdminData();
-      }
+      // 2. Open Razorpay Checkout
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+
+        amount: orderData.order.amount,
+        currency: orderData.order.currency,
+
+        name: "Manoj Astro",
+        description: "Silver Plan - 24 Hours",
+
+        order_id: orderData.order.id,
+
+        handler: async function (response) {
+
+          // 3. Verify Payment on Backend
+          const verifyResponse = await fetch(
+            `${API_BASE}/payments/verify-payment`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            }
+          );
+
+          const verifyData = await verifyResponse.json();
+
+          if (!verifyResponse.ok) {
+            throw new Error(
+              verifyData.message || "Payment verification failed"
+            );
+          }
+
+          setMessage("🎉 Silver Plan activated for 24 hours!");
+
+          // Refresh profile
+          await loadProfile();
+        },
+
+        prefill: {
+          name: user.name,
+          email: user.email,
+          contact: user.phone || "",
+        },
+
+        theme: {
+          color: "#fbbf24",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+
+      razorpay.open();
+
     } catch (error) {
+      console.error(error);
       setMessage(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -359,11 +440,33 @@ const Account = () => {
 
   const summaryCards = useMemo(() => {
     if (!dashboard?.summary) return [];
+
     return [
-      { label: 'Total Users', value: dashboard.summary.totalUsers, icon: <FaUsers /> },
-      { label: 'Active Users', value: dashboard.summary.activeUsers, icon: <FaShieldAlt /> },
-      { label: 'Premium Users', value: dashboard.summary.premiumUsers, icon: <FaCrown /> },
-      { label: 'Revenue', value: `₹${dashboard.summary.revenue}`, icon: <FaChartLine /> },
+      {
+        label: "Total Users",
+        value: dashboard.summary.totalUsers,
+        icon: <FaUsers />,
+      },
+      {
+        label: "Active Users",
+        value: dashboard.summary.activeUsers,
+        icon: <FaShieldAlt />,
+      },
+      {
+        label: "Silver Users",
+        value: dashboard.summary.silverUsers,
+        icon: <FaCrown />,
+      },
+      {
+        label: "Gold Users",
+        value: dashboard.summary.goldUsers,
+        icon: <FaGem />,
+      },
+      {
+        label: "Revenue",
+        value: `₹${dashboard.summary.revenue}`,
+        icon: <FaChartLine />,
+      },
     ];
   }, [dashboard]);
 
@@ -379,20 +482,7 @@ const Account = () => {
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-amber-300">Astrology Account Suite</p>
               <h1 className="mt-2 text-3xl font-semibold text-white sm:text-4xl">{t('accountTitle') || 'Professional account portal'}</h1>
-              <p className="mt-3 max-w-2xl text-sm leading-7 sm:text-base font-bold text-red-400">
-                प्रिय उपयोगकर्ता,
 
-                Account सुविधा पर वर्तमान में कार्य चल रहा है। जल्द ही आप अपने व्यक्तिगत खाते के माध्यम से:
-
-                📄 अपनी कुंडली एवं रिपोर्ट डाउनलोड कर सकेंगे।
-                📅 बुक की गई पूजा एवं परामर्श की स्थिति देख सकेंगे।
-                ❤️ अपनी पसंदीदा सेवाओं को सुरक्षित रख सकेंगे।
-                📜 अपने ऑर्डर एवं हिस्ट्री को आसानी से प्रबंधित कर सकेंगे।
-
-                हम इस सुविधा को बेहतर अनुभव के साथ जल्द ही उपलब्ध कराएंगे।
-
-                आपके धैर्य और सहयोग के लिए धन्यवाद। 🙏
-              </p>
             </div>
             <div className="rounded-2xl border border-amber-300/20 bg-slate-950/60 px-4 py-3 text-sm text-amber-200">
               <div className="flex items-center gap-2"><FaGem /> Secure & responsive experience</div>
@@ -537,7 +627,7 @@ const Account = () => {
             </motion.div>
           </div>
         ) : (
-          <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+          <div className="grid w-full min-w-0 gap-6 xl:grid-cols-[minmax(280px,0.72fr)_minmax(0,1.65fr)]">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="rounded-[24px] border border-white/10 bg-slate-950/70 p-6 shadow-2xl">
               <div className="flex items-center justify-between">
                 <div>
@@ -547,23 +637,44 @@ const Account = () => {
                 <div className="rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-sm font-semibold text-amber-300">{user.role}</div>
               </div>
 
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div className="mt-6 grid min-w-0 gap-4 sm:grid-cols-2">
+
+                <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="text-sm text-slate-400">Email</p>
-                  <p className="mt-1 font-medium text-white">{user.email}</p>
+
+                  <p className="mt-1 break-all text-sm font-medium text-white sm:text-base">
+                    {user.email}
+                  </p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+
+                <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="text-sm text-slate-400">Phone</p>
-                  <p className="mt-1 font-medium text-white">{user.phone || 'Not provided'}</p>
+
+                  <p className="mt-1 break-words font-medium text-white">
+                    {user.phone || "Not provided"}
+                  </p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+
+                <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="text-sm text-slate-400">Plan</p>
-                  <p className="mt-1 font-medium text-white">{user.plan || 'Basic'}</p>
+
+                  <p className="mt-1 font-medium text-white">
+                    {isGoldActive
+                      ? "Gold"
+                      : isSilverActive
+                        ? "Silver"
+                        : "Basic"}
+                  </p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+
+                <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="text-sm text-slate-400">Status</p>
-                  <p className="mt-1 font-medium text-white">{user.status || 'Active'}</p>
+
+                  <p className="mt-1 break-words font-medium text-white">
+                    {user.status || "Active"}
+                  </p>
                 </div>
+
               </div>
 
               {message && <div className="mt-6 rounded-xl border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">{message}</div>}
@@ -580,7 +691,11 @@ const Account = () => {
               </button>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="rounded-[24px] border border-white/10 bg-slate-950/70 p-6 shadow-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="min-w-0 w-full rounded-[24px] border border-white/10 bg-slate-950/70 p-5 sm:p-6 lg:p-8 shadow-2xl overflow-hidden"
+            >
               {user.role === 'admin' ? (
                 <>
                   <div className="flex items-center gap-3 text-amber-200">
@@ -604,10 +719,42 @@ const Account = () => {
                     <h3 className="text-lg font-semibold text-white">User list</h3>
                     <div className="mt-3 space-y-2">
                       {users.map((entry) => (
-                        <div key={entry.id} className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-3 sm:flex-row sm:items-center sm:justify-between">
-                          <div>
-                            <p className="font-medium text-white">{entry.name}</p>
-                            <p className="text-sm text-slate-400">{entry.email}</p>
+                        <div
+                          key={entry._id}
+                          className="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 md:grid-cols-[1fr_auto_auto] md:items-center"
+                        >
+                          <div className="min-w-0">
+                            <p className="font-medium text-white">
+                              {entry.name}
+                            </p>
+
+                            <p className="break-all text-sm text-slate-400">
+                              {entry.email}
+                            </p>
+
+                            <p className="mt-1 text-xs text-slate-500 break-all">
+                              ID: {entry._id}
+                            </p>
+
+                            {entry.plan === "Silver" && entry.premiumExpiry && (
+                              <p className="mt-1 text-xs text-amber-300">
+                                Silver Expiry:{" "}
+                                {new Date(entry.premiumExpiry).toLocaleString("en-IN")}
+                              </p>
+                            )}
+
+                            {entry.plan === "Gold" && entry.goldExpiry && (
+                              <p className="mt-1 text-xs text-yellow-300">
+                                Gold Expiry:{" "}
+                                {new Date(entry.goldExpiry).toLocaleString("en-IN")}
+                              </p>
+                            )}
+
+                            {entry.plan === "Basic" && (
+                              <p className="mt-1 text-xs text-slate-500">
+                                No active premium plan
+                              </p>
+                            )}
                           </div>
                           <div className="mt-3 flex flex-col gap-2 sm:mt-0 sm:items-end">
 
@@ -617,7 +764,8 @@ const Account = () => {
                               className="rounded-lg bg-slate-900 border border-white/10 px-3 py-2 text-white"
                             >
                               <option value="Basic">Basic</option>
-                              <option value="Premium">Premium</option>
+                              <option value="Silver">Silver</option>
+                              <option value="Gold">Gold</option>
                             </select>
 
                             <select
@@ -703,17 +851,75 @@ const Account = () => {
                   </div>
 
                   <div className="mt-6">
-                    <h3 className="text-lg font-semibold text-white">Recent payments</h3>
-                    <div className="mt-3 space-y-2">
-                      {payments.map((entry) => (
-                        <div key={entry.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
-                          <div className="flex items-center justify-between">
-                            <p className="font-medium text-white">{entry.userEmail}</p>
-                            <p className="text-sm text-amber-300">₹{entry.amount}</p>
+                    <h3 className="text-lg font-semibold text-white">
+                      Recent payments
+                    </h3>
+
+                    <div className="mt-3 space-y-3">
+                      {payments.length === 0 ? (
+                        <p className="text-slate-400">No payments found.</p>
+                      ) : (
+                        payments.map((entry) => (
+                          <div
+                            key={entry._id}
+                            className="rounded-2xl border border-white/10 bg-white/5 p-4"
+                          >
+                            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+
+                              <div className="min-w-0">
+                                <p className="font-semibold text-white break-words">
+                                  {entry.user?.name || "Unknown User"}
+                                </p>
+
+                                <p className="text-sm text-slate-400 break-all">
+                                  {entry.user?.email || "No email"}
+                                </p>
+                              </div>
+
+                              <div className="text-left sm:text-right">
+                                <p className="text-lg font-bold text-amber-300">
+                                  ₹{entry.amount / 100}
+                                </p>
+
+                                <p className="text-sm text-green-300">
+                                  {entry.status}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="mt-4 grid gap-2 text-sm text-slate-300">
+
+                              <p className="break-all">
+                                <span className="text-slate-500">Payment ID:</span>{" "}
+                                {entry.razorpay_payment_id || "N/A"}
+                              </p>
+
+                              <p className="break-all">
+                                <span className="text-slate-500">Order ID:</span>{" "}
+                                {entry.razorpay_order_id || "N/A"}
+                              </p>
+
+                              <p>
+                                <span className="text-slate-500">Plan:</span>{" "}
+                                {entry.plan}
+                              </p>
+
+                              <p>
+                                <span className="text-slate-500">Method:</span>{" "}
+                                {entry.method}
+                              </p>
+
+                              <p>
+                                <span className="text-slate-500">Date:</span>{" "}
+                                {entry.createdAt
+                                  ? new Date(entry.createdAt).toLocaleString("en-IN")
+                                  : "N/A"}
+                              </p>
+
+                            </div>
                           </div>
-                          <p className="mt-1 text-sm text-slate-400">{entry.plan} • {entry.status} • {entry.method}</p>
-                        </div>
-                      ))}
+                        ))
+                      )}
                     </div>
                   </div>
                 </>
@@ -726,26 +932,33 @@ const Account = () => {
                       <p className="text-sm text-slate-400">Upgrade your astrology experience</p>
                     </div>
                   </div>
-                  <div className="my-6 rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <div className="my-6 w-full min-w-0 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-5">
                     <p className="text-sm text-slate-400">Current plan</p>
-                    <p className="mt-2 text-2xl font-semibold text-white">{user.plan || 'Basic'}</p>
-                    <p className="my-3 text-sm leading-7 text-slate-400">Enjoy detailed planetary insights, priority support, and premium reports.</p>
-                    {/* <button onClick={handlePayment} className="mt-5 rounded-xl bg-amber-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-amber-300">
-                      Upgrade to Premium
-                    </button> */}
-                    <PremiumLock user={user}>
-                      <div className="mt-10 rounded-2xl border border-green-500 bg-green-500/10 p-5">
-                        <h2 className="text-xl font-bold text-green-300">
-                          🎉 Premium Content Unlocked
-                        </h2>
+                    <p className="mt-2 break-words text-2xl font-semibold text-white">{user.plan || 'Basic'}</p>
+                    <p className="my-3 break-words text-sm leading-7 text-slate-400">
+                      {isGoldActive
+                        ? "You are currently on the Gold plan. You have access to Silver and Gold premium features."
+                        : isSilverActive
+                          ? "You are currently on the Silver plan. You have access to detailed astrology reports and premium features."
+                          : "You are currently on the Basic plan. Upgrade to unlock premium astrology features."
+                      }
+                    </p>
 
-                        <p className="mt-2 text-slate-300">
-                          Congratulations! Only Premium users can see this section.
-                        </p>
-                      </div>
-                    </PremiumLock>
+                    {!isPremiumActive && (
+                      <Premium user={user}>
+                        <div className="rounded-2xl border border-green-500 bg-green-500/10 p-2">
+                          <h2 className="text-xl font-bold text-green-300">
+                            🎉 Premium Content Unlocked
+                          </h2>
+
+                          <p className="mt-2 text-slate-300">
+                            Congratulations! Only Premium users can see this section.
+                          </p>
+                        </div>
+                      </Premium>
+                    )}
                   </div>
-                  <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
+                  <div className="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6">
                     <h2 className="text-2xl font-bold text-white">
                       📅 My Bookings
                     </h2>

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Loader from "../../utils/buttons/Loader";
 import { API_BASE } from "../../config/api";
+import PremiumLock from "../Premium/PremiumLock";
+import { hasSilverAccess } from "../../utils/premiumAccess";
 
 const SadeSati = ({ userData }) => {
     const { t, i18n } = useTranslation();
@@ -21,8 +23,16 @@ const SadeSati = ({ userData }) => {
                 setSadeSati(null);
                 setLoading(true);
 
+                const token = localStorage.getItem("astro-token");
+
                 const response = await fetch(
-                    ` ${API_BASE}/astro/extended_horoscope/current_sadesati?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${apiLang}`);
+                    `${API_BASE}/astro/extended_horoscope/current_sadesati?date=${formattedDate}&time=${time}&latitude=${latitude}&longitude=${longitude}&tz=5.5&lang=${apiLang}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
 
                 const dosha = await response.json();
 
@@ -59,242 +69,145 @@ const SadeSati = ({ userData }) => {
         </div>
     }
 
+    const user = JSON.parse(
+        localStorage.getItem("astro-user") || "null"
+    );
+
+    const isPremium = hasSilverAccess(user);
+
     return (
+        <div className="mt-10 px-5 text-white">
 
-<div className="mt-10 px-5 text-white">
+            {loading && <Loader />}
 
+            {!loading && sadeSati && (
 
-{
-loading && <Loader/>
-}
+                <div className="max-w-5xl mx-auto bg-[#050b20] border border-yellow-500 rounded-3xl p-8 shadow-xl">
 
+                    <h2 className="text-center text-3xl font-bold text-yellow-400 mb-8">
+                        🪐 {t("sadeSatiReport")}
+                    </h2>
 
-{
-!loading && sadeSati && (
+                    <div className="border border-yellow-500 rounded-2xl p-6 mb-6 text-center">
 
+                        <h3 className="text-xl text-gray-300">
+                            {t("sadeSatiStatus")}
+                        </h3>
 
-<div className="
-max-w-5xl
-mx-auto
-bg-[#050b20]
-border
-border-yellow-500
-rounded-3xl
-p-8
-shadow-xl
-">
+                        <p className="text-3xl font-bold text-yellow-400 mt-3">
+                            {sadeSati.is_sade_sati_period
+                                ? t("running")
+                                : t("notRunning")
+                            }
+                        </p>
 
+                    </div>
 
-<h2 className="
-text-center
-text-3xl
-font-bold
-text-yellow-400
-mb-8
-">
-🪐 {t("sadeSatiReport")}
-</h2>
+                    {!isPremium && (
 
+                        <div className="mt-6">
+                            <PremiumLock
+                                title={`${t("sadeSatiReport")} की पूरी जानकारी के लिए`}
+                            />
+                        </div>
 
+                    )}
 
-{/* Status Card */}
+                    {isPremium && (
 
-<div className="
-border
-border-yellow-500
-rounded-2xl
-p-6
-mb-6
-text-center
-">
+                        <div className="mt-6">
 
+                            <div className="grid md:grid-cols-3 gap-5 mb-8">
 
-<h3 className="text-xl text-gray-300">
-{t("sadeSatiStatus")}
-</h3>
+                                <div className="border border-yellow-500 rounded-xl p-5 text-center">
 
+                                    <p className="text-gray-300">
+                                        {t("age")}
+                                    </p>
 
-<p className="
-text-3xl
-font-bold
-text-yellow-400
-mt-3
-">
+                                    <h3 className="text-3xl text-yellow-400">
+                                        {sadeSati.age ?? "-"}
+                                    </h3>
 
-{
-sadeSati.is_sade_sati_period
-?
-t("running")
-:
-t("notRunning")
-}
+                                </div>
 
-</p>
 
+                                <div className="border border-yellow-500 rounded-xl p-5 text-center">
 
-</div>
+                                    <p className="text-gray-300">
+                                        {t("shaniPeriod")}
+                                    </p>
 
+                                    <h3 className="text-xl text-yellow-400">
+                                        {sadeSati.shani_period_type ?? "-"}
+                                    </h3>
 
+                                </div>
 
+                            </div>
 
+                            {sadeSati.description && (
 
+                                <div className="border border-yellow-500 rounded-2xl p-6 mb-8">
 
-<div className="
-grid
-md:grid-cols-3
-gap-5
-mb-8
-">
+                                    <h3 className="text-2xl text-yellow-400 mb-3">
+                                        📜 {t("description")}
+                                    </h3>
 
+                                    <p className="text-gray-300 leading-8">
+                                        {sadeSati.description}
+                                    </p>
 
-<div className="border border-yellow-500 rounded-xl p-5 text-center">
+                                </div>
 
-<p className="text-gray-300">
-{t("age")}
-</p>
+                            )}
 
-<h3 className="text-3xl text-yellow-400">
-{sadeSati.age}
-</h3>
+                            {sadeSati.remedies?.length > 0 && (
 
-</div>
+                                <div>
 
-<div className="border border-yellow-500 rounded-xl p-5 text-center">
+                                    <h3 className="text-2xl text-yellow-400 mb-5">
+                                        🙏 {t("remedies")}
+                                    </h3>
 
-<p className="text-gray-300">
-{t("shaniPeriod")}
-</p>
+                                    <div className="space-y-4">
 
-<h3 className="text-xl text-yellow-400">
-{sadeSati.shani_period_type}
-</h3>
+                                        {sadeSati.remedies.map((item, index) => (
 
-</div>
+                                            <div
+                                                key={index}
+                                                className="border border-yellow-500 rounded-xl p-4 bg-[#020817]"
+                                            >
 
+                                                <span className="text-yellow-400">
+                                                    {index + 1}.
+                                                </span>
 
-</div>
+                                                {" "}
 
+                                                {item}
 
+                                            </div>
 
+                                        ))}
 
+                                    </div>
 
-{/* Description */}
+                                </div>
 
+                            )}
 
-<div className="
-border
-border-yellow-500
-rounded-2xl
-p-6
-mb-8
-">
+                        </div>
 
+                    )}
 
-<h3 className="
-text-2xl
-text-yellow-400
-mb-3
-">
-📜 {t("description")}
-</h3>
+                </div>
 
+            )}
 
-<p className="
-text-gray-300
-leading-8
-">
+        </div>
+    );
 
-{sadeSati.description}
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-{/* Remedies */}
-
-
-
-<div>
-
-
-<h3 className="
-text-2xl
-text-yellow-400
-mb-5
-">
-🙏 {t("remedies")}
-</h3>
-
-
-
-<div className="space-y-4">
-
-
-{
-sadeSati.remedies?.map((item,index)=>(
-
-
-<div
-
-key={index}
-
-className="
-border
-border-yellow-500
-rounded-xl
-p-4
-bg-[#020817]
-"
-
->
-
-
-<span className="text-yellow-400">
-
-{index+1}.
-
-</span>
-
-
-{" "}
-
-
-{item}
-
-
-</div>
-
-
-))
-}
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-)
-
-}
-
-
-</div>
-
-)
-    
 }
 
 export default SadeSati

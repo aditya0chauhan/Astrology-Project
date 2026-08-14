@@ -266,19 +266,19 @@ export const P1 = () => {
 
 const StyledWrapper = styled.div`
   .container {
+    width: 100%;
+    max-width: 360px;
     display: flex;
     align-items: stretch;
     justify-content: center;
-    width: 100%;
-    max-width: 360px;
   }
 
   .card_box {
     width: 100%;
-    min-height: 540px;
+    min-height: 840px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content:justify-between;
     border-radius: 24px;
     background:
     linear-gradient(
@@ -354,6 +354,7 @@ const StyledWrapper = styled.div`
   .card__section {
     display: flex;
     flex-direction: column;
+    justify-content:center;
     gap: 0.25rem;
   }
 

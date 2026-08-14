@@ -20,6 +20,7 @@ import LalKitab from './components/lalKitabAstro/LalKitab'
 import KpFile from './components/kpAstro/KpFile'
 import Reports from './components/Reports/Reports'
 import Appointment from './Pages/Appointment'
+import Premium from './components/Premium/Premium'
 
 
 const appRouter = createBrowserRouter([{
@@ -96,6 +97,10 @@ const appRouter = createBrowserRouter([{
 },{
    path:"/appointment",
    element:<Appointment />
+},
+{
+  path: "/premium",
+  element: <Premium />
 }]
 }])
 const App = () => {
