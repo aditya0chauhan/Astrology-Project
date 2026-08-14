@@ -5,6 +5,18 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {
       translation: {
+         sc1:"Shat-Chandi Anushthan -",
+        sc2:"The ritual is performed through the spiritual practice and worship of Goddess Chandi, involving the ceremonial recitation of the Durga Saptashati 100 times, chanting of the Navarna Mantra, and the observance of Havan (sacred fire ritual), Purna-ahuti (final offering), Tarpan (libation), and Marjan (purification).",
+        sc3:"Durga Saptashati Recitation & Mantra Chanting",
+        sc4:"Recitation of Durga Saptashati by 13 learned Pandits.",
+        sc5:" All Removal of Obstacles & Negative Influences",
+        sch:"Contact Pandit Manoj Shastri for Shat Chandi Anushthan and have the Anushthan performed according to the traditional Gurukul Vashishtha Rishi tradition.",
+        nv1:"Navratri Puja & Navchandi Anushthan",
+        nv2:" Navratri Puja & Navchandi Anushthan includes the proper worship of the Goddess, Durga Saptashati Path, mantra chanting, Havan, and Purna Ahuti, performed with devotion to seek the blessings of Maa Bhagwati.",
+        nv3:"Ghat Sthapana Kuldevi – Grace, Happiness, Complete Blessings",
+        nv4:"Kanya and Batuk worship",
+        nv5: "Durga Saptashati Path",
+        nah:"Contact Pandit Manoj Shastri for Navratri Puja & Navchandi Anushthan and have the Anushthan performed according to the traditional Gurukul Vashishtha Rishi tradition.",
         mulankTitle: "Mulank Vastu",
         mulankDesc: "Vastu guidance based on your Mulank (Numerology Number) for balanced energy and harmony.",
 
@@ -533,6 +545,18 @@ i18n.use(initReactI18next).init({
 
     hi: {
       translation: {
+        sc1:"शतचंडी अनुष्ठान -",
+        sc2:"दुर्गाशप्तशती के विधिवत 100 पाठ, नवार्ण मंत्र जाप, हवन पूर्ण आहुति तर्पण मार्जन से मां चंडी की शक्ति साधना और उपासना से अनुष्ठान संपन्न किया जाता है",
+        sc3:"दुर्गा सप्तशती पाठ एवं मंत्र जाप",
+        sc4:"13 विद्वान पंडितों द्वारा दुर्गा सप्तशती पाठ",
+        sc5:"समस्त बाधा एवं दोष निवारण",
+        sch:"शतचंडी अनुष्ठान हेतु पंडित मनोज शास्त्री से संपर्क करें एवं गुरुकुल वशिष्ठ ऋषि परंपरा से विधिवत अनुष्ठान संपन्न कराएं।",
+        nv1:"नवरात्रि पूजन एवं नवचंडी अनुष्ठान",
+        nv2:"नवरात्रि पूजन एवं नवचंडी अनुष्ठान में देवी माँ की विधिवत पूजा, दुर्गा सप्तशती पाठ, मंत्र जाप, हवन एवं पूर्ण आहुति के माध्यम से माँ भगवती का आशीर्वाद प्राप्त करने के लिए अनुष्ठान संपन्न कराया जाता है।",
+        nv3:"घट स्थापना कुलदेवी - कृपा, प्रसन्नता, पूर्ण आशीर्वाद",
+        nv4:"कन्या व बटुक पूजन",
+        nv5:"दुर्गा सप्तशती पाठ ",
+        nah:"नवरात्रि पूजन एवं नवचंडी अनुष्ठान हेतु पंडित मनोज शास्त्री से संपर्क करें एवं गुरुकुल वशिष्ठ ऋषि परंपरा से विधिवत अनुष्ठान संपन्न कराएं।",
         mulankTitle: "मूलांक वास्तु",
         mulankDesc: "मूलांक के अनुसार घर, दिशा और ऊर्जा संतुलन हेतु वास्तु मार्गदर्शन।",
 

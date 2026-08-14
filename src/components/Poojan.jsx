@@ -6,6 +6,8 @@ import poojan4 from '../assets/images/poojan-5.png'
 import poojan5 from '../assets/images/poojan-6.png'
 import poojan6 from '../assets/images/poojan-7.png'
 import poojan7 from '../assets/images/poojan-8.png'
+import navratri from '../assets/images/navratra.png'
+import shatchandi from '../assets/images/shatchandi.png'
 import banner from '../assets/images/banner.png'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -245,6 +247,35 @@ const PoojanCard = () => {
         </div>
       </div>
 
+      
+       <div className='group lg:w-[30%] rounded-[24px] border border-amber-400/20 bg-gradient-to-br from-[#1f2937] via-[#111827] to-[#0f172a] p-4 shadow-[0_20px_45px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_24px_50px_rgba(251,191,36,0.18)]'>
+        <div className='flex flex-col gap-3 text-white p-2'>
+          <img
+            className=' rounded-2xl border border-white/10 bg-white/5 object-contain p-1 hover:scale-[1.10] duration-300'
+            src={navratri}
+          />
+          <p className='text-xl font-semibold text-amber-400'>{t('nv1')}</p>
+
+          <div className='space-y-2'>
+            <p className=' leading-6 text-gray-200'>{t('nv2')}</p>
+
+            <div>
+              <ul className='ml-4 flex list-disc flex-col gap-4 text-gray-100'>
+                <li>{t('nv3')}</li>
+                <li>{t('nv4')}</li>
+                <li>{t('nv5')}</li>
+              </ul>
+          <h1 className='text-lg my-3 font-semibold text-amber-400'>{t('nah')}</h1>
+            </div>
+          </div>
+        </div>
+
+       <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
+            <a href="https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20*मुकदमा%20विजय%20अनुष्ठान*%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20इस%20अनुष्ठान%20की%20विधि,%20लाभ,%20उपयुक्त%20समय%20एवं%20बुकिंग%20प्रक्रिया%20बताएं।%0A%0Aधन्यवाद।🙏" target='blank'>
+        <button type='button'><Whatsapp /></button>
+        </a>
+        </div>
+      </div>
        <div className='group lg:w-[30%] rounded-[24px] border border-amber-400/20 bg-gradient-to-br from-[#1f2937] via-[#111827] to-[#0f172a] p-4 shadow-[0_20px_45px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_24px_50px_rgba(251,191,36,0.18)]'>
         <div className='flex flex-col gap-3 text-white p-2'>
           <img
@@ -264,6 +295,34 @@ const PoojanCard = () => {
                 <li>{t('ma3')}</li>
               </ul>
           <h1 className='text-lg my-3 font-semibold text-amber-400'>{t('mah')}</h1>
+            </div>
+          </div>
+        </div>
+
+       <div className='mt-5 flex items-center justify-center border-t border-white/10 py-3'>
+            <a href="https://wa.me/918882532259?text=🙏%20नमस्ते%20मनोज%20शास्त्री%20जी,%0A%0Aमुझे%20*मुकदमा%20विजय%20अनुष्ठान*%20के%20बारे%20में%20जानकारी%20चाहिए।%20कृपया%20इस%20अनुष्ठान%20की%20विधि,%20लाभ,%20उपयुक्त%20समय%20एवं%20बुकिंग%20प्रक्रिया%20बताएं।%0A%0Aधन्यवाद।🙏" target='blank'>
+        <button type='button'><Whatsapp /></button>
+        </a>
+        </div>
+      </div>
+       <div className='group lg:w-[30%] rounded-[24px] border border-amber-400/20 bg-gradient-to-br from-[#1f2937] via-[#111827] to-[#0f172a] p-4 shadow-[0_20px_45px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_24px_50px_rgba(251,191,36,0.18)]'>
+        <div className='flex flex-col gap-3 text-white p-2'>
+          <img
+            className=' rounded-2xl border border-white/10 bg-white/5 object-contain p-1 hover:scale-[1.10] duration-300'
+            src={shatchandi}
+          />
+          <p className='text-xl font-semibold text-amber-400'>{t('sc1')}</p>
+
+          <div className='space-y-2'>
+            <p className=' leading-6 text-gray-200'>{t('sc2')}</p>
+
+            <div>
+              <ul className='ml-4 flex list-disc flex-col gap-4 text-gray-100'>
+                <li>{t('sc3')}</li>
+                <li>{t('sc4')}</li>
+                <li>{t('sc5')}</li>
+              </ul>
+          <h1 className='text-lg my-3 font-semibold text-amber-400'>{t('sch')}</h1>
             </div>
           </div>
         </div>

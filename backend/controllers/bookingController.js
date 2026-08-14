@@ -26,6 +26,8 @@ const SERVICE_PRICES = {
   "Nagbali Poojan ": 21000,
   "Shigrah Vivah Poojan": 71000,
   "Mukdama Vijay Austhan": 151000,
+  "Navratri Poojan ":11000,
+  "Shat-chandi poojan":151000,
   "Vastu Dosh Niwaran Poojan (siddh yantra, sampurn kit)" :7100,
   "Vastu Dosh Niwaran Poojan (personal solution)" :3100,
   "Vastu Dosh Niwaran Poojan (Navakalash)" :31000,
