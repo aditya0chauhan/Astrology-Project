@@ -491,9 +491,9 @@ const Account = () => {
         </motion.div>
 
         {!user ? (
-          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="w-full grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} className="rounded-[24px] border border-white/10 bg-slate-950/70 p-6 shadow-2xl">
-              <div className="flex items-center gap-3 text-amber-200">
+              <div className="w-full flex items-center gap-3 text-amber-200">
                 <FaUserCircle className="text-2xl" />
                 <div>
                   <h2 className="text-xl font-semibold">{authMode === 'login' ? 'Login to your account' : 'Create your account'}</h2>
@@ -600,28 +600,6 @@ const Account = () => {
                 {authMode === 'login' ? 'New here?' : 'Already have an account?'}{' '}
                 <button className="text-amber-300" onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}>
                   {authMode === 'login' ? 'Create account' : 'Login instead'}
-                </button>
-              </div>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} className="rounded-[24px] border border-amber-400/20 bg-gradient-to-br from-amber-500/15 to-emerald-500/10 p-6 shadow-2xl">
-              <div className="flex items-center gap-3 text-amber-200">
-                <FaCreditCard className="text-2xl" />
-                <div>
-                  <h2 className="text-xl font-semibold">Premium astrology services</h2>
-                  <p className="text-sm text-slate-400">Pay securely and unlock detailed consultations</p>
-                </div>
-              </div>
-              <div className="mt-6 rounded-2xl border border-white/10 bg-slate-950/70 p-5">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">Premium Plan</h3>
-                    <p className="text-sm text-slate-400">₹2,999 for advanced astrology reports</p>
-                  </div>
-                  <div className="rounded-full bg-amber-400/20 px-3 py-1 text-sm font-semibold text-amber-300">Popular</div>
-                </div>
-                <button onClick={handlePayment} className="mt-5 w-full rounded-xl border border-amber-300/30 bg-amber-400/10 px-4 py-3 font-semibold text-amber-200 transition hover:bg-amber-400/20">
-                  Pay with UPI Apps
                 </button>
               </div>
             </motion.div>
