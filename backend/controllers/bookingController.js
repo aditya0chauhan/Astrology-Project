@@ -7,7 +7,6 @@ const SERVICE_PRICES = {
   "Astrology consultation": 250,
   "Vastu consultation": 500,
   "Numerology consultation": 799,
-  "Dosh & Dasha Consultation" : 250,
   "Lal Kitab Consultation": 999,
   "KP Astrology Consultation": 250,
   "Baby Name Selection Consultation":501,
