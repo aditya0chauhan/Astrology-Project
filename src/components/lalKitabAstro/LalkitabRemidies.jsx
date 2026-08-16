@@ -1,10 +1,21 @@
 import { useEffect, useState } from 'react'
 import Loader from '../../utils/buttons/Loader';
 import { API_BASE } from "../../config/api";
+import PremiumLock from "../Premium/PremiumLock";
+import { hasGoldAccess } from "../../utils/premiumAccess";
 
 const LalkitabRemidies = ({ userData }) => {
     const [remidies, setRemidies] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem("astro-user");
+
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
     useEffect(() => {
         if (userData) {
             fetchRemidies();
@@ -18,8 +29,16 @@ const LalkitabRemidies = ({ userData }) => {
             const [year, month, day] = userData.dob.split("-");
             const formattedDate = `${day}/${month}/${year}`;
 
+            const token = localStorage.getItem("astro-token");
+
             const response = await fetch(
-                `${API_BASE}/astro/lalKitab/remedies?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi`);
+                `${API_BASE}/astro/lalKitab/remedies?date=${formattedDate}&time=${userData.time}&latitude=${userData.latitude}&longitude=${userData.longitude}&tz=5.5&lang=hi`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
             const result = await response.json();
             setRemidies(result.response);
@@ -36,70 +55,96 @@ const LalkitabRemidies = ({ userData }) => {
     }
 
 
-     if (loading) return (
-      <div className='min-h-[50vh] w-full flex justify-center items-center mt-10 rounded-xl bg-[#0f172a] p-6'>
-        <Loader />
-      </div>
+    if (loading) return (
+        <div className='min-h-[50vh] w-full flex justify-center items-center mt-10 rounded-xl bg-[#0f172a] p-6'>
+            <Loader />
+        </div>
     )
-return (
+    return (
+        <div className="mt-10 max-w-6xl mx-auto px-4">
 
-<div className="mt-10 max-w-6xl mx-auto px-4">
+            {!hasGoldAccess(user) && (
+                <div className="bg-[#111827] border border-amber-400 rounded-2xl p-6 shadow-xl text-white">
 
-{
-    remidies && Object.values(remidies).map((item,index)=>(
+                    <h2 className="text-2xl font-bold text-amber-400 mb-6 text-center">
+                        📕 लाल किताब — उपाय
+                    </h2>
 
-    <div key={index} className="bg-[#111827] border border-orange-500 rounded-2xl p-6 mb-6 shadow-xl text-white ">
+                    <PremiumLock
+                        title="लाल किताब के सभी उपाय देखने के लिए Gold Plan लें"
+                    />
 
-    <h2 className="text-2xl font-bold text-orange-400 mb-5">🪐 {item.planet}</h2>
+                </div>
+            )}
 
-<div className="grid md:grid-cols-2 gap-5">
+            {hasGoldAccess(user) && remidies && (
+                <>
+                    {Object.values(remidies).map((item, index) => (
 
-    <div className="bg-[#020817] p-4 rounded-xl">
-        <p className="text-yellow-400 font-semibold">🏠 घर</p>
-        <p className="mt-2">{item.house}</p>
-    </div>
+                        <div
+                            key={index}
+                            className="bg-[#111827] border border-orange-500 rounded-2xl p-6 mb-6 shadow-xl text-white"
+                        >
 
-</div>
+                            <h2 className="text-2xl font-bold text-orange-400 mb-5">
+                                🪐 {item.planet}
+                            </h2>
 
-<div className="mt-5 bg-[#020817] p-4 rounded-xl">
-    <p className="text-yellow-400 font-semibold mb-2">📜 प्रभाव</p>
-    <p className="leading-8">{item.effects}</p>
-</div>
+                            <div className="grid md:grid-cols-2 gap-5">
 
-    {
-        item.remedies?.length > 0 && (
+                                <div className="bg-[#020817] p-4 rounded-xl">
+                                    <p className="text-yellow-400 font-semibold">
+                                        🏠 घर
+                                    </p>
 
-<div className="mt-5">
+                                    <p className="mt-2">
+                                        {item.house}
+                                    </p>
+                                </div>
 
-    <h3 className="text-green-400 font-semibold text-lg mb-3">🙏 उपाय</h3>
+                            </div>
 
-<div className="space-y-3">
+                            <div className="mt-5 bg-[#020817] p-4 rounded-xl">
+                                <p className="text-yellow-400 font-semibold mb-2">
+                                    📜 प्रभाव
+                                </p>
 
-    {
-        item.remedies.map((remedy,i)=>(
+                                <p className="leading-8">
+                                    {item.effects}
+                                </p>
+                            </div>
 
-    <div key={i} className="bg-green-950 border border-green-600 rounded-xl p-3 ">
-    {remedy}</div>
+                            {item.remedies?.length > 0 && (
+                                <div className="mt-5">
 
-))
+                                    <h3 className="text-green-400 font-semibold text-lg mb-3">
+                                        🙏 उपाय
+                                    </h3>
 
-}
+                                    <div className="space-y-3">
 
-</div>
+                                        {item.remedies.map((remedy, i) => (
+                                            <div
+                                                key={i}
+                                                className="bg-green-950 border border-green-600 rounded-xl p-3"
+                                            >
+                                                {remedy}
+                                            </div>
+                                        ))}
 
-</div>
+                                    </div>
 
-)}
+                                </div>
+                            )}
 
-</div>
+                        </div>
 
-))
+                    ))}
+                </>
+            )}
 
-}
-
-</div>
-
-)
+        </div>
+    );
 
 }
 

@@ -284,6 +284,19 @@ export const astroController = async (req, res) => {
       data.response = {};
     }
 
+    if (
+      endpoint.includes("/lalKitab/debts") &&
+      !isGold
+    ) {
+      data.response = {};
+    }
+    if (
+      endpoint.includes("/lalKitab/remedies") &&
+      !isGold
+    ) {
+      data.response = {};
+    }
+
     res.json(data);
 
   } catch (error) {
