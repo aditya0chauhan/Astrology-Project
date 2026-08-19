@@ -1,11 +1,15 @@
+import { useState } from "react";
+import { API_BASE } from "../../config/api";
+import { generatePdfReport } from "../../utils/pdf/pdfReports";
 import { FaFilePdf } from "react-icons/fa";
-import { GenrateReport } from '../../utils/buttons/Genrate';
-import { useTranslation } from 'react-i18next'
+import { GenrateReport } from "../../utils/buttons/Genrate";
 
 const reports = [
   {
-    id: "vedic5",
+    id: "vedic_5_year",
     title: "Vedic 5 Year Predictions",
+    endpoint: "vedic_five_year_predictions",
+    price: 1100,
     subtitle: `🔮 अगले 5 सालों की विस्तृत भविष्यवाणियाँ
 📅 अगले 5 सालों के लिए साल-दर-साल भविष्यवाणियाँ
 👤 जन्म का पूरा विवरण और पंचांग विश्लेषण
@@ -31,10 +35,12 @@ const reports = [
 ⚠️ शुभ और चुनौतीपूर्ण समय
 📖 71 पेज की प्रीमियम वैदिक ज्योतिष रिपोर्ट`,
   },
-{
-  id: "vedic10",
+  {
+    id: "vedic_10_year",
     title: "Vedic 10 Year Predictions",
-      subtitle: `🔮 भविष्य के 10 सालों की विस्तृत भविष्यवाणी
+    endpoint: "vedic_ten_year_predictions",
+    price: 2100,
+    subtitle: `🔮 भविष्य के 10 सालों की विस्तृत भविष्यवाणी
 📅 अगले 10 सालों के लिए साल-दर-साल भविष्यवाणियां
 👤 जन्म और पंचांग की पूरी जानकारी
 🪐 ग्रहों की स्थिति और उनकी ताकत का विस्तृत विश्लेषण
@@ -58,10 +64,12 @@ const reports = [
 ⚠️ महत्वपूर्ण अवसर और सावधानी वाले समय
 📄 111 पेज की प्रीमियम वैदिक ज्योतिष रिपोर्ट`,
   },
-{
-  id: "vedic15",
+  {
+    id: "vedic_15_year",
     title: "Vedic 15 Year Predictions",
-      subtitle: `🔮 भविष्य की 15 साल की विस्तृत भविष्यवाणियां
+    endpoint: "vedic_fifteen_year_predictions",
+    price: 3100,
+    subtitle: `🔮 भविष्य की 15 साल की विस्तृत भविष्यवाणियां
 📅 अगले 15 सालों के लिए साल-दर-साल भविष्यवाणियां
 👤 जन्म का पूरा विवरण और पंचांग विश्लेषण
 🪐 ग्रहों की विस्तृत स्थिति और ग्रहों की ताकत
@@ -87,19 +95,123 @@ const reports = [
 ⚠️ अच्छा और चुनौतीपूर्ण समय
 📖 137 पेज की प्रीमियम वैदिक ज्योतिष रिपोर्ट`,
   },
-  
+
 ];
 
-const VedicReport = () => {
-   const { t } = useTranslation()
-  const handleWhatsApp = (reportName) => {
-    const phone = "918882532259";
-    const message = `🙏 Namaste Manoj Astro Guruji,
-    Mujhe "${reportName}" ki Full PDF report chahiye.
-    Kripya iski process aur payment details bhej dijiye.`;
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+const VedicReport = ({ userData }) => {
+
+  const handlePayment = async (report) => {
+    const token = localStorage.getItem("astro-token");
+
+    if (!token) {
+      alert("PDF purchase karne ke liye pehle login karein.");
+      return;
+    }
+
+    try {
+      const orderResponse = await fetch(
+        `${API_BASE}/payments/create-pdf-order`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            reportId: report.id,
+          }),
+        }
+      );
+
+      const orderData = await orderResponse.json();
+
+      if (!orderResponse.ok || !orderData.success) {
+        throw new Error(
+          orderData.message || "Order create nahi hua."
+        );
+      }
+
+      if (!window.Razorpay) {
+        throw new Error("Razorpay load nahi hua.");
+      }
+
+      const razor = new window.Razorpay({
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: orderData.order.amount,
+        currency: orderData.order.currency,
+        name: "Manoj Vedic Astro",
+        description: report.title,
+        order_id: orderData.order.id,
+
+        handler: async (response) => {
+          try {
+            const verifyResponse = await fetch(
+              `${API_BASE}/payments/verify-pdf-payment`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                  ...response,
+                  reportId: report.id,
+                  userData,
+                }),
+              }
+            );
+
+            const verifyData = await verifyResponse.json();
+
+            if (!verifyResponse.ok || !verifyData.success) {
+              throw new Error(
+                verifyData.message ||
+                "Payment verification failed."
+              );
+            }
+
+            const pdfResult = await generatePdfReport(
+              report.endpoint,
+              userData
+            );
+
+            console.log("Vedic PDF Result:", pdfResult);
+
+            if (pdfResult?.downloadUrl) {
+              window.open(pdfResult.downloadUrl, "_blank");
+            } else if (pdfResult?.url) {
+              window.open(pdfResult.url, "_blank");
+            } else {
+              alert(
+                "Payment verified, lekin PDF URL nahi mila."
+              );
+            }
+
+          } catch (error) {
+            console.error(error);
+            alert(error.message);
+          }
+        },
+
+        modal: {
+          ondismiss: () => {
+            console.log("Payment cancelled");
+          },
+        },
+
+        theme: {
+          color: "#f59e0b",
+        },
+      });
+
+      razor.open();
+
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
   };
+
   return (
     <div className="mt-10">
 
@@ -137,11 +249,14 @@ const VedicReport = () => {
                 {report.subtitle}
 
               </p>
+              <p className="text-center text-2xl font-bold text-white mt-5">
+                ₹{report.price}
+              </p>
 
             </div>
 
             <button
-              onClick={() => handleWhatsApp(report.title)}
+              onClick={() => handlePayment(report)}
               className="mt-8 py-3 rounded-xl duration-300 flex justify-center items-center"
             >
               <GenrateReport />

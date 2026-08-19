@@ -10,6 +10,7 @@ import NumerologySuggesstion from "./NumerologySuggesstion";
 import NameAnalysis from "./NameAnalysis";
 import VehicleAnalysis from "./VahicleAnalysis";
 import NuAnalysis from "./NuAnalysis";
+import NumerologyReports from '../../components/Reports/NumerologyReports'
 
 const Numerology = () => {
   const [userData, setUserData] = useState(null);
@@ -67,6 +68,10 @@ const Numerology = () => {
                   {
                     name : "Number-Analysis",
                     value : 'numberAnalysis'
+                  },
+                  {
+                    name : "Pdf Report",
+                    value : 'pdfReport'
                   }
                 ].map((tab) => (
 
@@ -118,6 +123,11 @@ const Numerology = () => {
             {
               activeTab === "numberAnalysis" &&
               <NuAnalysis userData={userData} />
+            }
+            {
+            
+            activeTab === "pdfReport" &&
+            <NumerologyReports userData={userData} />
             }
             
           </>

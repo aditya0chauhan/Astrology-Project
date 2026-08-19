@@ -26,7 +26,7 @@ const services = [
   "Nagbali Poojan ",
   "Shigrah Vivah Poojan",
   "Mukdama Vijay Austhan",
-  "Navratri Poojan ",
+  "Navratri Poojan",
   "Shat-chandi poojan",
   "Vastu Dosh Niwaran Poojan (siddh yantra, sampurn kit)" ,
   "Vastu Dosh Niwaran Poojan (personal solution)",

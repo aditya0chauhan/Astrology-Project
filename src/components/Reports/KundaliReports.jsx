@@ -1,72 +1,245 @@
+import { useState } from "react";
 import { FaFilePdf } from "react-icons/fa";
-import { GenrateReport } from '../../utils/buttons/Genrate';
-import { generatePdfReport } from '../../utils/pdf/pdfReports'
+import { GenrateReport } from "../../utils/buttons/Genrate";
+import { API_BASE } from "../../config/api";
 
 const reports = [
   {
-    id: "kundali1",
-    title: " kundali Report",
-    subtitle: "📊 जन्म एवं नवांश कुंडली, ⭐ नक्षत्र एवं राशि विवरण, 🪐 ग्रहों की स्थिति एवं विश्लेषण,⏳ विम्शोत्तरी महादशा, ग्रह मित्रता, 🏠 लग्न एवं भाव विश्लेषण, 👤 व्यक्तित्व एवं जीवन संकेत, हिन्दी एवं English में उपलब्ध"
+    id: "kundali_pdf",
+    title: "Kundali PDF",
+    subtitle:
+      "📊 जन्म एवं नवांश कुंडली, ⭐ नक्षत्र एवं राशि विवरण, 🪐 ग्रहों की स्थिति एवं विश्लेषण, ⏳ दशा विवरण",
+    pdfType: "medium",
+    price: 499,
   },
   {
-    id: "kundali2",
-    title: "matching Kundali Report",
-    subtitle: "❤️ दूल्हा-दुल्हन की कुंडली का पूरा मिलान, 📊 अष्टकूट गुण मिलान (36 पॉइंट्स), 💖 दशकूट मिलान (10 पैरामीटर्स), 🔥 मांगलिक दोष का विश्लेषण, ⚠️ वेध दोष का विश्लेषण, 🪐 ग्रहों की अनुकूलता, 📈 अनुकूलता स्कोर और ग्राफ़, 📅 चल रही दशा का मिलान,📄23-पेज की विस्तृत विवाह रिपोर्ट",
+    id: "advance_kundali",
+    title: "Advance Kundali",
+    subtitle:
+      "🪐 विस्तृत जन्म कुंडली, 📊 एडवांस्ड चार्ट, 🔍 ग्रह एवं भाव विश्लेषण, ⏳ दशा विश्लेषण और विस्तृत रिपोर्ट",
+    pdfType: "large",
+    price: 999,
   },
   {
-    id: "kundali3",
-    title: "Sampuran kundali Report",
-    subtitle: "जन्म कुंडली का पूरा विश्लेषण, 📊 KP ज्योतिष विश्लेषण, 📖 15+ डिविजनल चार्ट, ⭐ ग्रहों की ताकत का विश्लेषण, 📈 पूरी दशा टाइमलाइन, 📐 अष्टकवर्ग विश्लेषण, 💼 करियर और धन संबंधी जानकारी, ❤️ परिवार और रिश्तों पर मार्गदर्शन, 🎓 शिक्षा का विश्लेषण, 🧘 आध्यात्मिक मार्गदर्शन, 💎 शुभ रत्न और मंत्र, 📄 60+ पेज की प्रोफेशनल PDF",
+    id: "samyak_kundali",
+    title: "Samyak Kundali",
+    subtitle:
+      "⭐ विस्तृत कुंडली विश्लेषण, 🪐 ग्रहों की स्थिति, 📊 चार्ट एवं ज्योतिषीय विवरण",
+    endpoint: "kundali_samyak",
+    price: 499,
   },
   {
-    id: "kundali4",
-    title: "Kundali Deep Report",
-    subtitle: "🪐 कुंडली की बुनियादी जानकारी, 🌟 ग्रहों की स्थिति, ताकत, नक्षत्र स्वामी, ग्रहों की अवस्था और नक्षत्र, 📊 कुंडली चार्ट, 📈 एडवांस्ड डिविजनल चार्ट, 🤝 ग्रहों के आपसी संबंध का विश्लेषण, 🔍 KP ज्योतिष विश्लेषण, 🏠 भाव कुंडली, ⏳ दशा विश्लेषण, अच्छे और बुरे गुण, 📄 45-पेज की प्रोफेशनल PDF",
+    id: "dirgh_drishti",
+    title: "Dirgh Drishti Kundali",
+    subtitle:
+      "🔮 गहन भविष्य दृष्टि, 🪐 ग्रहों का विस्तृत विश्लेषण, 📊 जीवन के महत्वपूर्ण क्षेत्रों का ज्योतिषीय मार्गदर्शन",
+    endpoint: "kundali_dirghaDrishti",
+    price: 1499,
   },
   {
-    id: "kundali5",
-    title: "Detailed Kundali Report",
-    subtitle: "⭐ जन्म कुंडली का पूरा विश्लेषण, 🪐 ग्रहों की स्थिति और KP विश्लेषण, 🏠 भाव-वार व्याख्या, 📈 महादशा की समय-सीमा, ⚠️ काल सर्प और मंगल दोष की जाँच, 🌙 वर्तमान साढ़े साती का विश्लेषण, 📊 ग्रहों की ताकत और मित्रता, 📄 प्रोफेशनल PDF रिपोर्ट",
+    id: "foreign_travel",
+    title: "Kundali Foreign Travel Report",
+    subtitle: "🌍 विदेश यात्रा, विदेश में अवसर, यात्रा की संभावनाएँ और विदेश में जीवन से जुड़े ज्योतिषीय संकेतों का विस्तृत विश्लेषण",
+    endpoint: "foreign_travel_report",
+    price: 799,
   },
   {
-    id: "kundali6",
-    title: "Premium Kundali Report",
-    subtitle: "🪔 पूरी जन्म कुंडली, 🪐 ग्रहों की स्थिति और ताकत, 📊 लग्न, चंद्र और नवांश चार्ट, 🔮 15 से ज़्यादा एडवांस्ड डिविजनल चार्ट, 📐 KP ज्योतिष विश्लेषण, 🌟 जैमिनी ज्योतिष विश्लेषण, 🤝 ग्रहों की मित्रता तालिका, ⏳ महादशा और अंतर्दशा, 💼 करियर विश्लेषण, ❤️ शादी और रिश्तों की जानकारी, 💰 धन और वित्त विश्लेषण, 🎓 शिक्षा और पेशा, 👨‍👩‍👧 परिवार और बच्चे, 🩺 ​​स्वास्थ्य विश्लेषण, 🧘 आध्यात्मिक मार्गदर्शन, 📄 83-पेज की प्रीमियम कुंडली रिपोर्ट ",
+    id: "government_job",
+    title: "Kundali Government Job Report",
+    subtitle:
+      "💼 सरकारी नौकरी के योग, करियर संकेत, प्रतियोगी परीक्षाओं और नौकरी से जुड़े ज्योतिषीय संकेतों का विस्तृत विश्लेषण",
+    endpoint: "government_job_report",
+    price: 999,
+  },
+  {
+    id: "mul_patrika",
+    title: "Kundali Mool Patrika",
+    subtitle:
+      "📜 मूल जन्म पत्रिका, 🪐 ग्रहों की स्थिति, 📊 जन्म कुंडली का विस्तृत विवरण",
+    endpoint: "Kundali_moolPatrika",
+    price: 1999,
   },
 ];
 
-const KundaliReports = ({userData}) => {
+const KundaliReports = ({ userData }) => {
+  const [loadingReport, setLoadingReport] = useState(null);
 
-  const handleGeneratePdf = async (reportName) => {
-  try {
-    const result = await generatePdfReport(
-      "generate",
-      userData,
-      "large"
-    );
+  const handleGeneratePdf = async (report) => {
+    const token = localStorage.getItem("astro-token");
 
-    console.log("PDF RESULT:", result);
-
-    if (result?.url) {
-      window.open(result.url, "_blank");
-    } else {
-      alert("PDF generate ho gayi, lekin URL nahi mila.");
+    if (!token) {
+      alert("PDF खरीदने के लिए पहले login करें.");
+      return;
     }
-  } catch (error) {
-    console.error("PDF Error:", error);
-    alert("PDF generate nahi ho payi.");
-  }
-};
 
-  const handleWhatsApp = (reportName) => {
-    const phone = "918882532259";
+    try {
+      setLoadingReport(report.id);
+      const orderResponse = await fetch(
+        `${API_BASE}/payments/create-pdf-order`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            reportId: report.id,
+          }),
+        }
+      );
 
-    const message = `🙏 Namaste Manoj Astro Guruji,
-    Mujhe "${reportName}" ki Full PDF report chahiye.
-    Kripya iski process aur payment details bhej dijiye.`;
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+      const orderData = await orderResponse.json();
+
+      if (
+        !orderResponse.ok ||
+        !orderData.success ||
+        !orderData.order?.id
+      ) {
+        throw new Error(
+          orderData.message || "Unable to create payment order"
+        );
+      }
+
+      if (!window.Razorpay) {
+        throw new Error(
+          "Razorpay checkout failed to load"
+        );
+      }
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+
+        amount: orderData.order.amount,
+        currency: orderData.order.currency,
+
+        name: "Manoj Vedic Astro",
+        description: report.title,
+
+        order_id: orderData.order.id,
+
+        prefill: {
+          name: userData?.name || "",
+        },
+
+        modal: {
+          ondismiss: () => {
+            console.log("Razorpay checkout dismissed");
+            setLoadingReport(null);
+          },
+        },
+
+        handler: async (response) => {
+          try {
+            const verifyToken =
+              localStorage.getItem("astro-token");
+
+            const verifyResponse = await fetch(
+              `${API_BASE}/payments/verify-pdf-payment`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${verifyToken}`,
+                },
+                body: JSON.stringify({
+                  ...response,
+                  reportId: report.id,
+                  userData,
+                }),
+              }
+            );
+
+            const verifyData =
+              await verifyResponse.json();
+
+            console.log(
+              "PDF Payment Verification:",
+              verifyData
+            );
+
+            if (
+              !verifyResponse.ok ||
+              !verifyData.success
+            ) {
+              throw new Error(
+                verifyData.message ||
+                "Payment verification failed"
+              );
+            }
+
+            const pdfUrl =
+              verifyData.pdf?.downloadUrl ||
+              verifyData.pdf?.url ||
+              verifyData.pdf?.pdf_url ||
+              verifyData.pdf?.download_url;
+
+            if (!pdfUrl) {
+              console.log("Complete PDF Response:", verifyData);
+
+              alert(
+                "Payment successful, lekin PDF URL nahi mila."
+              );
+
+              return;
+            }
+
+            window.open(
+              pdfUrl,
+              "_blank",
+              "noopener,noreferrer"
+            );
+
+          } catch (error) {
+            console.error(
+              "PDF Payment / Generation Error:",
+              error
+            );
+
+            alert(
+              error.message ||
+              "Payment successful, lekin PDF generate nahi ho payi."
+            );
+          } finally {
+            setLoadingReport(null);
+          }
+        },
+
+        theme: {
+          color: "#f59e0b",
+        },
+      };
+      const razor = new window.Razorpay(options);
+
+      razor.on("payment.failed", (response) => {
+        console.error(
+          "Razorpay Payment Failed:",
+          response
+        );
+
+        setLoadingReport(null);
+
+        alert(
+          "Payment Failed. Please try again."
+        );
+      });
+
+      razor.open();
+
+    } catch (error) {
+      console.error(
+        "PDF Payment Error:",
+        error
+      );
+
+      setLoadingReport(null);
+
+      alert(
+        error.message ||
+        "Payment process failed."
+      );
+    }
   };
+
   return (
     <div className="mt-10">
 
@@ -77,46 +250,47 @@ const KundaliReports = ({userData}) => {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
         {reports.map((report) => (
-
           <div
             key={report.id}
-            className="bg-[#111827] border border-amber-400 rounded-2xl p-6 shadow-xl hover:scale-[1.03] duration-300 flex flex-col justify-between ">
+            className="bg-[#111827] border border-amber-400 rounded-2xl p-6 shadow-xl hover:scale-[1.03] duration-300 flex flex-col justify-between"
+          >
 
             <div>
 
               <div className="flex justify-center mb-5">
-
                 <FaFilePdf
                   className="text-red-500"
                   size={55}
                 />
-
               </div>
 
               <h3 className="text-xl font-bold text-amber-400 text-center">
-
                 {report.title}
-
               </h3>
 
               <p className="text-center text-gray-300 mt-4 leading-7">
-
                 {report.subtitle}
+              </p>
 
+              <p className="text-center text-2xl font-bold text-white mt-5">
+                ₹{report.price}
               </p>
 
             </div>
 
             <button
-              onClick={() => handleGeneratePdf(report.title)}
-                 
-              className="mt-8 py-3 rounded-xl duration-300 flex justify-center items-center"
+              onClick={() => handleGeneratePdf(report)}
+              disabled={loadingReport !== null}
+              className="mt-8 py-3 rounded-xl flex justify-center items-center cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <GenrateReport />
+              {loadingReport === report.id ? (
+                "Please wait..."
+              ) : (
+                <GenrateReport />
+              )}
             </button>
 
           </div>
-
         ))}
 
       </div>
@@ -125,4 +299,4 @@ const KundaliReports = ({userData}) => {
   );
 };
 
-export default KundaliReports; 
+export default KundaliReports;

@@ -4,7 +4,7 @@ const tabs = [
   { id: 'aggregate', label: 'समग्र मिलान' },
   { id: 'papasamya', label: 'पापसाम्य मिलान' },
   { id: 'sandhi', label: 'दशा-संधि' },
-  // { id: 'pdf', label: 'मिलान रिपोर्ट' },
+  { id: 'pdf', label: 'मिलान रिपोर्ट' },
  
 ];
 

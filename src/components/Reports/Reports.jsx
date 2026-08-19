@@ -5,9 +5,7 @@ import Loader from '../../utils/buttons/Loader';
 import { GenrateReport } from '../../utils/buttons/Genrate';
 import ReportNav from './ReportNav';
 import VedicReport from './VedicReport';
-// import SmallKundali from './SmallKundali';
-// import LargeKundali from './LargeKundali';
-// import KundaliSamyak from './KundaliSamyak';
+import OtherReports from './OtherReports';
 import KundaliReports from './KundaliReports';
 
 const Reports = () => {
@@ -91,14 +89,18 @@ const Reports = () => {
         }
     };
 
- const tabComponents = {
-  vedicReport: (
-    <VedicReport userData={userData} />
-  ),
-  kundaliReport: (
-    <KundaliReports userData={userData} />
-  )
-};
+    const tabComponents = {
+        vedicReport: (
+            <VedicReport userData={userData} />
+        ),
+        kundaliReport: (
+            <KundaliReports userData={userData} />
+        ),
+
+        otherReport: (
+            <OtherReports userData={userData} />
+        ),
+    };
 
     return (
         <div className='m-0 lg:mt-3'>
@@ -116,7 +118,7 @@ const Reports = () => {
                     }}
                     className='cursor-pointer border-2 p-1 rounded-lg text-amber-300 bg-red-800'
                 >
-                   Get New Report
+                    Get New Report
                 </button>
             </div>
             <div id='report'></div>

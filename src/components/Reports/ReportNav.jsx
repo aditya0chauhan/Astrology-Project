@@ -1,6 +1,7 @@
 const tabs = [
   { id: "kundaliReport", label: "📄 कुंडली रिपोर्ट" },
-  { id: 'vedicReport', label: 'वैदिक रिपोर्ट' }
+  { id: "vedicReport", label: "📜 वैदिक रिपोर्ट" },
+  { id: "otherReport", label: "📚 अन्य रिपोर्ट" },
 ];
 
 const ReportNav = ({ activeTab, setActiveTab }) => {

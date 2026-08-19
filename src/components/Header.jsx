@@ -16,7 +16,7 @@ const Header = () => {
     { to: '/numerology', label: t('numerology') },
     { to: '/vastu', label: t('vaastu') },
     { to: '/panchang', label: t('panchang') },
-    // { to: '/report', label: t('rep') },
+    { to: '/report', label: t('rep') },
     { to: '/contact', label: t('contact') },
     { to: '/poojan', label: t('pujan') },
     { to: '/account', label: t('account') },
